@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   MDBContainer,
   MDBBtn,
@@ -8,7 +7,7 @@ import {
 }
 from 'mdb-react-ui-kit';
 
-function LoginPage() {
+const LoginPage = () => {
   return (
     <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
            <div className="text-center mb-3">
