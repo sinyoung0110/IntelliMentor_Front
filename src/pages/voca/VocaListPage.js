@@ -1,6 +1,5 @@
 
 import React from 'react';
-import ListComponent from "../../components/todo/ListComponent";
 
 const ListPage=()=>{
   return ( 
@@ -8,7 +7,6 @@ const ListPage=()=>{
     <div className="text-3xl font-extrabold">
       Todo List Page Component
       </div>
-      <ListComponent></ListComponent>
   </div>
    );
 }
