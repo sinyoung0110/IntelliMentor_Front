@@ -2,7 +2,7 @@ import { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import vocaRouter from "./vocaRouter";
 
-const Loading=<div classNmae={'bg-red-700'}>Loading....</div>
+const Loading=<div className={'bg-red-700'}>Loading....</div>
 
 const Main=lazy(()=>import("../pages/MainPage"))
 const Voca=lazy(()=>import("../pages/voca/VocaIndexPage"))
