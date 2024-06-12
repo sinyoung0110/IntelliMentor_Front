@@ -10,11 +10,10 @@ const BasicMenu = ()=> {
   //리덕스 - 로그인유지
   const loginState = useSelector(state => state.loginSlice)
 
-  console.log("loginState.......:"+loginState)
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/">IntelliMentor</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">IntelliMentor</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
         {loginState.email ?
