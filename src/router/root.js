@@ -2,15 +2,14 @@ import { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import todoRouter from "./todoRouter";
 import vocaRouter from "./vocaRouter";
+import memberRouter from "./memberRouter";
 
-const Loading=<div classNmae={'bg-red-700'}>Loading....</div>
+const Loading=<div className={'bg-red-700'}>Loading....</div>
 
 const Main=lazy(()=>import("../pages/MainPage"))
 const Voca=lazy(()=>import("../pages/voca/VocaIndexPage"))
 const Study=lazy(()=>import("../pages/study/StudyMinePage"))
 const Notice=lazy(()=>import("../pages/notice/NoticeIndexPage"))
-const Login=lazy(()=>import("../pages/member/LoginPage"))
-const Signup=lazy(()=>import("../pages/member/SignupPage"))
 
 
 const root=createBrowserRouter([
@@ -34,14 +33,10 @@ const root=createBrowserRouter([
         children: todoRouter()
     },
     {
-        path: 'login',
-        element: <Suspense fallback={Loading}><Login/></Suspense>
-    },
-    {
-        path: 'signup',
-        element: <Suspense fallback={Loading}><Signup/></Suspense>
+        path: 'member',
+        children: memberRouter()
     }
 
 ])
 
-export default root
+export default root;
