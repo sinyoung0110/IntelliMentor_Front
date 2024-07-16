@@ -4,9 +4,10 @@ import {Form} from 'react-bootstrap';
 const StudyComponent=()=> {
     return (
         <>
-        <div className='bg-pink-300'><h1>Study</h1>
-        <div className="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div className="row g-0 border rounded-3xl overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"  style={{ backgroundColor: '#EBF0EA', color: '#000000' }}>
+        
         <div className="col p-4 d-flex flex-column position-static">
+        <h1>Study</h1>
           <strong className="d-inline-block mb-2 text-success-emphasis">나의 스터디 그룹 </strong>
           <h3 className="mb-0">6주차 과제</h3>
           <div className="mb-1 text-body-secondary">기한 : 2024.05.27.</div>
@@ -29,7 +30,6 @@ const StudyComponent=()=> {
             <button type="button" className="btn btn-outline-dark">바로 가기</button>
       </div>
     </div>
-  </div>
         </>
     );
 }

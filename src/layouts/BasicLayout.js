@@ -8,9 +8,9 @@ function BasicLayout({children}) {
     <>
       <BasicMenu/>
       <Container>
-        <div className="bg-green-200 my-5 w-full">
+        <div>
           <main 
-            className="bg-sky-300 w-full px-5 py-5"> {/* 상단 여백 py-40 변경 flex 제거 */}
+            className="bg-gray-50 w-full px-5 py-5"> {/* 상단 여백 py-40 변경 flex 제거 */}
             {children}
           </main>
         </div>

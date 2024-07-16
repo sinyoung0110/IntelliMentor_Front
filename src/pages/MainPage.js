@@ -9,8 +9,8 @@ function MainPage(props) {
     return (
         <BasicLayout>
                 <Row>
-                    <Col> <VocaComponent/></Col>
-                    <Col><StudyComponent/></Col>
+                    <Col sm={8}> <VocaComponent/></Col>
+                    <Col sm={4}><StudyComponent/></Col>
                 </Row><br/>
                 <Row>
                     <Col sm={8}> <DataComponent/></Col>

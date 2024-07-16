@@ -1,51 +1,36 @@
-import {Table} from 'react-bootstrap';
-
-
+import {Table,Container} from 'react-bootstrap';
+import { FaRegSmile,FaRegFrown } from "react-icons/fa";
+import { CiFaceSmile } from "react-icons/ci";
 const DataComponent=()=> {
     return (
         <>
-        <div className='bg-gray-300'>
-        <h1>이번주 단어장 학습 기록</h1>
-        <Table responsive>
+        <Container className="mt-5">
+      <h2>Borderless Table</h2>
+      <Table borderless>
         <thead>
-        <tr>
-          <th>날짜</th>
-          {Array.from({ length: 7 }).map((_, index) => (
-            <th key={index}>5/1{index}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>학습한 단어 수</td>
-          {Array.from({ length: 7 }).map((_, index) => (
-            <td key={index}>학습 : 2{index}</td>
-          ))}
-        </tr>
-        <tr>
-          <td>퀴즈 성적</td>
-          {Array.from({ length: 7 }).map((_, index) => (
-            <td key={index}>퀴즈 : A+</td>
-          ))}
-        </tr>
-        <tr>
-          <td>오답 단어 수</td>
-          {Array.from({ length: 7 }).map((_, index) => (
-            <td key={index}>오답 :{index}</td>
-          ))}
-        </tr>
-        <tr>
-          <td>총 외운 단어 수</td>
-          {Array.from({ length: 7 }).map((_, index) => (
-            <td key={index}> 총 : 1{index}</td>
-          ))}
-        </tr>
-      </tbody>
-    </Table>
-            </div>
-     
-
-       
+          <tr>
+            <th>MON</th>
+            <th>TUE</th>
+            <th>WED</th>
+            <th>THU</th>
+            <th>FRI</th>
+            <th>SAT</th>
+            <th>SUN</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><FaRegSmile /></td>
+            <td><CiFaceSmile /></td>
+            <td><FaRegFrown /></td>
+            <td><FaRegSmile /></td>
+            <td><FaRegSmile /></td>
+            <td><FaRegSmile /></td>
+            <td><FaRegSmile /></td>
+          </tr>
+        </tbody>
+      </Table>
+    </Container>
         </>
     );
 }

@@ -12,7 +12,7 @@ function BasicMenu() {
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/">IntelliMentor</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">IntelliMentor</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
@@ -33,7 +33,7 @@ function BasicMenu() {
           <>
           <Nav>
             <Nav.Link as={Link} to="/member/login">로그인</Nav.Link>
-            <Nav.Link eventKey={2}as={Link} to="/signup">
+            <Nav.Link eventKey={2}as={Link} to="/member/signup">
               회원가입
             </Nav.Link>
           </Nav>
