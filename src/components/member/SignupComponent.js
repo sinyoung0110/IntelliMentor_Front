@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import useCustomLogin from "../../hooks/useCustomLogin";
+import { signupPost } from '../../api/memberApi'; // signupPost 함수 import
 
 const SignUp = () => {
+  const { moveToPath } = useCustomLogin();
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    nickname: ''
   });
 
   const handleChange = (e) => {
@@ -15,13 +20,25 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
     } else {
-      // Handle form submission (e.g., send data to API)
-      alert("Form submitted successfully!");
+      try {
+        const signupData = {
+          email: formData.email,
+          pw: formData.password,
+          pwCheck: formData.confirmPassword,
+          nickname: formData.nickname
+        };
+        const response = await signupPost(signupData);
+        alert("Form submitted successfully!");
+        moveToPath('/');
+      } catch (error) {
+        console.error("Signup error:", error);
+        alert("An error occurred during signup. Please try again.");
+      }
     }
   };
 
@@ -62,6 +79,18 @@ const SignUp = () => {
                 placeholder="Confirm Password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formNickname">
+              <Form.Label>Nickname</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your nickname"
+                name="nickname"
+                value={formData.nickname}
                 onChange={handleChange}
                 required
               />

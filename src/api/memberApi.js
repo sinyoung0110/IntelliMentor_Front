@@ -13,3 +13,11 @@ export const loginPost = async (loginParam) => {
 	const res = await axios.post(`${host}/login`, form, header);
 	return res.data;
 };
+export const signupPost = async (signupParam) => {
+	const header = {
+	  headers: { "Content-Type": "application/json" }
+	};
+  
+	const res = await axios.post(`${host}/signup`, signupParam, header);
+	return res.data;
+  };
