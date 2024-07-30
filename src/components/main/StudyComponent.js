@@ -1,10 +1,10 @@
 import {Form} from 'react-bootstrap';
-
+import '../../App.css';
 
 const StudyComponent=()=> {
     return (
         <>
-        <div className="row g-0 border rounded-3xl overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"  style={{ backgroundColor: '#EBF0EA', color: '#000000' }}>
+        <div className="commonContainer"  style={{ backgroundColor: '#EBF0EA', color: '#000000' }}>
         
         <div className="col p-4 d-flex flex-column position-static">
         <h1>Study</h1>

@@ -1,10 +1,11 @@
 import {Table,Container} from 'react-bootstrap';
 import { FaRegSmile,FaRegFrown } from "react-icons/fa";
-import { CiFaceSmile } from "react-icons/ci";
+
 const DataComponent=()=> {
     return (
-        <>
-        <Container className="mt-5">
+      <div className="bg-gray-50">
+        
+      <Container className="mt-5">
       <h2>Borderless Table</h2>
       <Table borderless>
         <thead>
@@ -20,18 +21,18 @@ const DataComponent=()=> {
         </thead>
         <tbody>
           <tr>
-            <td><FaRegSmile /></td>
-            <td><CiFaceSmile /></td>
-            <td><FaRegFrown /></td>
-            <td><FaRegSmile /></td>
-            <td><FaRegSmile /></td>
-            <td><FaRegSmile /></td>
-            <td><FaRegSmile /></td>
+            <td><FaRegSmile size="40" color="FBB241"/></td>
+            <td><FaRegFrown size="40" color="DFE549"/></td>
+            <td><FaRegFrown size="40" color="DFE549"/></td>
+            <td><FaRegSmile size="40" color="FBB241"/></td>
+            <td><FaRegSmile size="40" color="FBB241"/></td>
+            <td><FaRegSmile size="40" color="FBB241"/></td>
+            <td><FaRegSmile size="40" color="FBB241"/></td>
           </tr>
         </tbody>
       </Table>
     </Container>
-        </>
+        </div>
     );
 }
 
