@@ -10,7 +10,7 @@ function BasicLayout({children}) {
       <Container>
         <div>
           <main 
-            className="bg-gray-50 w-full px-5 py-5"> {/* 상단 여백 py-40 변경 flex 제거 */}
+            className="w-full px-5 py-5"> {/* 상단 여백 py-40 변경 flex 제거 */}
             {children}
           </main>
         </div>

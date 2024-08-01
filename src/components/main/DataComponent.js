@@ -3,7 +3,7 @@ import { FaRegSmile,FaRegFrown } from "react-icons/fa";
 
 const DataComponent=()=> {
     return (
-      <div className="bg-gray-50">
+      <div>
         
       <Container className="mt-5">
       <h2>Borderless Table</h2>

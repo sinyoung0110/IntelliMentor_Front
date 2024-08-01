@@ -21,3 +21,5 @@ export const signupPost = async (signupParam) => {
 	const res = await axios.post(`${host}/signup`, signupParam, header);
 	return res.data;
   };
+
+  

@@ -4,10 +4,11 @@ import { Badge, ListGroup} from 'react-bootstrap';
 const NoticeComponent=()=> {
     return (
         <>
-        <div className='bg-orange-300'>
-        <h1>게시판 인기글</h1>
+        <div className='commonContainer' style={{ backgroundColor: '#EBF0EA', color: '#000000' }}>
+        <div className="col p-4 d-flex flex-column position-static">
+        <h1>Hot List</h1>
         <ListGroup as="ol" numbered>
-      <ListGroup.Item
+        <ListGroup.Item
         as="li"
         className="d-flex justify-content-between align-items-start"
       >
@@ -44,7 +45,7 @@ const NoticeComponent=()=> {
         </Badge>
       </ListGroup.Item>
     </ListGroup>
-            
+    </div>
             
             </div>
         </>

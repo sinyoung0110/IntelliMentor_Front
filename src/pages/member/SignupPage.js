@@ -7,7 +7,7 @@ function SignupPage() {
 
   return (<>
   <BasicMenu/>
-    <Container>
+  <Container>
     <SignupComponent />
   </Container>
   </>
