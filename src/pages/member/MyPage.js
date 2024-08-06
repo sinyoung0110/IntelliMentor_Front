@@ -1,13 +1,15 @@
 import React from 'react';
-import BasicMenu from "../../components/menus/BasicMenu";
+import BasicLayout from '../../layouts/BasicLayout';
 import MypageComponent from '../../components/member/MypageComponent';
 
 function MyPage() {
   return (
-    <>
-    <BasicMenu/>
-    <MypageComponent></MypageComponent>
-    </>
+
+    <BasicLayout>
+ 
+        <MypageComponent/>
+      
+    </BasicLayout>
   );
 }
 

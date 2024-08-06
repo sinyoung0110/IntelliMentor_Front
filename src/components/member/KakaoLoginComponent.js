@@ -7,12 +7,12 @@ const link=getKakaoLoginLink()
 function KakaoLoginComponent(props) {
     return (
         <div className="flex flex-col">
-            <div className="text-center text-blue-500">로그인시에 자동 가입처리 됩니다</div>
+            <div className="text-center text-green m-4">로그인시에 자동 가입처리 됩니다</div>
                 <div className="flex justify-center w-full">
                     <div
-                    className="text-3xl text-center m-6 text-white font-extrabold w-3/4 bg-yellow-500
+                    className="text-xl text-center text-green font-bold w-2/5 bg-green
                     shadow-sm rounded p-2">
-                    <Link to={link}>KAKAO LOGIN</Link>
+                    <Link to={link} className="no-underline-link" >KAKAO LOGIN</Link>
                 </div>
             </div>
         </div>

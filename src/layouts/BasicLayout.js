@@ -2,7 +2,7 @@ import React from 'react';
 import BasicMenu from "../components/menus/BasicMenu";
 import Footer from "../components/menus/Footer";
 import { Container } from 'react-bootstrap';
-
+import '../App.css';
 function BasicLayout({children}) {
   return (
     <>

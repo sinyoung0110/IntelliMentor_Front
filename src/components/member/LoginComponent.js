@@ -1,92 +1,92 @@
-import { useState } from "react"
-import useCustomLogin from "../../hooks/useCustomLogin"
-import KakaoLoginComponent from "./KakaoLoginComponent"
+import React, { useState } from 'react';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import useCustomLogin from "../../hooks/useCustomLogin";
+import KakaoLoginComponent from "./KakaoLoginComponent";
+import { useNavigate } from 'react-router-dom'; // useNavigate 훅 임포트
 
-const initState = {
-  email: '',
-  pw: ''
-};
 
 const LoginComponent = () => {
-    const [loginParam, setLoginParam] = useState({...initState})
-    
-    const {doLogin, moveToPath} = useCustomLogin()
+  const [loginParam, setLoginParam] = useState({
+    email: '',
+    pw: ''
+  });
+  
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
+  const { doLogin, moveToPath } = useCustomLogin();
 
-    const handleChange = (e) => {
-    loginParam[e.target.name] = e.target.value
-    setLoginParam({...loginParam})
+  const handleChange = (e) => {
+    setLoginParam({
+      ...loginParam,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleClickLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await doLogin(loginParam);
+      if (data.error) {
+        alert("이메일과 패스워드를 다시 확인하세요");
+      } else {
+        alert("로그인 성공");
+        moveToPath('/');
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("로그인 중 오류가 발생했습니다. 다시 시도해 주세요.");
     }
-
-    const handleClickLogin = (e) => {
-        //dispatch(login(loginParam))
-        // dispatch(loginPostAsync(loginParam))
-        //     .unwrap()
-        //     .then(data=>{
-        //         if(data.error){
-        //           afterAll("이메일과 패스워드를 확인해주세요")
-
-        //         }else{
-        //           alert("로그인 성공")
-        //           navigate({pathname:'/'},{replace:true})
-
-        //         }
-        //     })
-        doLogin(loginParam) // loginSlice의 비동기 호출
-        .then(data => {
-          console.log(data)
-          if(data.error) {
-            alert("이메일과 패스워드를 다시 확인하세요")
-          }else {
-            alert("로그인 성공")
-            moveToPath('/')
-          }
-        })
-    } 
+  };
+  
+  const handleSignupClick = () => {
+    navigate('/member/signup'); // 회원가입 페이지로 이동
+  };
 
   return (
-    <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      <div className="flex justify-center">
-        <div className="text-4xl m-4 p-4 font-extrabold text-blue-500">Login Component</div>
-      </div>
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-          <div className="w-2/5 p-6 text-right font-bold">Email</div>
-          <input
-            className="w-1/2 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
-            name="email"
-            type="text"
-            value={loginParam.email}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-          <div className="w-2/5 p-6 text-right font-bold">Password</div>
-          <input
-            className="w-1/2 p-6 rounded-r border border-solid border-neutral-500 shadow-md"
-            name="pw"
-            type="password"
-            value={loginParam.pw}
-            onChange={handleChange}
-          />
-        </div>
-      </div>
-      <div className="flex justify-center">
-        <div className="relative mb-4 flex w-full justify-center">
-          <div className="w-2/5 p-6 flex justify-center font-bold">
-            <button
-              className="rounded p-4 w-36 bg-blue-500 text-xl text-white"
-              onClick={handleClickLogin}
-            >
-              LOGIN
-            </button>
-          </div>
-        </div>
-      </div>
-      <KakaoLoginComponent/>
-    </div>
+    <Container className="mt-5">
+      <Row className="justify-content-md-center">
+        <Col md={6}>
+          <h2 className="text-center mb-4 text-green font-bold">Login</h2>
+          <Form onSubmit={handleClickLogin}>
+            <Form.Group controlId="formEmail">
+              <Form.Label className="text-green">Email address</Form.Label>
+              <Form.Control 
+                type="email"
+                placeholder="Enter email"
+                name="email"
+                value={loginParam.email}
+                onChange={handleChange}
+                required
+                className="mb-3"
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formPassword">
+              <Form.Label className="text-green">Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                name="pw"
+                value={loginParam.pw}
+                onChange={handleChange}
+                required
+                className="mb-3"
+              />
+            </Form.Group>
+
+            <div className="d-flex justify-content-center mt-4">
+              <Button type="submit" className="custom-button mr-2">
+                LOGIN
+              </Button>
+              <Button type="button" className="custom-button" style={{ backgroundColor: '#BFBFBF' }} onClick={handleSignupClick}>
+                SIGNUP
+              </Button>
+            </div>
+          </Form>
+          <KakaoLoginComponent />
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

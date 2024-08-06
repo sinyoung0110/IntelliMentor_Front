@@ -1,42 +1,31 @@
 import React, { useState } from 'react';
-import Container from 'react-bootstrap/Container';
+import { Container } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import '../../css/mypage.css'; // CSS 파일 임포트
+import { useNavigate } from 'react-router-dom';
+import { modify, deleted } from '../../api/memberApi'; // API 함수 임포트
+import { logout } from "../../slices/loginSlice";
 
 function MypageComponent() {
   const user = useSelector(state => state.loginSlice);
   const dispatch = useDispatch(); // Redux dispatch 함수
   const navigate = useNavigate(); // useNavigate 훅 사용
   const [editing, setEditing] = useState(false);
+  const [pw, setPw] = useState('');
   const [nickname, setNickname] = useState(user.nickname);
-  const [password, setPassword] = useState('');
 
   // 정보 저장 함수
   const handleSave = async () => {
     try {
-      const response = await fetch('/api/member/modify', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}` // Assuming you're using token-based authentication
-        },
-        body: JSON.stringify({
-          email: user.email, // 이메일을 고유키로 사용
-          nickname,
-          password
-        })
+      const data = await modify({
+        email: user.email, // 이메일을 고유키로 사용
+        pw,
+        nickname
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to save user information');
-      }
-
-      const data = await response.json();
       console.log('정보가 저장되었습니다:', data);
 
       // 상태 업데이트
-      dispatch({ type: 'UPDATE_USER', payload: { nickname } });
+      dispatch({ type: 'UPDATE_USER', payload: { email: user.email, nickname } });
 
       setEditing(false);
       alert('정보가 성공적으로 저장되었습니다.');
@@ -49,24 +38,12 @@ function MypageComponent() {
   // 회원 탈퇴 함수
   const handleDeleteAccount = async () => {
     try {
-      const response = await fetch('/api/member/delete', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}` // Assuming you're using token-based authentication
-        },
-        body: JSON.stringify({ email: user.email }) // 이메일을 고유키로 사용
-      });
+      const data = await deleted({ email: user.email }); // 이메일을 고유키로 사용
 
-      if (!response.ok) {
-        throw new Error('Failed to delete account');
-      }
-
-      const data = await response.json();
       console.log('회원 탈퇴 완료:', data);
 
       // 상태 초기화 및 리디렉션
-      dispatch({ type: 'LOGOUT' });
+      dispatch(logout());
       navigate('/member/login'); // 로그인 페이지로 리디렉션
       alert('회원 탈퇴가 완료되었습니다.');
     } catch (error) {
@@ -76,53 +53,77 @@ function MypageComponent() {
   };
 
   return (
-    <Container className="my-page-container">
-      <h1 className="my-page-heading">마이페이지</h1>
-      <div className="my-page-info">
+    <Container className="bg-white rounded-lg shadow-md flex flex-col items-center mb-20">
+      <h1 className="text-3xl font-bold text-green text-center ">마이페이지</h1>
+      <div className="space-y-4 mt-5 w-full max-w-xs ">
         {editing ? (
           <>
-            <div className="form-group">
-              <label htmlFor="email">이메일:</label>
+            <div className="flex flex-col mb-4">
+              <label htmlFor="email" className="text-gray-700">이메일:</label>
               <input
                 type="email"
                 id="email"
                 value={user.email}
                 readOnly
+                className="p-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 w-full"
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="password">비밀번호 변경:</label>
+            <div className="flex flex-col mb-4">
+              <label htmlFor="pw" className="text-gray-700">비밀번호 변경:</label>
               <input
                 type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                id="pw"
+                value={pw}
+                onChange={(e) => setPw(e.target.value)}
+                className="p-2 border border-gray-300 rounded-lg w-full"
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="nickname">닉네임:</label>
+            <div className="flex flex-col mb-4">
+              <label htmlFor="nickname" className="text-gray-700">닉네임:</label>
               <input
                 type="text"
                 id="nickname"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
+                className="p-2 border border-gray-300 rounded-lg w-full"
               />
             </div>
-            
-            <button onClick={handleSave} className="btn btn-primary">저장</button>
-            <button onClick={() => setEditing(false)} className="btn btn-secondary">취소</button>
+            <div className="flex justify-center space-x-4 mt-4">
+              <button
+                onClick={handleSave}
+                className="bg-green text-white px-4 py-2 rounded-lg hover:bg-green-600"
+              >
+                저장
+              </button>
+              <button
+                onClick={() => setEditing(false)}
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+              >
+                취소
+              </button>
+            </div>
+            <div className="h-10"> </div>
           </>
         ) : (
           <>
-            <h2>정보</h2>
-            <p><strong>닉네임:</strong> {nickname}</p>
             <p><strong>이메일:</strong> {user.email}</p>
+            <p><strong>닉네임:</strong> {nickname}</p>
             <p><strong>계정 정보:</strong> {user.isAdmin ? '관리자' : '일반 사용자'}</p>
-            <button onClick={() => setEditing(true)} className="btn btn-primary">정보 수정</button>
-            <div className="my-page-links">
-              <Link to="/member/change-password">비밀번호 변경</Link>
-              <button onClick={handleDeleteAccount} className="btn btn-danger">회원 탈퇴</button>
+            <div className="flex justify-center space-x-4 mt-5">
+              <button
+                onClick={() => setEditing(true)}
+                className="bg-green text-white px-4 py-2 rounded-lg  hover:bg-green-600"
+              >
+                정보 수정
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                회원 탈퇴
+              </button>
             </div>
+            <div className="h-10"> </div>
           </>
         )}
       </div>

@@ -3,6 +3,7 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import useCustomLogin from "../../hooks/useCustomLogin";
 import { signupPost } from '../../api/memberApi'; // signupPost 함수 import
 
+
 const SignUp = () => {
   const { moveToPath } = useCustomLogin();
 
@@ -44,9 +45,9 @@ const SignUp = () => {
 
   return (
     <Container>
-      <Row className="justify-content-md-center mt-5">
-        <Col md={6}>
-          <h2>Sign Up</h2>
+      <Row className="justify-content-md-center mt-5 text-green">
+        <Col md={6} lg={4}>
+          <h2 className="text-center mb-4 font-bold">Sign Up</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formEmail">
               <Form.Label>Email address</Form.Label>
@@ -57,6 +58,7 @@ const SignUp = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                className="mb-3"
               />
             </Form.Group>
 
@@ -69,6 +71,7 @@ const SignUp = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                className="mb-3"
               />
             </Form.Group>
 
@@ -81,6 +84,7 @@ const SignUp = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 required
+                className="mb-3"
               />
             </Form.Group>
 
@@ -93,12 +97,15 @@ const SignUp = () => {
                 value={formData.nickname}
                 onChange={handleChange}
                 required
+                className="mb-3"
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-3">
-              Sign Up
-            </Button>
+            <div className="d-flex justify-content-center mt-4">
+              <Button type="submit" className="custom-button">
+                Sign Up
+              </Button>
+            </div>
           </Form>
         </Col>
       </Row>
