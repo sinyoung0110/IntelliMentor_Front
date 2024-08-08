@@ -8,8 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch } from "react-redux";
 import { logout } from "../../slices/loginSlice";
 
-
-
 function BasicMenu() {
   const loginState = useSelector(state => state.loginSlice)
   const location = useLocation(); // To get the current route

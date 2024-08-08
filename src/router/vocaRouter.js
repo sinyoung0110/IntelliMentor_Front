@@ -13,23 +13,19 @@ const RecommendAdd=lazy(()=>import("../pages/voca/RecommendAddPage"))
 
 const vocaRouter = () => {
     return [
-        {
-          path: 'list',
-          element: <Suspense fallback={Loading}><VocaList/></Suspense>
-        },
-        {
-          path: '',
-          element: <Navigate replace={true} to={'add'}/>
+        // {
+        //   path: 'list',
+        //   element: <Suspense fallback={Loading}><VocaList/></Suspense>
+        // },
+        // {
+        //   path: '',
+        //   element: <Navigate replace={true} to={'list'}/>
          
-        },
+        // },
         // {
         //   path: 'read/:tno',
         //   element: <Suspense fallback={Loading}><VocaRead/></Suspense>
         // },
-        {
-          path: 'add',
-          element: <Suspense fallback={Loading}><VocaAdd/></Suspense>,
-        },
         {path:'directAdd',
           element:<Suspense fallback={Loading}><DirectAdd/></Suspense>
         },{path:'aiAdd',
