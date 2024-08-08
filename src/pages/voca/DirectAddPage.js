@@ -1,12 +1,13 @@
 import React from 'react';
-
 import DirectAddComponent from '../../components/voca/DirectAddComponent';
+import BasicLayout from '../../layouts/BasicLayout';
 function DirectAddPage() {
     return (
         <>
-            <div className={'text-3xl'}>DirectAdd Page</div>
+        <BasicLayout>
             <DirectAddComponent/>
-            </>
+        </BasicLayout>
+        </>
      
     );
 }

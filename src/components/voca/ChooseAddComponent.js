@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { PiPencilSimpleLineDuotone,PiSmileyDuotone,PiLegoSmileyDuotone} from "react-icons/pi";
 import { Button} from 'react-bootstrap';
-import { Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'; // useNavigate 훅 임포트
+
 const ChooseAddComponent = () => {
   const [exist, setExist] = useState(false);
   const navigate = useNavigate();
   const handleDirectAdd = () => {
     navigate('/voca/directAdd'); // 회원가입 페이지로 이동
+  };
+  const handleRecommendAdd = () => {
+    navigate('/voca/recommendAdd'); // 회원가입 페이지로 이동
+  };
+  const handleAitAdd = () => {
+    navigate('/voca/aiAdd'); // 회원가입 페이지로 이동
   };
 
   useEffect(() => {
@@ -24,19 +30,28 @@ const ChooseAddComponent = () => {
     setExist(false); // 존재하지 않음으로 설정
   }, []);
 
+
   return (
     <div>
       {exist ? (
         <div>목록이 존재합니다.</div> // 목록을 표시하는 부분
-      ) : (
-        <div>
-          <Button type="button" className="custom-button" style={{ backgroundColor: '#BFBFBF' }} onClick={handleDirectAdd}>
-                직접입력
+      ) : (<>
+      <div className="main-text">단어장 생성하기</div>
+        <div className="choose-container">
+          <Button type="button" className="choose-button" onClick={handleDirectAdd}>
+          <PiPencilSimpleLineDuotone size="200" color="#8FB299"/>
+                직접 생성
           </Button>
-          <Nav.Link as={Link} to="/voca/directAdd">Direct Add</Nav.Link>
-          <Nav.Link as={Link} to="/voca/recommendAdd">Recommend Add</Nav.Link>
-          <Nav.Link as={Link} to="/voca/aiAdd">AI Add</Nav.Link>
+          <Button type="button" className="choose-button" onClick={handleRecommendAdd}>
+          <PiSmileyDuotone size="200" color="#8FB299"/>
+                사용자 추천
+          </Button>
+          <Button type="button" className="choose-button" onClick={handleAitAdd}>
+          <PiLegoSmileyDuotone size="200" color="#8FB299"/>
+                ai 생성
+          </Button>
         </div>
+        </>
       )}
     </div>
   );

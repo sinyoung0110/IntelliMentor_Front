@@ -10,18 +10,22 @@ const VocaAdd=lazy(()=>import("../pages/voca/VocaAddPage"))
 const DirectAdd=lazy(()=>import("../pages/voca/DirectAddPage"))
 const AiAdd=lazy(()=>import("../pages/voca/AiAddPage"))
 const RecommendAdd=lazy(()=>import("../pages/voca/RecommendAddPage"))
-
+const Index=lazy(()=>import("../pages/voca/VocaIndexPage"))
 const vocaRouter = () => {
     return [
-        // {
-        //   path: 'list',
-        //   element: <Suspense fallback={Loading}><VocaList/></Suspense>
-        // },
-        // {
-        //   path: '',
-        //   element: <Navigate replace={true} to={'list'}/>
+        {
+          path: 'list',
+          element: <Suspense fallback={Loading}><VocaList/></Suspense>
+        },
+        {
+          path: 'index',
+          element: <Suspense fallback={Loading}><Index/></Suspense>
+        },
+        {
+          path: '',
+          element: <Navigate replace={true} to={'index'}/>
          
-        // },
+        },
         // {
         //   path: 'read/:tno',
         //   element: <Suspense fallback={Loading}><VocaRead/></Suspense>
