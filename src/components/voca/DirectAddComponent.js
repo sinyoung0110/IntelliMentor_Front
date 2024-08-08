@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { postAdd } from '../../api/todoApi'; // 실제 API 경로로 수정 필요
+import { directAdd } from '../../api/vocaApi'; // 실제 API 경로로 수정 필요
 import ResultModal from '../common/ResultModal'; // 필요에 따라 수정
 import useCustomMove from '../../hooks/useCustomMove'; // 필요에 따라 수정
 
@@ -46,7 +46,7 @@ function DirectAddComponent() {
             entries: formData.entries
         };
         
-        postAdd(dataToSend).then(response => {
+        directAdd(dataToSend).then(response => {
             setResult(response.TNO);
             setFormData({...initState});
         });

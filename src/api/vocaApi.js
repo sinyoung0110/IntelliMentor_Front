@@ -1,11 +1,14 @@
 import axios from "axios";
 import { API_SERVER_HOST } from "./todoApi";
 
-const host = `${API_SERVER_HOST}/api/member`;
+const host = `${API_SERVER_HOST}/api/voca`;
 
 export const directAdd = async (data) => {
     try {
-        const response = await axios.post('/api/voca/create', data);
+        const header = {
+            headers: { "Content-Type": "application/json" }
+          };
+        const response = await axios.post(`${host}/create`, data,header);
         return response.data;
     } catch (error) {
         console.error('Error posting data:', error);
