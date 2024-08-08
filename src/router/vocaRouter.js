@@ -9,7 +9,7 @@ const VocaAdd=lazy(()=>import("../pages/voca/VocaAddPage"))
 //const VocaModify = lazy(() => import("../pages/voca/VocaModifyPage"))
 const DirectAdd=lazy(()=>import("../pages/voca/DirectAddPage"))
 const AiAdd=lazy(()=>import("../pages/voca/AiAddPage"))
-
+const RecommendAdd=lazy(()=>import("../pages/voca/RecommendAddPage"))
 
 const vocaRouter = () => {
     return [
@@ -29,16 +29,15 @@ const vocaRouter = () => {
         {
           path: 'add',
           element: <Suspense fallback={Loading}><VocaAdd/></Suspense>,
-          children: [
-            {path:'directAdd',
+        },
+        {path:'directAdd',
           element:<Suspense fallback={Loading}><DirectAdd/></Suspense>
         },{path:'aiAdd',
         element:<Suspense fallback={Loading}><AiAdd/></Suspense>
+      },{
+        path:'recommendAdd',
+        element:<Suspense fallback={Loading}><RecommendAdd/></Suspense>
       }
-          ]
-            
-          
-        },
         // {
         //   path: 'modify/:tno',
         //   element: <Suspense fallback={Loading}><VocaModify/></Suspense>

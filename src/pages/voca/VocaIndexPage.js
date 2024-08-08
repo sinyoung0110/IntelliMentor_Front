@@ -1,5 +1,6 @@
 import BasicLayout from "../../layouts/BasicLayout";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import ChooseAddComponent from "../../components/voca/ChooseAddComponent";
 
 const IndexPage = () => {
   const {isLogin, moveToLoginReturn} = useCustomLogin()
@@ -8,7 +9,7 @@ const IndexPage = () => {
   }
   return (
   <BasicLayout>
-  <div className=" text-3xl">단어장</div>
+  <ChooseAddComponent/>
   </BasicLayout>
   );
 }
