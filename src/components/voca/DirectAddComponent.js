@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { directAdd } from '../../api/vocaApi'; // 실제 API 경로로 수정 필요
-import ResultModal from '../common/ResultModal'; // 필요에 따라 수정
-import useCustomMove from '../../hooks/useCustomMove'; // 필요에 따라 수정
+import { directAdd } from '../../api/vocaApi';
+import ResultModal from '../common/ResultModal';
+import useCustomMove from '../../hooks/useCustomMove';
 
 const initState = {
     title: '',
-    entries: [{ eng: '', kor: '' }]
+    eng: [''],
+    kor: ['']
 };
 
 function DirectAddComponent() {
@@ -15,46 +16,55 @@ function DirectAddComponent() {
     const [result, setResult] = useState(null);
     const { moveToList } = useCustomMove();
 
-    const handleChange = (e, index) => {
-        const { name, value } = e.target;
-        const updatedEntries = [...formData.entries];
-        updatedEntries[index][name] = value;
-        setFormData(prevState => ({ ...prevState, entries: updatedEntries }));
+    const handleChange = (e, index, type) => {
+        const { value } = e.target;
+        const updatedList = [...formData[type]];
+        updatedList[index] = value;
+        setFormData(prevState => ({ ...prevState, [type]: updatedList }));
     };
 
     const handleAddField = () => {
         setFormData(prevState => ({
             ...prevState,
-            entries: [...prevState.entries, { eng: '', kor: '' }]
+            eng: [...prevState.eng, ''],
+            kor: [...prevState.kor, '']
         }));
     };
 
     const handleRemoveField = (index) => {
-        const updatedEntries = formData.entries.filter((_, i) => i !== index);
-        setFormData(prevState => ({ ...prevState, entries: updatedEntries }));
+        const updatedEng = formData.eng.filter((_, i) => i !== index);
+        const updatedKor = formData.kor.filter((_, i) => i !== index);
+        setFormData(prevState => ({ ...prevState, eng: updatedEng, kor: updatedKor }));
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault(); // 기본 제출 동작 방지
+        e.preventDefault();
         handleAddField(); // 새로운 입력 필드 추가
     };
 
     const handleClickAdd = () => {
         const dataToSend = {
-            userId: user.email, // 로그인한 사용자 이메일을 userId로 사용
+            userId: user.email,
             title: formData.title,
-            entries: formData.entries
+            eng: formData.eng,
+            kor: formData.kor
         };
         
         directAdd(dataToSend).then(response => {
-            setResult(response.TNO);
+            setResult(response.message || '단어장이 성공적으로 만들어졌습니다');
             setFormData({...initState});
+        }).catch(error => {
+            if (error.response && error.response.status === 409) {
+                setResult(error.response.data.ERROR_MESSAGE);
+            } else {
+                setResult('An error occurred. Please try again.');
+            }
         });
     };
 
     const closeModal = () => {
         setResult(null);
-        moveToList();
+        //moveToList();
     };
 
     return (
@@ -75,16 +85,15 @@ function DirectAddComponent() {
                             required
                         />
                     </div>
-                    {formData.entries.map((entry, index) => (
+                    {formData.eng.map((engWord, index) => (
                         <div key={index} className="flex items-center mb-4 gap-4">
                             <div className="flex-1 min-w-[30%]">
                                 <label htmlFor={`eng-${index}`} className="text-gray-700">English Word:</label>
                                 <input
                                     type="text"
                                     id={`eng-${index}`}
-                                    name="eng"
-                                    value={entry.eng}
-                                    onChange={(e) => handleChange(e, index)}
+                                    value={engWord}
+                                    onChange={(e) => handleChange(e, index, 'eng')}
                                     className="p-3 border border-gray-300 rounded-lg w-full"
                                     placeholder="Enter the English word"
                                     required
@@ -95,9 +104,8 @@ function DirectAddComponent() {
                                 <input
                                     type="text"
                                     id={`kor-${index}`}
-                                    name="kor"
-                                    value={entry.kor}
-                                    onChange={(e) => handleChange(e, index)}
+                                    value={formData.kor[index] || ''}
+                                    onChange={(e) => handleChange(e, index, 'kor')}
                                     className="p-3 border border-gray-300 rounded-lg w-full"
                                     placeholder="Enter the Korean translation"
                                     required
