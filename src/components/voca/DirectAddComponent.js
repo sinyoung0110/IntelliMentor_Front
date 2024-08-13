@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { directAdd } from '../../api/vocaApi';
 import ResultModal from '../common/ResultModal';
-import useCustomMove from '../../hooks/useCustomMove';
+import {useNavigate} from "react-router-dom";
 
 const initState = {
     title: '',
@@ -14,7 +14,8 @@ function DirectAddComponent() {
     const user = useSelector(state => state.loginSlice);
     const [formData, setFormData] = useState({...initState});
     const [result, setResult] = useState(null);
-    const { moveToList } = useCustomMove();
+    const navigate=useNavigate()
+   
 
     const handleChange = (e, index, type) => {
         const { value } = e.target;
@@ -64,7 +65,7 @@ function DirectAddComponent() {
 
     const closeModal = () => {
         setResult(null);
-        //moveToList();
+        navigate('/voca/list');
     };
 
     return (

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { checkVocaExists } from '../../api/vocaApi'; // 실제 경로에 맞게 수정
 import { PiPencilSimpleLineDuotone, PiSmileyDuotone, PiLegoSmileyDuotone } from "react-icons/pi";
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 const ChooseAddComponent = () => {
   const [exist, setExist] = useState(false);
   const navigate = useNavigate();
+  const user = useSelector(state => state.loginSlice);
+  const userId = user?.email; // 이메일을 userId로 사용
 
   const handleDirectAdd = () => {
     navigate('/voca/directAdd');
@@ -15,14 +19,25 @@ const ChooseAddComponent = () => {
     navigate('/voca/recommendAdd');
   };
 
-  const handleAitAdd = () => {
+  const handleAiAdd = () => {
     navigate('/voca/aiAdd');
   };
 
   useEffect(() => {
-    // 여기서 API 호출을 통해 목록의 존재 여부를 확인할 수 있습니다.
-    setExist(false); // 예제로 존재하지 않음으로 설정
-  }, []);
+    if (userId) { // userId가 있을 때만 API 호출
+      const fetchVocaExistence = async () => {
+        try {
+          const doesExist = await checkVocaExists(userId); // 이메일을 userId로 사용
+          setExist(doesExist);
+        } catch (error) {
+          console.error('Failed to check vocabulary existence', error);
+          setExist(false); // 에러 발생 시에도 목록이 없다고 가정
+        }
+      };
+
+      fetchVocaExistence();
+    }
+  }, [userId]);
 
   return (
     <div>
@@ -40,7 +55,7 @@ const ChooseAddComponent = () => {
               <PiSmileyDuotone color="#8FB299" />
               사용자 추천
             </Button>
-            <Button type="button" className="choose-button" onClick={handleAitAdd}>
+            <Button type="button" className="choose-button" onClick={handleAiAdd}>
               <PiLegoSmileyDuotone color="#8FB299" />
               ai 생성
             </Button>
