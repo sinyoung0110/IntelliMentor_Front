@@ -16,8 +16,8 @@ function MypageComponent() {
   // 정보 저장 함수
   const handleSave = async () => {
     try {
+      // modify API 호출 시 email을 보내지 않음
       const data = await modify({
-        email: user.email, // 이메일을 고유키로 사용
         pw,
         nickname
       });
@@ -25,7 +25,7 @@ function MypageComponent() {
       console.log('정보가 저장되었습니다:', data);
 
       // 상태 업데이트
-      dispatch({ type: 'UPDATE_USER', payload: { email: user.email, nickname } });
+      dispatch({ type: 'UPDATE_USER', payload: { nickname } });
 
       setEditing(false);
       alert('정보가 성공적으로 저장되었습니다.');
@@ -38,7 +38,8 @@ function MypageComponent() {
   // 회원 탈퇴 함수
   const handleDeleteAccount = async () => {
     try {
-      const data = await deleted({ email: user.email }); // 이메일을 고유키로 사용
+      // deleted API 호출 시 email을 보내지 않음
+      const data = await deleted({}); // deleteParam을 비워둠
 
       console.log('회원 탈퇴 완료:', data);
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { checkVocaExists } from '../../api/vocaApi'; // 실제 경로에 맞게 수정
+import { checkVocaExists as apiCheckVocaExists } from '../../api/vocaApi'; // 실제 경로에 맞게 수정
 import { PiPencilSimpleLineDuotone, PiSmileyDuotone, PiLegoSmileyDuotone } from "react-icons/pi";
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -25,17 +25,20 @@ const ChooseAddComponent = () => {
 
   useEffect(() => {
     if (userId) { // userId가 있을 때만 API 호출
-      const fetchVocaExistence = async () => {
+      const checkVocabularyExistence = async () => {
         try {
-          const doesExist = await checkVocaExists(userId); // 이메일을 userId로 사용
-          setExist(doesExist);
+          const vocabularyList = await apiCheckVocaExists(userId); // API 호출 함수 사용
+          console.log(vocabularyList); // 응답 확인
+
+          // 리스트가 비어있지 않으면 exist를 true로 설정
+          setExist(vocabularyList.length > 0);
         } catch (error) {
           console.error('Failed to check vocabulary existence', error);
           setExist(false); // 에러 발생 시에도 목록이 없다고 가정
         }
       };
 
-      fetchVocaExistence();
+      checkVocabularyExistence();
     }
   }, [userId]);
 
