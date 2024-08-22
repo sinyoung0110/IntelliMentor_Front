@@ -1,17 +1,18 @@
 import BasicLayout from "../../layouts/BasicLayout";
 import useCustomLogin from "../../hooks/useCustomLogin";
-import ChooseAddComponent from "../../components/voca/ChooseAddComponent";
+import FirstVisitComponent from "../../components/voca/FirstVisitComponent";
 
 const IndexPage = () => {
   const {isLogin, moveToLoginReturn} = useCustomLogin()
+
   if(!isLogin){
-  return moveToLoginReturn()
-  }
+    return moveToLoginReturn()
+    }
   return (
   <BasicLayout>
-  <ChooseAddComponent/>
+  <FirstVisitComponent/>
   </BasicLayout>
   );
 }
- 
+
 export default IndexPage;

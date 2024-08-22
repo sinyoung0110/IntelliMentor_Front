@@ -5,8 +5,8 @@ import { Navigate } from "react-router-dom";
 const Loading=<div className={'bg-red-700'}>Loading....</div>
 const VocaList=lazy(()=>import("../pages/voca/VocaListPage"))
 //const VocaRead=lazy(()=>import("../pages/voca/VocaReadPage"))
-const VocaAdd=lazy(()=>import("../pages/voca/VocaAddPage"))
 //const VocaModify = lazy(() => import("../pages/voca/VocaModifyPage"))
+const ChooseAdd=lazy(()=>import("../pages/voca/ChooseAddPage"))
 const DirectAdd=lazy(()=>import("../pages/voca/DirectAddPage"))
 const AiAdd=lazy(()=>import("../pages/voca/AiAddPage"))
 const RecommendAdd=lazy(()=>import("../pages/voca/RecommendAddPage"))
@@ -30,14 +30,20 @@ const vocaRouter = () => {
         //   path: 'read/:tno',
         //   element: <Suspense fallback={Loading}><VocaRead/></Suspense>
         // },
+        {path:'chooseAdd',
+          element:<Suspense fallback={Loading}><ChooseAdd/></Suspense>
+        },
+
         {path:'directAdd',
           element:<Suspense fallback={Loading}><DirectAdd/></Suspense>
-        },{path:'aiAdd',
+        },
+        {path:'aiAdd',
         element:<Suspense fallback={Loading}><AiAdd/></Suspense>
-      },{
+        },
+        {
         path:'recommendAdd',
         element:<Suspense fallback={Loading}><RecommendAdd/></Suspense>
-      }
+        }
         // {
         //   path: 'modify/:tno',
         //   element: <Suspense fallback={Loading}><VocaModify/></Suspense>

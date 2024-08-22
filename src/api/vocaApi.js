@@ -23,27 +23,3 @@ export const checkVocaExists = async () => {
         throw error;
     }
 };
-
-// 단어장 목록을 가져오는 함수 (기존 코드 유지)
-export const fetchVocabularyLists = async (userId) => {
-    try {
-        // 쿼리 문자열 생성
-        const queryString = new URLSearchParams({ userId }).toString();
-        const response = await fetch(`${host}/read?${queryString}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error fetching vocabulary lists:', error);
-        throw error;
-    }
-};

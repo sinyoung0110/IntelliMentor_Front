@@ -6,11 +6,7 @@ import BasicLayout from "../../layouts/BasicLayout";
 const ListPage=()=>{
   return ( 
   <div>
-   
       <BasicLayout>
-      <div className="text-3xl font-extrabold">
-      Todo List Page Component
-      </div>
       <ListComponent/>
       </BasicLayout>
   </div>
