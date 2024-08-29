@@ -15,6 +15,8 @@ const LoginComponent = () => {
 
   const { doLogin, moveToPath } = useCustomLogin();
 
+  const [message, setMessage] = useState('');
+
   const handleChange = (e) => {
     setLoginParam({
       ...loginParam,
@@ -26,13 +28,16 @@ const LoginComponent = () => {
     e.preventDefault();
     try {
       const data = await doLogin(loginParam);
+      
       if (data.error) {
         alert("이메일과 패스워드를 다시 확인하세요");
+        //setMessage('Login failed: ' + error.message);
       } else {
         moveToPath('/');
       }
     } catch (error) {
       console.error("Login error:", error);
+      setMessage('Login failed: ' + error.message);
       alert("로그인 중 오류가 발생했습니다. 다시 시도해 주세요.");
     }
   };
@@ -77,6 +82,7 @@ const LoginComponent = () => {
               <Button type="submit" className="custom-button mr-2">
                 LOGIN
               </Button>
+              {message && <p>{message}</p>}
               <Button type="button" className="custom-button" style={{ backgroundColor: '#BFBFBF' }} onClick={handleSignupClick}>
                 SIGNUP
               </Button>

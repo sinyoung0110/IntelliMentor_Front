@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from './api';
 
 const host = `${process.env.REACT_APP_API_SERVER_HOST}/api/voca`;
 

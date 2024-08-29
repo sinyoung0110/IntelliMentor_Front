@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from './api';
 
 // 토큰 갱신 API
 export const refreshToken = async (refreshToken) => {

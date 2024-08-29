@@ -1,25 +1,35 @@
 import axios from "axios";
-import apiClient from './apiClient';
+import apiClient from './api'; // 이미 만들어진 Axios 인스턴스를 사용한다면 여기에 해당합니다.
 
 const host = `${process.env.REACT_APP_API_SERVER_HOST}/api/member`;
 
+// 토큰 저장 함수 추가
+function saveTokens(accessToken, refreshToken) {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+}
 
-export const loginPost = async (loginParam) => {
-const header = {
-  headers: { "Content-Type": "x-www-form-urlencoded" }
+export const loginPost = async (loginParam, credentials) => {
+    const header = {
+        headers: { "Content-Type": "x-www-form-urlencoded" }
+    };
+    const form = new FormData();
+    form.append("username", loginParam.email);
+    form.append("password", loginParam.pw);
+
+    // 로그인 요청
+    const res = await axios.post(`${host}/login`, form, header, credentials);
+
+    const { accessToken, refreshToken } = res.data;
+
+    // 토큰을 로컬 스토리지에 저장
+    saveTokens(accessToken, refreshToken);
+    console.log('Access Token:', localStorage.getItem('accessToken'));
+    console.log('Refresh Token:', localStorage.getItem('refreshToken'));
+
+    return res.data;
 };
-const form = new FormData();
-form.append("username", loginParam.email);
-form.append("password", loginParam.pw);
-const res = await axios.post(`${host}/login`, form, header);
 
-const { accessToken, refreshToken } = res.data;
-
-// 액세스 토큰과 리프레시 토큰을 로컬 스토리지에 저장
-localStorage.setItem('accessToken', accessToken);
-localStorage.setItem('refreshToken', refreshToken);
-return res.data;
-};
 
 
 
