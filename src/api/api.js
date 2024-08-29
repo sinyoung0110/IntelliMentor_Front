@@ -40,6 +40,7 @@ function handleTokenError(errorData) {
     alert(errorMessage);
 }
 
+
 // Axios 인스턴스 생성 및 인터셉터 설정
 const api = axios.create({
     baseURL: `${host}`,
@@ -55,8 +56,8 @@ api.interceptors.request.use(
         if (accessToken) {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
-        // x-Refresh-Token 헤더를 제거하여 모든 요청에 포함되지 않도록 함
-        delete config.headers['x-Refresh-Token'];
+        // x-Refresh-Token 헤더를 요청에서 제외함
+        delete config.headers['X-Refresh-Token'];
         return config;
     },
     error => {
@@ -66,31 +67,36 @@ api.interceptors.request.use(
 
 // 응답 인터셉터 설정
 api.interceptors.response.use(
-    response => {
-        return response;
-    },
-    async error => {
-        const originalRequest = error.config;
+    async response => {
+        const originalRequest = response.config;
 
-        if (error.response && error.response.status === 401 && !originalRequest._retry) {
+        const { cause, error: errorMessage } = response.data;
+        console.log('Response data:', cause);
+        if(cause==="Expired"){
             originalRequest._retry = true;
-
             try {
                 // 토큰 갱신 요청
+                const refreshToken = localStorage.getItem('refreshToken');
                 const response = await axios.post(`${host}/api/member/refresh`, {}, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        'x-Refresh-Token': localStorage.getItem('refreshToken')
+                        'X-Refresh-Token': refreshToken
                     }
                 });
 
+                // 응답에서 새로운 토큰을 저장
                 if (response.status === 200) {
+                    console.log(response.data);
                     const { accessToken, refreshToken } = response.data;
                     saveTokens(accessToken, refreshToken);
-                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
+                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;//이놈을 조지시오
+                    console.log('Access token refreshed successfully.');
                     return api(originalRequest);
+                } else {
+                    console.log('Failed to refresh access token.');
                 }
             } catch (refreshError) {
+                console.error('Error refreshing access token:', refreshError);
                 if (refreshError.response && refreshError.response.data) {
                     handleTokenError(refreshError.response.data);
                 } else {
@@ -99,8 +105,7 @@ api.interceptors.response.use(
                 return Promise.reject(refreshError);
             }
         }
-
-        return Promise.reject(error);
+        return response;
     }
 );
 

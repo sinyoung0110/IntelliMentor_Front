@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 const Loading=<div className={'bg-red-700'}>Loading....</div>
 const VocaList=lazy(()=>import("../pages/voca/VocaListPage"))
 //const VocaRead=lazy(()=>import("../pages/voca/VocaReadPage"))
-//const VocaModify = lazy(() => import("../pages/voca/VocaModifyPage"))
+const VocaModify = lazy(() => import("../pages/voca/VocaEditPage"))
 const ChooseAdd=lazy(()=>import("../pages/voca/ChooseAddPage"))
 const DirectAdd=lazy(()=>import("../pages/voca/DirectAddPage"))
 const AiAdd=lazy(()=>import("../pages/voca/AiAddPage"))
@@ -43,11 +43,11 @@ const vocaRouter = () => {
         {
         path:'recommendAdd',
         element:<Suspense fallback={Loading}><RecommendAdd/></Suspense>
+        },
+        {
+          path: 'read/:title',
+          element: <Suspense fallback={Loading}><VocaModify/></Suspense>
         }
-        // {
-        //   path: 'modify/:tno',
-        //   element: <Suspense fallback={Loading}><VocaModify/></Suspense>
-        // }
     
     
       ]

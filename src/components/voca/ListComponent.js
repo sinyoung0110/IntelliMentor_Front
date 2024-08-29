@@ -22,7 +22,7 @@ const ListComponent = () => {
   }, []);
 
   const handleEditClick = (title) => {
-    navigate(`/voca/edit/${title}`);
+    navigate(`/voca/read/${title}`);
   };
 
   const handleCreateClick = () => {
