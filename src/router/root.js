@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import todoRouter from "./todoRouter";
+import learnRouter from "./learnRouter";
 import vocaRouter from "./vocaRouter";
 import memberRouter from "./memberRouter";
 
@@ -14,12 +14,16 @@ const root=createBrowserRouter([
         element: <Suspense fallback={Loading}><Main/></Suspense>
     },
     {
+        path: 'member',
+        children: memberRouter()
+    },
+    {
         path: 'voca',
         children: vocaRouter()
     },
     {
-        path: 'member',
-        children: memberRouter()
+        path: 'learn',
+        children: learnRouter()
     }
 
 ])

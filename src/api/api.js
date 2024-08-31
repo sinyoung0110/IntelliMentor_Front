@@ -40,7 +40,6 @@ function handleTokenError(errorData) {
     alert(errorMessage);
 }
 
-
 // Axios 인스턴스 생성 및 인터셉터 설정
 const api = axios.create({
     baseURL: `${host}`,
@@ -68,16 +67,18 @@ api.interceptors.request.use(
 // 응답 인터셉터 설정
 api.interceptors.response.use(
     async response => {
-        const originalRequest = response.config;
+        return response; // 정상적인 응답일 경우 그냥 반환
+    },
+    async error => {
+        const originalRequest = error.config;
+        const errorData = error.response?.data;
 
-        const { cause, error: errorMessage } = response.data;
-        console.log('Response data:', cause);
-        if(cause==="Expired"){
+        if (errorData?.cause === 'Expired' && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
                 // 토큰 갱신 요청
                 const refreshToken = localStorage.getItem('refreshToken');
-                const response = await axios.post(`${host}/api/member/refresh`, {}, {
+                const tokenRefreshResponse = await axios.post(`${host}/api/member/refresh`, {}, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'X-Refresh-Token': refreshToken
@@ -85,27 +86,26 @@ api.interceptors.response.use(
                 });
 
                 // 응답에서 새로운 토큰을 저장
-                if (response.status === 200) {
-                    console.log(response.data);
-                    const { accessToken, refreshToken } = response.data;
+                if (tokenRefreshResponse.status === 200) {
+                    const { accessToken, refreshToken } = tokenRefreshResponse.data;
                     saveTokens(accessToken, refreshToken);
-                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;//이놈을 조지시오
+                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
                     console.log('Access token refreshed successfully.');
                     return api(originalRequest);
                 } else {
                     console.log('Failed to refresh access token.');
+                    handleTokenError(tokenRefreshResponse.data);
                 }
             } catch (refreshError) {
                 console.error('Error refreshing access token:', refreshError);
-                if (refreshError.response && refreshError.response.data) {
-                    handleTokenError(refreshError.response.data);
-                } else {
-                    alert('An unexpected error occurred during token refresh.');
-                }
+                handleTokenError(refreshError.response?.data || {});
                 return Promise.reject(refreshError);
             }
+        } else {
+            handleTokenError(errorData);
         }
-        return response;
+
+        return Promise.reject(error);
     }
 );
 
