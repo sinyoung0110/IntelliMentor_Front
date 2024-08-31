@@ -64,6 +64,7 @@ function EditVocabularyComponent() {
             kor: formData.kor
         }).then(response => {
             setResult(response.message || 'Vocabulary successfully updated');
+            navigate('/voca/list');
         }).catch(error => {
             if (error.response && error.response.status === 409) {
                 setResult(error.response.data.ERROR_MESSAGE);

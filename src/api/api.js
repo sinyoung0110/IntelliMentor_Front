@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// 환경 변수에서 API 서버 호스트 가져오기
 const host = process.env.REACT_APP_API_SERVER_HOST;
 
 // 로그인 후 토큰 저장
@@ -16,7 +15,7 @@ function handleTokenError(errorData) {
     if (errorData.error === 'ERROR_ACCESS_TOKEN') {
         switch (errorData.cause) {
             case 'Expired':
-                errorMessage = 'Access token has expired. Please log in again.';
+                errorMessage = 'Access token has expired. Refreshing...';
                 break;
             case 'MalFormed':
                 errorMessage = 'The token format is incorrect. Please try logging in again.';
@@ -36,11 +35,11 @@ function handleTokenError(errorData) {
         errorMessage = 'An unknown error occurred. Please try again.';
     }
 
-    // 사용자에게 알림 표시
+    // 사용자에게 알림 표시 (예: 토스트 메시지)
     alert(errorMessage);
 }
 
-// Axios 인스턴스 생성 및 인터셉터 설정
+// Axios 인스턴스 생성
 const api = axios.create({
     baseURL: `${host}`,
     headers: {
@@ -55,8 +54,15 @@ api.interceptors.request.use(
         if (accessToken) {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
         }
-        // x-Refresh-Token 헤더를 요청에서 제외함
-        delete config.headers['X-Refresh-Token'];
+
+        // Refresh 요청 시 X-Refresh-Token 헤더 추가
+        if (config.url.includes("/refresh")) {
+            const refreshToken = localStorage.getItem('refreshToken');
+            if (refreshToken) {
+                config.headers['X-Refresh-Token'] = refreshToken;
+            }
+        }
+
         return config;
     },
     error => {
@@ -66,38 +72,37 @@ api.interceptors.request.use(
 
 // 응답 인터셉터 설정
 api.interceptors.response.use(
-    async response => {
-        return response; // 정상적인 응답일 경우 그냥 반환
+    response => {
+        return response;
     },
     async error => {
         const originalRequest = error.config;
         const errorData = error.response?.data;
 
-        if (errorData?.cause === 'Expired' && !originalRequest._retry) {
+        // Access Token이 만료된 경우
+        if (errorData?.error === 'ERROR_ACCESS_TOKEN' && errorData.cause === 'Expired' && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
-                // 토큰 갱신 요청
                 const refreshToken = localStorage.getItem('refreshToken');
+                const accessToken = localStorage.getItem('accessToken');
+
+                // Refresh 요청 시 기존 Axios 인스턴스가 아닌 기본 Axios 사용
                 const tokenRefreshResponse = await axios.post(`${host}/api/member/refresh`, {}, {
                     headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Authorization': `Bearer ${accessToken}`,
                         'X-Refresh-Token': refreshToken
                     }
                 });
 
-                // 응답에서 새로운 토큰을 저장
                 if (tokenRefreshResponse.status === 200) {
-                    const { accessToken, refreshToken } = tokenRefreshResponse.data;
-                    saveTokens(accessToken, refreshToken);
-                    originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-                    console.log('Access token refreshed successfully.');
+                    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = tokenRefreshResponse.data;
+                    saveTokens(newAccessToken, newRefreshToken);
+                    originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
                     return api(originalRequest);
                 } else {
-                    console.log('Failed to refresh access token.');
                     handleTokenError(tokenRefreshResponse.data);
                 }
             } catch (refreshError) {
-                console.error('Error refreshing access token:', refreshError);
                 handleTokenError(refreshError.response?.data || {});
                 return Promise.reject(refreshError);
             }
