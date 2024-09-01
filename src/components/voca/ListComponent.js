@@ -31,7 +31,7 @@ const ListComponent = () => {
       const voca = vocabularyList.find(v => v.title === title);
       if (voca.section > 0) {
         await readVocabulary(title);
-        navigate('/learn/index');
+        navigate(`/learn/index?title=${encodeURIComponent(title)}`);
       } else {
         setSelectedVoca(voca);
         setSectionValue(voca.section);

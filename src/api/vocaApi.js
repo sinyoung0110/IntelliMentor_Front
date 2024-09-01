@@ -16,7 +16,7 @@ export const directAdd = async (data) => {
 export const checkVocaExists = async () => {
     try {
         const response = await apiClient.get(`${host}/read`);
-        console.log(response.data);
+        console.log("단어장 목록 확인: "+response.data);
         return response.data; // 서버에서 받은 데이터를 그대로 반환
     } catch (error) {
         console.error('Error fetching vocabulary list:', error);

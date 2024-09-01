@@ -72,44 +72,46 @@ api.interceptors.request.use(
 
 // 응답 인터셉터 설정
 api.interceptors.response.use(
-    response => {
-        return response;
-    },
-    async error => {
-        const originalRequest = error.config;
-        const errorData = error.response?.data;
+    async response => {
+        const messageData = response.data;
 
-        // Access Token이 만료된 경우
-        if (errorData?.error === 'ERROR_ACCESS_TOKEN' && errorData.cause === 'Expired' && !originalRequest._retry) {
-            originalRequest._retry = true;
-            try {
-                const refreshToken = localStorage.getItem('refreshToken');
-                const accessToken = localStorage.getItem('accessToken');
+        // 만료된 토큰에 대한 메시지를 처리
+        if (messageData?.error === 'ERROR_ACCESS_TOKEN' && messageData.cause === 'Expired') {
+            const originalRequest = response.config;
 
-                // Refresh 요청 시 기존 Axios 인스턴스가 아닌 기본 Axios 사용
-                const tokenRefreshResponse = await axios.post(`${host}/api/member/refresh`, {}, {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'X-Refresh-Token': refreshToken
+            if (!originalRequest._retry) {
+                originalRequest._retry = true;
+                try {
+                    const refreshToken = localStorage.getItem('refreshToken');
+                    const accessToken = localStorage.getItem('accessToken');
+
+                    // Refresh 요청 시 기존 Axios 인스턴스가 아닌 기본 Axios 사용
+                    const tokenRefreshResponse = await axios.post(`${host}/api/member/refresh`, {}, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'X-Refresh-Token': refreshToken
+                        }
+                    });
+
+                    if (tokenRefreshResponse.status === 200) {
+                        const { accessToken: newAccessToken, refreshToken: newRefreshToken } = tokenRefreshResponse.data;
+                        saveTokens(newAccessToken, newRefreshToken);
+                        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                        return api(originalRequest);
+                    } else {
+                        handleTokenError(tokenRefreshResponse.data);
                     }
-                });
-
-                if (tokenRefreshResponse.status === 200) {
-                    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = tokenRefreshResponse.data;
-                    saveTokens(newAccessToken, newRefreshToken);
-                    originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                    return api(originalRequest);
-                } else {
-                    handleTokenError(tokenRefreshResponse.data);
+                } catch (refreshError) {
+                    handleTokenError(refreshError.response?.data || {});
+                    return Promise.reject(refreshError);
                 }
-            } catch (refreshError) {
-                handleTokenError(refreshError.response?.data || {});
-                return Promise.reject(refreshError);
             }
-        } else {
-            handleTokenError(errorData);
         }
 
+        return response;
+    },
+    error => {
+        handleTokenError(error.response?.data);
         return Promise.reject(error);
     }
 );

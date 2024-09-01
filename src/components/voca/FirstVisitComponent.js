@@ -15,7 +15,7 @@ const FirstVisitComponent = () => {
         const checkVocabularyExistence = async () => {
           try {
             const vocabularyList = await apiCheckVocaExists(userId); // API 호출 함수 사용
-            console.log(vocabularyList); // 응답 확인
+            console.log("firstvisit component :" +vocabularyList); // 응답 확인
             // 리스트가 비어있지 않으면 exist를 true로 설정
             setExist(vocabularyList.length > 0);
           } catch (error) {
