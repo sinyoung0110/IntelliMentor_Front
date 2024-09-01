@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import DaySelector from './DaySelector'; // 일(day) 선택 컴포넌트
 import VocabularyList from './VocabularyList'; // 단어 리스트 컴포넌트
 import { readVocabulary } from '../../api/learnApi';
+import { ProgressBar } from 'react-bootstrap';
+import QuizButton from './QuizButton';
 
 const LearnIndex = ({ title }) => {
     const [selectedDay, setSelectedDay] = useState('Day1');
@@ -24,11 +27,24 @@ const LearnIndex = ({ title }) => {
     }, [title]);
 
     return (
-        <div>
+      <Container fluid>
+      <Row>
+        <Col className="vocabulary-list-container">
+        
             <DaySelector selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-            {/* VocabularyList에 sectionNumber와 vocabularyData를 전달합니다 */}
-            <VocabularyList sectionNumber={sectionNumber} vocabularyData={vocabularyData} />
-        </div>
+            {vocabularyData ? (
+                <VocabularyList sectionNumber={sectionNumber} vocabularyData={vocabularyData} />
+            ) : (
+                <div>Loading...</div>
+            )}
+          
+        <div className="bottom-controls">
+        <ProgressBar className="custom-progress-bar" now={60} label="60%" />
+        <QuizButton />
+      </div>
+      </Col>
+      </Row>
+      </Container>
     );
 };
 
