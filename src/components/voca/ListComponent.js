@@ -8,7 +8,7 @@ import { FaEdit, FaPlus } from 'react-icons/fa';
 const ListComponent = () => {
   const [vocabularyList, setVocabularyList] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedVoca, setSelectedVoca] = useState({ title: '', section: 0 });
+  const [selectedVoca, setSelectedVoca] = useState({ titleId: 0, title: '', section: 0 });
   const [sectionValue, setSectionValue] = useState(0);
   const [hoveredRowIndex, setHoveredRowIndex] = useState(null);
   const navigate = useNavigate();
@@ -17,22 +17,23 @@ const ListComponent = () => {
     const fetchVocabularyList = async () => {
       try {
         const data = await checkVocaExists();
-        setVocabularyList(data);
+        setVocabularyList(data); // API 응답이 배열 형식이므로 바로 설정
       } catch (error) {
         console.error('Failed to fetch vocabulary list', error);
+        setVocabularyList([]); // 에러 발생 시 빈 배열로 설정
       }
     };
 
     fetchVocabularyList();
   }, []);
 
-  const handleTitleClickWrapper = async (title) => {
+  const handleTitleClickWrapper = async (titleId) => {
     try {
-      const voca = vocabularyList.find(v => v.title === title);
-      if (voca.section > 0) {
-        await readVocabulary(title);
-        navigate(`/learn/index?title=${encodeURIComponent(title)}`);
-      } else {
+      const voca = vocabularyList.find(v => v.titleId === titleId);
+      if (voca && voca.section > 0) {
+        await readVocabulary(titleId);
+        navigate(`/learn/index?titleId=${encodeURIComponent(titleId)}`);
+      } else if (voca) {
         setSelectedVoca(voca);
         setSectionValue(voca.section);
         setShowModal(true);
@@ -48,20 +49,23 @@ const ListComponent = () => {
 
   const handleModalClose = () => {
     setShowModal(false);
-    setSelectedVoca({ title: '', section: 0 });
+    setSelectedVoca({ titleId: 0, title: '', section: 0 });
   };
 
   const handleModalSubmit = async () => {
     try {
-      await updateSection(selectedVoca.title, sectionValue);
-      await readVocabulary(selectedVoca.title);
-      navigate('/learn/index');
+        // API를 호출하여 섹션 값을 업데이트
+        await updateSection(selectedVoca.titleId, sectionValue);
+        // 섹션 업데이트 후, 관련 데이터를 다시 불러올 수 있다면 여기에 추가
+        await readVocabulary(selectedVoca.titleId);
+        navigate('/learn/index');
     } catch (error) {
-      console.error('Failed to update vocabulary section', error);
+        console.error('Failed to update vocabulary section', error);
     } finally {
-      setShowModal(false);
+        setShowModal(false);
     }
-  };
+};
+
 
   return (
     <Container className="mt-4">
@@ -113,7 +117,7 @@ const ListComponent = () => {
           <tbody style={{ fontSize: '1.1rem' }}>
             {vocabularyList.map((voca, index) => (
               <tr 
-                key={index} 
+                key={voca.titleId} 
                 style={{ 
                   fontWeight: 'bold', 
                   cursor: 'pointer',
@@ -122,17 +126,17 @@ const ListComponent = () => {
                 }}
                 onMouseEnter={() => setHoveredRowIndex(index)}
                 onMouseLeave={() => setHoveredRowIndex(null)}
-                onClick={() => handleTitleClickWrapper(voca.title)}
+                onClick={() => handleTitleClickWrapper(voca.titleId)}
               >
-                <td className="align-middle" style={{ borderTopLeftRadius: '24px',borderBottomLeftRadius:'24px',backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent',}}>{voca.title}</td>
-                <td className="align-middle" style={{backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent',}}>{voca.vocaCount}</td>
-                <td className="align-middle" style={{borderTopRightRadius: '24px',borderBottomRightRadius:'24px',backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent',}}>{voca.section}</td>
+                <td className="align-middle" style={{ borderTopLeftRadius: '24px', borderBottomLeftRadius: '24px', backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent' }}>{voca.title}</td>
+                <td className="align-middle" style={{ backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent' }}>{voca.count}</td>
+                <td className="align-middle" style={{ borderTopRightRadius: '24px', borderBottomRightRadius: '24px', backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent' }}>{voca.section}</td>
                 <td className="align-middle">
                   <Button
                     variant="link" 
                     onClick={(e) => {
                       e.stopPropagation(); // Edit 버튼 클릭 시 행 클릭 이벤트가 발생하지 않도록 함
-                      navigate(`/voca/read/${voca.title}`);
+                      navigate(`/voca/read/${voca.titleId}`);
                     }}
                     style={{ padding: 0 }}
                   >
@@ -164,7 +168,7 @@ const ListComponent = () => {
                 type="number" 
                 value={sectionValue} 
                 onChange={(e) => setSectionValue(Number(e.target.value))} 
-                min="1" 
+                min="0" // 최소값을 0으로 설정
               />
             </Form.Group>
           </Form>

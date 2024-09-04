@@ -16,18 +16,18 @@ export const directAdd = async (data) => {
 export const checkVocaExists = async () => {
     try {
         const response = await apiClient.get(`${host}/read`);
-        console.log("단어장 목록 확인: "+response.data);
-        return response.data; // 서버에서 받은 데이터를 그대로 반환
+        console.log("단어장 목록 확인: ", response.data.data); // 수정된 부분
+        return response.data.data; // 서버에서 받은 'data' 배열을 반환
     } catch (error) {
         console.error('Error fetching vocabulary list:', error);
         throw error;
     }
 };
 // 단어장 데이터를 가져오는 API 함수
-export const getVocabulary = async (title) => {
+export const getVocabulary = async (titleId) => {
     try {
-        const response = await apiClient.get(`${host}/read/${title}`);
-        return response.data;
+        const response = await apiClient.get(`${host}/read/${titleId}`);
+        return response.data; // 데이터는 서버에서 지정한 형식으로 반환
     } catch (error) {
         console.error('Error fetching vocabulary data:', error);
         throw error;
@@ -36,12 +36,13 @@ export const getVocabulary = async (title) => {
 
 // 단어장 수정을 위한 API 함수
 export const updateVocabulary = async (data) => {
-    const { originalTitle, modifiedTitle, eng, kor } = data;
+    const { titleId, modifiedTitle, modifiedWord, deleteId, addWord } = data;
     try {
-        const response = await apiClient.put(`${host}/update/${originalTitle}`, {
-            title: modifiedTitle,
-            eng: eng,
-            kor: kor
+        const response = await apiClient.patch(`${host}/update/${titleId}`, {
+            modifiedTitle,
+            modifiedWord,
+            deleteId,
+            addWord
         });
         console.log(response.data);
         return response.data;
@@ -51,11 +52,10 @@ export const updateVocabulary = async (data) => {
     }
 };
 
-
 // 삭제 API 요청 함수
-export const deleteVocabulary = async (title) => {
+export const deleteVocabulary = async (titleId) => {
     try {
-        const response = await apiClient.delete(`${host}/delete/${title}`);
+        const response = await apiClient.delete(`${host}/delete/${titleId}`);
         return response.data;
     } catch (error) {
         console.error('Error deleting vocabulary:', error);

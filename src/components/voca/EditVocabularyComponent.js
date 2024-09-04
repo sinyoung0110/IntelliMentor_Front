@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getVocabulary, updateVocabulary, deleteVocabulary } from '../../api/vocaApi'; // Ensure deleteVocabulary is imported
+import { getVocabulary, updateVocabulary, deleteVocabulary } from '../../api/vocaApi'; // Ensure these functions are imported
 import ResultModal from '../common/ResultModal';
 
-const initState = {
-    title: '',
-    eng: [''],
-    kor: ['']
-};
-
-function EditVocabularyComponent() {
-    const { title } = useParams(); // Get the title from URL
-    const [formData, setFormData] = useState({...initState});
+const EditVocabularyComponent = () => {
+    const { titleId } = useParams(); // Get the titleId from URL
+    const [formData, setFormData] = useState({
+        title: '',
+        words: [],
+        deleteId: [],
+        addWord: []
+    });
     const [result, setResult] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchVocabulary = async () => {
             try {
-                const data = await getVocabulary(title); // Fetch vocabulary data based on title
+                const data = await getVocabulary(titleId); // Fetch vocabulary data based on titleId
                 setFormData({
                     title: data.title,
-                    eng: data.eng,
-                    kor: data.kor
+                    words: data.word,
+                    deleteId: [],
+                    addWord: []
                 });
             } catch (error) {
                 console.error('Failed to fetch vocabulary', error);
@@ -30,59 +30,72 @@ function EditVocabularyComponent() {
         };
 
         fetchVocabulary();
-    }, [title]);
+    }, [titleId]);
 
     const handleChange = (e, index, type) => {
         const { value } = e.target;
-        const updatedList = [...formData[type]];
-        updatedList[index] = value;
-        setFormData(prevState => ({ ...prevState, [type]: updatedList }));
+        const updatedWords = [...formData.words];
+        updatedWords[index][type] = value;
+        setFormData(prevState => ({ ...prevState, words: updatedWords }));
     };
 
     const handleAddField = () => {
         setFormData(prevState => ({
             ...prevState,
-            eng: [...prevState.eng, ''],
-            kor: [...prevState.kor, '']
+            words: [...prevState.words, { eng: '', kor: '' }]
         }));
     };
 
     const handleRemoveField = (index) => {
-        const updatedEng = formData.eng.filter((_, i) => i !== index);
-        const updatedKor = formData.kor.filter((_, i) => i !== index);
-        setFormData(prevState => ({ ...prevState, eng: updatedEng, kor: updatedKor }));
+        const wordToDelete = formData.words[index];
+        setFormData(prevState => ({
+            ...prevState,
+            words: prevState.words.filter((_, i) => i !== index),
+            deleteId: [...prevState.deleteId, wordToDelete.id] // Mark word ID for deletion
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleAddNewWord = (eng, kor) => {
+        setFormData(prevState => ({
+            ...prevState,
+            addWord: [...prevState.addWord, { eng, kor }]
+        }));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Call API to update vocabulary
-        updateVocabulary({
-            originalTitle: title,  // 기존 제목
-            modifiedTitle: formData.title,  // 수정된 제목
-            eng: formData.eng,
-            kor: formData.kor
-        }).then(response => {
-            setResult(response.message || 'Vocabulary successfully updated');
+        // Separate modifiedWords from addWord and deleteId
+        const modifiedWords = formData.words.filter(word => word.id); // Existing words with ID
+        const addWord = formData.words.filter(word => !word.id); // New words without ID
+
+        // Prepare the data for update
+        const modifiedData = {
+            titleId,
+            modifiedTitle: formData.title,
+            modifiedWord: modifiedWords,
+            deleteId: formData.deleteId,
+            addWord: [...formData.addWord, ...addWord] // Add new words to the list
+        };
+
+        try {
+            await updateVocabulary(modifiedData);
+            setResult('Vocabulary successfully updated');
             navigate('/voca/list');
-        }).catch(error => {
-            if (error.response && error.response.status === 409) {
-                setResult(error.response.data.ERROR_MESSAGE);
-            } else {
-                setResult('An error occurred. Please try again.');
-            }
-        });
+        } catch (error) {
+            setResult('An error occurred. Please try again.');
+            console.error('Error updating vocabulary:', error);
+        }
     };
 
-    const handleDelete = () => {
-        if (window.confirm('Are you sure you want to delete this vocabulary?')) {
-            deleteVocabulary(title).then(response => {
-                setResult(response.message || 'Vocabulary successfully deleted');
-                navigate('/voca/list'); // Navigate back to the list page
-            }).catch(error => {
-                setResult('An error occurred while deleting the vocabulary. Please try again.');
-                console.error('Error deleting vocabulary:', error);
-            });
+    const handleDeleteVocabulary = async () => {
+        try {
+            await deleteVocabulary(titleId);
+            setResult('Vocabulary successfully deleted');
+            navigate('/voca/list');
+        } catch (error) {
+            setResult('An error occurred. Please try again.');
+            console.error('Error deleting vocabulary:', error);
         }
     };
 
@@ -108,14 +121,14 @@ function EditVocabularyComponent() {
                             required
                         />
                     </div>
-                    {formData.eng.map((engWord, index) => (
+                    {formData.words.map((word, index) => (
                         <div key={index} className="flex items-center mb-4 gap-4">
                             <div className="flex-1 min-w-[30%]">
                                 <label htmlFor={`eng-${index}`} className="text-gray-700">English Word:</label>
                                 <input
                                     type="text"
                                     id={`eng-${index}`}
-                                    value={engWord}
+                                    value={word.eng}
                                     onChange={(e) => handleChange(e, index, 'eng')}
                                     className="p-3 border border-gray-300 rounded-lg w-full"
                                     placeholder="Enter the English word"
@@ -127,7 +140,7 @@ function EditVocabularyComponent() {
                                 <input
                                     type="text"
                                     id={`kor-${index}`}
-                                    value={formData.kor[index] || ''}
+                                    value={word.kor}
                                     onChange={(e) => handleChange(e, index, 'kor')}
                                     className="p-3 border border-gray-300 rounded-lg w-full"
                                     placeholder="Enter the Korean translation"
@@ -164,10 +177,10 @@ function EditVocabularyComponent() {
                 <div className="flex justify-center mt-4">
                     <button
                         type="button"
-                        onClick={handleDelete}
+                        onClick={handleDeleteVocabulary}
                         className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                     >
-                        Delete
+                        Delete Vocabulary
                     </button>
                 </div>
             </div>
@@ -179,6 +192,6 @@ function EditVocabularyComponent() {
             )}
         </>
     );
-}
+};
 
 export default EditVocabularyComponent;
