@@ -55,13 +55,6 @@ const EditVocabularyComponent = () => {
         }));
     };
 
-    const handleAddNewWord = (eng, kor) => {
-        setFormData(prevState => ({
-            ...prevState,
-            addWord: [...prevState.addWord, { eng, kor }]
-        }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
