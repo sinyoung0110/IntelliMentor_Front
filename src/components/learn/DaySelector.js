@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const DaySelector = ({ selectedDay, setSelectedDay }) => {
-    const days = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5', 'Day6', 'Day7']; // 예시로 더 많은 버튼 추가
+const DaySelector = ({ selectedDay, setSelectedDay, section }) => {
+    // section 값에 따라 Day 버튼을 동적으로 생성
+    const days = Array.from({ length: section }, (_, index) => `Day${index + 1}`);
 
     return (
         <div className="day-selector-container">
@@ -18,6 +20,12 @@ const DaySelector = ({ selectedDay, setSelectedDay }) => {
             </div>
         </div>
     );
+};
+
+DaySelector.propTypes = {
+    selectedDay: PropTypes.string.isRequired,
+    setSelectedDay: PropTypes.func.isRequired,
+    section: PropTypes.number.isRequired,
 };
 
 export default DaySelector;

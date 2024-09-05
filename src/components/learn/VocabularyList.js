@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 const VocabularyList = ({ sectionNumber, vocabularyData }) => {
     const [localVocabularyData, setLocalVocabularyData] = useState(vocabularyData);
@@ -25,7 +26,6 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
         return <div>No data for section {sectionNumber}</div>;
     }
 
-    // Flatten the data into a list of word pairs
     const wordPairs = [];
     const { word } = sectionData;
     for (let i = 0; i < word.length; i += 2) {
@@ -93,6 +93,23 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
             </table>
         </div>
     );
+};
+
+VocabularyList.propTypes = {
+    sectionNumber: PropTypes.number.isRequired,
+    vocabularyData: PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        data: PropTypes.arrayOf(PropTypes.shape({
+            section: PropTypes.number.isRequired,
+            grade: PropTypes.string.isRequired,
+            word: PropTypes.arrayOf(PropTypes.shape({
+                eng: PropTypes.string.isRequired,
+                kor: PropTypes.string.isRequired,
+                bookmark: PropTypes.bool.isRequired,
+                mistakes: PropTypes.number.isRequired,
+            })).isRequired,
+        })).isRequired,
+    }).isRequired,
 };
 
 export default VocabularyList;
