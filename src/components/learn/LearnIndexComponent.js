@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, ProgressBar } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import DaySelector from './DaySelector';
 import VocabularyList from './VocabularyList';
 import { readVocabulary } from '../../api/learnApi';
 import QuizButton from './QuizButton';
+import ProgressBarComponent from './ProgressBarComponent'
 import { useLocation } from 'react-router-dom';
 
 const LearnIndexComponent = () => {
@@ -47,7 +48,7 @@ const LearnIndexComponent = () => {
                         <div>Loading...</div>
                     )}
                     <div className="bottom-controls">
-                        <ProgressBar className="custom-progress-bar" now={60} label="60%" />
+                        <ProgressBarComponent className="custom-progress-bar" /> 
                         <QuizButton />
                     </div>
                 </Col>

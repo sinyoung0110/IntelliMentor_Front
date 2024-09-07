@@ -25,3 +25,17 @@ export const updateSection = async (titleId, section) => {
         throw error;
     }
 };
+
+// 북마크를 업데이트하는 API 함수
+export const updateBookmark = async (titleId, trueIdList, falseIdList) => {
+    try {
+        const response = await apiClient.patch(`${host}/modify/bookmark/${titleId}`, {
+            trueIdList,
+            falseIdList
+        });
+        console.log('Update response data:', response.data);
+    } catch (error) {
+        console.error('Error updating bookmarks:', error);
+        throw error;
+    }
+};
