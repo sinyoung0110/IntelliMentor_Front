@@ -4,8 +4,13 @@ import DaySelector from './DaySelector';
 import VocabularyList from './VocabularyList';
 import { readVocabulary } from '../../api/learnApi';
 import QuizButton from './QuizButton';
+import { useLocation } from 'react-router-dom';
 
-const LearnIndex = ({ titleId }) => {
+const LearnIndexComponent = () => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const titleId = queryParams.get('titleId'); // 쿼리 파라미터에서 titleId 가져옴
+
     const [selectedDay, setSelectedDay] = useState('Day1');
     const sectionNumber = parseInt(selectedDay.replace('Day', ''), 10);
     const [vocabularyData, setVocabularyData] = useState(null);
@@ -25,7 +30,7 @@ const LearnIndex = ({ titleId }) => {
         }
     }, [titleId]);
 
-    const totalSections = vocabularyData?.data.length || 0;
+    const maxSection = vocabularyData?.maxSection || 0;
 
     return (
         <Container fluid>
@@ -34,7 +39,7 @@ const LearnIndex = ({ titleId }) => {
                     <DaySelector 
                         selectedDay={selectedDay} 
                         setSelectedDay={setSelectedDay} 
-                        section={totalSections} 
+                        section={maxSection}
                     />
                     {vocabularyData ? (
                         <VocabularyList sectionNumber={sectionNumber} vocabularyData={vocabularyData} />
@@ -51,4 +56,4 @@ const LearnIndex = ({ titleId }) => {
     );
 };
 
-export default LearnIndex;
+export default LearnIndexComponent;

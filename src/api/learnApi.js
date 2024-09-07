@@ -5,14 +5,15 @@ const host = `${process.env.REACT_APP_API_SERVER_HOST}/api/learn`;
 // 단어장 데이터를 가져오는 API 함수
 export const readVocabulary = async (titleId) => {
     try {
-        const response = await apiClient.get(`${host}/read/${titleId}`); // 엔드포인트 확인
-        console.log('API response:', response.data); // API 응답 데이터 확인
+        const response = await apiClient.get(`${host}/read/${titleId}`);
+        console.log('API response data:', response.data); // API 응답 데이터 확인
         return response.data;
     } catch (error) {
-        console.error('Error reading vocabulary:', error);
+        console.error('Error reading vocabulary:', error); // 에러 로그 출력
         throw error;
     }
 };
+
 
 // 단어장 섹션 업데이트 함수
 export const updateSection = async (titleId, section) => {

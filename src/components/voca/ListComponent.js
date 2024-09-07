@@ -54,11 +54,12 @@ const ListComponent = () => {
 
   const handleModalSubmit = async () => {
     try {
+      
         // API를 호출하여 섹션 값을 업데이트
         await updateSection(selectedVoca.titleId, sectionValue);
         // 섹션 업데이트 후, 관련 데이터를 다시 불러올 수 있다면 여기에 추가
         await readVocabulary(selectedVoca.titleId);
-        navigate('/learn/index');
+        navigate(`/learn/index?titleId=${encodeURIComponent(selectedVoca.titleId)}`);
     } catch (error) {
         console.error('Failed to update vocabulary section', error);
     } finally {

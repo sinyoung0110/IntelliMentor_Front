@@ -8,7 +8,6 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
         setLocalVocabularyData(vocabularyData);
     }, [vocabularyData]);
 
-    // 북마크 토글 함수
     const toggleBookmark = (index, wordIndex) => {
         const updatedData = { ...localVocabularyData };
         updatedData.data[sectionNumber - 1].word[wordIndex].bookmark = !updatedData.data[sectionNumber - 1].word[wordIndex].bookmark;
@@ -38,62 +37,64 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
     return (
         <div className="vocabulary-list">
             <h3>{title} - Section {sectionNumber} (총 {word.length}개)</h3>
-            <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 15px' }}>
-                <thead>
-                    <tr>
-                        <th style={{ textAlign: 'left' }}>단어 (영어)</th>
-                        <th style={{ textAlign: 'left' }}>단어 (한글)</th>
-                        <th>북마크</th>
-                        <th>오답횟수</th>
-                        <th style={{ textAlign: 'left' }}>단어 (영어)</th>
-                        <th style={{ textAlign: 'left' }}>단어 (한글)</th>
-                        <th>북마크</th>
-                        <th>오답횟수</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {wordPairs.map((pair, index) => (
-                        <tr key={index} style={{ backgroundColor: 'white', borderRadius: '10px', padding: '10px' }}>
-                            <td style={{ padding: '10px 20px' }}>{pair.word1.eng}</td>
-                            <td style={{ padding: '10px 20px' }}>{pair.word1.kor}</td>
-                            <td style={{ textAlign: 'center' }}>
-                                <span 
-                                    style={{ fontSize: '20px', cursor: 'pointer', color: pair.word1.bookmark ? 'gold' : 'gray' }}
-                                    onClick={() => toggleBookmark(index, index * 2)} // Bookmark index
-                                >
-                                    ★
-                                </span>
-                            </td>
-                            <td style={{ textAlign: 'center' }}>{pair.word1.mistakes}</td>
-                            {pair.word2 ? (
-                                <>
-                                    <td style={{ padding: '10px 20px' }}>{pair.word2.eng}</td>
-                                    <td style={{ padding: '10px 20px' }}>{pair.word2.kor}</td>
-                                    <td style={{ textAlign: 'center' }}>
-                                        <span 
-                                            style={{ fontSize: '20px', cursor: 'pointer', color: pair.word2.bookmark ? 'gold' : 'gray' }}
-                                            onClick={() => toggleBookmark(index, index * 2 + 1)} // Bookmark index
-                                        >
-                                            ★
-                                        </span>
-                                    </td>
-                                    <td style={{ textAlign: 'center' }}>{pair.word2.mistakes}</td>
-                                </>
-                            ) : (
-                                <>
-                                    <td style={{ padding: '10px 20px' }}></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </>
-                            )}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <table style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+    <thead>
+        <tr>
+            <th style={{ width: '20%', textAlign: 'left', padding: '10px 20px'}}>단어 (영어)</th>
+            <th style={{ width: '20%', textAlign: 'left', padding: '10px 10px' }}>단어 (한글)</th>
+            <th style={{ width: '10%', textAlign: 'center' }}>북마크</th>
+            <th style={{ width: '10%', textAlign: 'center' }}>오답횟수</th>
+            <th style={{ width: '20%', textAlign: 'left', padding: '10px 20px' }}>단어 (영어)</th>
+            <th style={{ width: '20%', textAlign: 'left', padding: '10px 10px'}}>단어 (한글)</th>
+            <th style={{ width: '10%', textAlign: 'center' }}>북마크</th>
+            <th style={{ width: '10%', textAlign: 'center' }}>오답횟수</th>
+        </tr>
+    </thead>
+    <tbody>
+        {wordPairs.map((pair, index) => (
+            <tr key={index} style={{ backgroundColor: 'white', borderRadius: '10px', padding: '10px' }}>
+                <td style={{ padding: '10px 20px', wordWrap: 'break-word' }}>{pair.word1.eng}</td>
+                <td style={{ padding: '10px 20px', wordWrap: 'break-word' }}>{pair.word1.kor}</td>
+                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                    <span 
+                        style={{ fontSize: '20px', cursor: 'pointer', color: pair.word1.bookmark ? 'gold' : 'gray' }}
+                        onClick={() => toggleBookmark(index, index * 2)} 
+                    >
+                        ★
+                    </span>
+                </td>
+                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{pair.word1.mistakes}</td>
+                {pair.word2 ? (
+                    <>
+                        <td style={{ padding: '10px 20px', wordWrap: 'break-word' }}>{pair.word2.eng}</td>
+                        <td style={{ padding: '10px 20px', wordWrap: 'break-word' }}>{pair.word2.kor}</td>
+                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
+                            <span 
+                                style={{ fontSize: '20px', cursor: 'pointer', color: pair.word2.bookmark ? 'gold' : 'gray' }}
+                                onClick={() => toggleBookmark(index, index * 2 + 1)}
+                            >
+                                ★
+                            </span>
+                        </td>
+                        <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{pair.word2.mistakes}</td>
+                    </>
+                ) : (
+                    <>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </>
+                )}
+            </tr>
+        ))}
+    </tbody>
+</table>
+
         </div>
     );
 };
+
 
 VocabularyList.propTypes = {
     sectionNumber: PropTypes.number.isRequired,
