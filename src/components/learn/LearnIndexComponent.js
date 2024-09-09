@@ -3,9 +3,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import DaySelector from './DaySelector';
 import VocabularyList from './VocabularyList';
 import { readVocabulary } from '../../api/learnApi';
-import QuizButton from './QuizButton';
 import ProgressBarComponent from './ProgressBarComponent'
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 
 const LearnIndexComponent = () => {
     const location = useLocation();
@@ -15,6 +14,8 @@ const LearnIndexComponent = () => {
     const [selectedDay, setSelectedDay] = useState('Day1');
     const sectionNumber = parseInt(selectedDay.replace('Day', ''), 10);
     const [vocabularyData, setVocabularyData] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,6 +34,15 @@ const LearnIndexComponent = () => {
 
     const maxSection = vocabularyData?.maxSection || 0;
 
+    const handleQuizCreation = () => {
+          // Logic to create quiz
+    };
+    const handleLearnCreation = () => {
+        navigate(`/learn/card?titleId=${titleId}&sectionNumber=${sectionNumber}`);
+    };
+
+
+
     return (
         <Container fluid>
             <Row>
@@ -47,10 +57,20 @@ const LearnIndexComponent = () => {
                     ) : (
                         <div>Loading...</div>
                     )}
-                    <div className="bottom-controls">
-                        <ProgressBarComponent className="custom-progress-bar" /> 
-                        <QuizButton />
-                    </div>
+                   <div className="bottom-controls">
+                    <ProgressBarComponent className="custom-progress-bar" />
+                    <div className="quiz-button-container">
+                    <button onClick={handleLearnCreation} className="quiz-button learning">
+                     학습하기
+                    </button>
+                    <button onClick={handleQuizCreation} className="quiz-button">
+                        생성하기
+                    </button>
+                </div>
+            </div>
+
+
+
                 </Col>
             </Row>
         </Container>

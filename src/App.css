@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: row;
   gap: 0;
-  border-radius: 24px;
+  border-radius: 20px;
   overflow: hidden;
   margin-bottom: 16px;
   box-shadow: 0 4px 8px rgba(186, 184, 184, 0.11);
@@ -96,64 +96,55 @@
   height: 150px; /* 아이콘의 고정 크기 설정 */
   margin-bottom: 20px; /* 아이콘과 텍스트 사이의 간격 조정 */
 }
+/* 단어장 대쉬보드 */
 
 .vocabulary-list {
-  background-color: #F7F9F8;
-  border-radius: 20px;
   padding: 20px;
-  margin-bottom: 10px;
-}
-
-.progress-bar-container {
-  width: 90%;
+  border: 1px solid #ddd;
   border-radius: 20px;
-  margin-bottom: 20px;
   background-color: #F7F9F8;
-  padding:20px;
-  margin-right: 20px;
+  margin-bottom: 20px;
 }
 
-.progress-info {
+.vocabulary-list-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-.progress-bar {
+.table-container {
+  max-height: 500px;
+  overflow-y: auto; /* tbody 스크롤 가능 */
+  position: relative;
+}
+
+.table-container table {
   width: 100%;
-  background-color: #E5E5E5;
-  border-radius: 10px;
-  height: 20px;
+  border-collapse: separate; /* 셀 간격 유지 */
+  border-spacing: 0 10px; /* 행 간 간격 설정 */
 }
 
-.progress {
-  background-color: #B3C0B5;
-  height: 100%;
-  border-radius: 10px;
+thead {
+  position: sticky;
+  background-color: #F7F9F8;
+  top: 0;
+  z-index: 1;
 }
 
-.quiz-button {
-  background-color: #8FB299;
-  color: #FFF;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-.quiz-button:hover {
-  background-color: #6D8E6F;
+th, td {
+  text-align: left;
+  padding: 10px; /* 셀 내부 여백 추가 */
 }
 
-/* 전체 높이 설정 */
-html, body, .vocabulary-list-container {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+tbody td {
+  background-color: white;
+  word-break: break-word;
+  text-align: left;
 }
 
-.vocabulary-list-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* ProgressBar와 QuizButton을 아래쪽에 정렬 */
+tbody tr {
+  background-color: white;
+  border-radius: 10px; /* 행 모서리 둥글게 */
 }
 
 /* DaySelector 스타일 */
@@ -161,7 +152,6 @@ html, body, .vocabulary-list-container {
   position: sticky;
   overflow-x: auto; /* 가로 스크롤 가능 */
   white-space: nowrap; /* 버튼들이 가로로 정렬되도록 설정 */
-  
   padding: 10px 10px 10px ; /* 상하 여백 */
   
 }
@@ -197,44 +187,178 @@ html, body, .vocabulary-list-container {
 .day-button:active {
   transform: scale(0.95); /* 클릭 시 버튼을 약간 줄어들게 하여 클릭 효과 추가 */
 }
-
+/*아래 버튼(프로그래스,학습,퀴즈버튼)*/
 .bottom-controls {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
+  align-items: center; /* 세로 중앙 정렬 */
+  gap: 20px; /* 프로그래스바와 버튼 컨테이너 사이의 간격 */
+}
+.progress-bar-container {
+  width: 90%;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  background-color: #F7F9F8;
+  padding:30px;
+  
 }
 
-.custom-progress-bar {
-  flex-grow: 1;
-  margin-right: 10px;
-}
-
-.vocabulary-list {
-  max-height: 500px; /* 원하는 최대 높이로 설정 */
-  overflow-y: auto; /* 세로 스크롤만 표시 */
-  padding: 20px; /* 패딩 추가 */
-  border: 1px solid #ddd; /* 경계선 추가 (선택 사항) */
-  border-radius: 5px; /* 둥근 모서리 (선택 사항) */
-}
-
-.vocabulary-list-header {
+.progress-info {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: #E5E5E5;
+  border-radius: 10px;
+  height: 20px;
+}
+
+.progress {
+  background-color: #B3C0B5;
+  height: 100%;
+  border-radius: 10px;
+}
+.quiz-button-container {
+  display: flex;
+  flex-direction: column; /* 버튼들을 수직으로 정렬 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+  gap: 10px; /* 버튼 사이의 간격 */
+  margin-top:-10px;
+}
+.quiz-button {
+  background-color: #8FB299;
+  color: #FFF;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.quiz-button:hover {
+  background-color: #6D8E6F;
+}
+.quiz-button.learning {
+  background-color: #F7F9F8; /* '학습하기' 버튼의 배경 색상 */
+  color: #000; /* 텍스트 색상 설정, 원하는 색상으로 변경 가능 */
+  border: 1px solid #ddd;
+}
+
+.quiz-button.learning:hover {
+  background-color: #E5E5E5; /* 호버 시 색상 변경 */
 }
 
 .save-button {
   padding: 5px 10px;
   background-color: #8FB299;
-  
   color: white;
-
-  border-radius: 5px; /* 버튼을 둥글게 만들기 */
+  border-radius: 10px; /* 버튼을 둥글게 만들기 */
   cursor: pointer;
 }
 
 .save-button:hover {
   background-color: #6D8E6F;
+}
+
+/* CardLearn */
+/* CardLearn */
+.card-container-wrapper {
+  overflow-x: auto; /* 가로 스크롤 활성화 */
+  overflow-y: hidden; /* 세로 스크롤 숨기기 */
+  white-space: nowrap; /* 카드들이 한 줄로 쌓이지 않도록 */
+  padding: 10px 0;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px); /* 카드 너비 300px로 고정 */
+  grid-template-rows: repeat(2, 200px); /* 2행 고정 */
+  gap: 30px;
+  grid-auto-flow: column; /* 열 기준으로 흐름 설정 */
+  justify-content: start;
+}
+
+.card {
+  width: 300px; /* 카드의 너비 */
+  height: 180px; /* 카드의 높이 */
+  cursor: pointer;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.card-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card.flipped .card-content {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  z-index: 1; /* 추가된 z-index */
+}
+
+.card-back {
+  background-color: #F4F1EC;
+  color: #000000;
+  transform: rotateY(180deg);
+  z-index: 0; /* card-front 아래에 위치하도록 z-index 설정 */
+}
+
+.card-front {
+  background-color: #EBF0EA;
+  color: #000000;
+  position: relative;
+  z-index: 2; /* card-back 위에 표시되도록 z-index 설정 */
+}
+
+
+.card-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bookmark-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.mistakes {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 14px;
+}
+
+/* 스크롤바 스타일링 */
+.card-container-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.card-container-wrapper::-webkit-scrollbar-thumb {
+  background-color: #8FB299;
+  border-radius: 10px;
+}
+
+.card-container-wrapper::-webkit-scrollbar-track {
+  background-color: #F7F9F8;
 }
