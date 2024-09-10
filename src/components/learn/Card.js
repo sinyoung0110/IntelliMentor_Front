@@ -6,6 +6,7 @@ const Card = ({ word, onBookmarkToggle }) => {
 
     const handleCardClick = () => {
         setIsFlipped(!isFlipped);
+        
     };
 
     return (

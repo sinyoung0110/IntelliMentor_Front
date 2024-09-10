@@ -64,7 +64,7 @@ const LearnIndexComponent = () => {
                      학습하기
                     </button>
                     <button onClick={handleQuizCreation} className="quiz-button">
-                        생성하기
+                        퀴즈풀기
                     </button>
                 </div>
             </div>

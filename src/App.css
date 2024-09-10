@@ -260,7 +260,6 @@ tbody tr {
 }
 
 /* CardLearn */
-/* CardLearn */
 .card-container-wrapper {
   overflow-x: auto; /* 가로 스크롤 활성화 */
   overflow-y: hidden; /* 세로 스크롤 숨기기 */
@@ -278,13 +277,15 @@ tbody tr {
 }
 
 .card {
-  width: 300px; /* 카드의 너비 */
-  height: 180px; /* 카드의 높이 */
+  width: 300px;
+  height: 180px;
   cursor: pointer;
   border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   position: relative;
+  overflow: hidden;
+  border:0;
+  
 }
 
 .card-content {
@@ -293,6 +294,7 @@ tbody tr {
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.6s;
+  
 }
 
 .card.flipped .card-content {
@@ -300,32 +302,27 @@ tbody tr {
 }
 
 .card-front, .card-back {
-  position: absolute;
+  position: absolute; /* 앞뒤면 모두 절대 위치로 설정 */
   width: 100%;
   height: 100%;
-  backface-visibility: hidden;
+  backface-visibility: hidden; /* 뒤집힌 면을 가림 */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
-  z-index: 1; /* 추가된 z-index */
-}
+  
 
-.card-back {
-  background-color: #F4F1EC;
-  color: #000000;
-  transform: rotateY(180deg);
-  z-index: 0; /* card-front 아래에 위치하도록 z-index 설정 */
 }
 
 .card-front {
   background-color: #EBF0EA;
   color: #000000;
-  position: relative;
-  z-index: 2; /* card-back 위에 표시되도록 z-index 설정 */
 }
 
-
+.card-back {
+  background-color: #F4F1EC;
+  color: #000000;
+  transform: rotateY(180deg); /* 뒤집혀서 뒷면이 보이도록 설정 */
+}
 .card-header {
   position: absolute;
   top: 0;

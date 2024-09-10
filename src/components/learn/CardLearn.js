@@ -10,7 +10,7 @@ const CardLearn = () => {
     const sectionNumber = parseInt(queryParams.get('sectionNumber'), 10);
 
     const [vocabularyData, setVocabularyData] = useState(null);
-    const [isSaving, setIsSaving] = useState(false);
+    const [ setIsSaving] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,13 +75,7 @@ const CardLearn = () => {
             ) : (
                 <p>Loading...</p>
             )}
-            <button
-                className="save-button"
-                onClick={() => console.log('Save button clicked')}
-                disabled={isSaving}
-            >
-                {isSaving ? 'Saving...' : 'Save'}
-            </button>
+            
         </div>
     );
 };
