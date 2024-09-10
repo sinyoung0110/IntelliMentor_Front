@@ -4,9 +4,9 @@ import { Badge, ListGroup} from 'react-bootstrap';
 const NoticeComponent=()=> {
     return (
         <>
-        <div className='commonContainer' style={{ backgroundColor: '#EBF0EA', color: '#000000' }}>
+        <div className='commonContainer' style={{ backgroundColor: '#F7F9F8', color: '#000000' }}>
         <div className="col p-4 d-flex flex-column position-static">
-        <h1>Hot List</h1>
+        <h1>FQA</h1>
         <ListGroup as="ol" numbered>
         <ListGroup.Item
         as="li"

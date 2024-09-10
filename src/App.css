@@ -7,8 +7,10 @@
   overflow: hidden;
   margin-bottom: 16px;
   box-shadow: 0 4px 8px rgba(186, 184, 184, 0.11);
+  padding:10px 30px 0 30px;
   position: relative;
-  opacity: 0.7; 
+  opacity: 0.8; 
+  border: 1px solid #ddd;
 }
 .text-gray{
   color:#BFBFBF;
@@ -22,7 +24,7 @@
   font-weight: 800;
 }
 .bg-yellow-green{
-  background-color: #EBF0EA;
+  background-color: #F7F9F8;
 }
 .bg-green{
   background-color: #8FB299;
@@ -31,7 +33,7 @@
   background-color:#BFBFBF;
 }
 .bg-beige{
-  background-color:#F4F1EC;
+  background-color:#f7f4f0;
 }
 .no-underline-link {
   text-decoration: none; /* 밑줄 제거 */
@@ -220,14 +222,20 @@ tbody tr {
   height: 100%;
   border-radius: 10px;
 }
-.quiz-button-container {
+.dash-button-container {
   display: flex;
   flex-direction: column; /* 버튼들을 수직으로 정렬 */
   align-items: flex-start; /* 왼쪽 정렬 */
   gap: 10px; /* 버튼 사이의 간격 */
-  margin-top:-10px;
+  margin-top:-20px;
+}
+.quiz-button-container {
+  display: flex;
+  gap: 10px; /* 버튼 사이의 간격 */
+  justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
 }
 .quiz-button {
+
   background-color: #8FB299;
   color: #FFF;
   padding: 10px 20px;
@@ -309,17 +317,15 @@ tbody tr {
   display: flex;
   align-items: center;
   justify-content: center;
-  
-
 }
 
 .card-front {
-  background-color: #EBF0EA;
+  background-color: #F7F9F8;
   color: #000000;
 }
 
 .card-back {
-  background-color: #F4F1EC;
+  background-color: #f7f4f0;
   color: #000000;
   transform: rotateY(180deg); /* 뒤집혀서 뒷면이 보이도록 설정 */
 }

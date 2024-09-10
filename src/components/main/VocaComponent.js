@@ -16,7 +16,7 @@ const VocaComponent=()=> {
             <p className="card-text mb-auto">ex_Please look out for us. </p>
             <p className="card-text mb-auto">= 저희 많이 응원해주세요. </p>
             <br/>
-            <button type="button" className="btn btn-outline-dark">학습하러 가기 </button>
+        
             </div>
         </div>
         </>

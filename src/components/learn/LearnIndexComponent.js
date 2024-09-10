@@ -35,7 +35,7 @@ const LearnIndexComponent = () => {
     const maxSection = vocabularyData?.maxSection || 0;
 
     const handleQuizCreation = () => {
-          // Logic to create quiz
+        navigate(`/learn/quiz?titleId=${titleId}&sectionNumber=${sectionNumber}`);
     };
     const handleLearnCreation = () => {
         navigate(`/learn/card?titleId=${titleId}&sectionNumber=${sectionNumber}`);
@@ -59,7 +59,7 @@ const LearnIndexComponent = () => {
                     )}
                    <div className="bottom-controls">
                     <ProgressBarComponent className="custom-progress-bar" />
-                    <div className="quiz-button-container">
+                    <div className="dash-button-container">
                     <button onClick={handleLearnCreation} className="quiz-button learning">
                      학습하기
                     </button>

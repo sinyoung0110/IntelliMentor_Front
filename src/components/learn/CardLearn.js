@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { readVocabulary, updateBookmark } from '../../api/learnApi';
 import Card from './Card';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 
 const CardLearn = () => {
     const location = useLocation();
@@ -11,6 +11,7 @@ const CardLearn = () => {
 
     const [vocabularyData, setVocabularyData] = useState(null);
     const [ setIsSaving] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,9 +58,24 @@ const CardLearn = () => {
 
     const sectionData = vocabularyData?.data.find(section => section.section === sectionNumber);
 
+    const handleList = () => {
+        navigate(`/learn/index?titleId=${titleId}&sectionNumber=${sectionNumber}`);
+    };
+    const handleQuizCreation = () => {
+        navigate(`/learn/quiz?titleId=${titleId}&sectionNumber=${sectionNumber}`);
+    };
+
     return (
         <div className="card-learn-page">
             <h1>{vocabularyData?.title} - Section {sectionNumber}</h1>
+            <div className="quiz-button-container">
+                    <button onClick={handleList} className="quiz-button learning">
+                     목록으로
+                    </button>
+                    <button onClick={handleQuizCreation} className="quiz-button">
+                        퀴즈풀기
+                    </button>
+                </div>
             {sectionData ? (
                 <div className="card-container-wrapper">
                     <div className="card-container">

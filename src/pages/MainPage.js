@@ -9,12 +9,12 @@ function MainPage(props) {
     return (
         <BasicLayout>
                 <Row>
-                    <Col sm={8}> <VocaComponent/></Col>
-                    <Col sm={4}><StudyComponent/></Col>
+                    <Col sm={7}> <VocaComponent/></Col>
+                    <Col sm={5}><StudyComponent/></Col>
                 </Row><br/>
                 <Row>
-                    <Col sm={8}> <DataComponent/></Col>
-                    <Col sm={4}><NoticeComponent/></Col>
+                    <Col sm={7}> <DataComponent/></Col>
+                    <Col sm={5}><NoticeComponent/></Col>
                 </Row>
         </BasicLayout>
     );

@@ -4,7 +4,7 @@ import '../../App.css';
 const StudyComponent=()=> {
     return (
         <>
-        <div className="commonContainer"  style={{ backgroundColor: '#EBF0EA', color: '#000000' }}>
+        <div className="commonContainer"  style={{ backgroundColor: '#F7F9F8', color: '#000000' }}>
         
         <div className="col p-4 d-flex flex-column position-static">
         <h1>Study</h1>
@@ -27,7 +27,7 @@ const StudyComponent=()=> {
   			</li>
 			</ul>
             <br/>
-            <button type="button" className="btn btn-outline-dark">바로 가기</button>
+            
       </div>
     </div>
         </>
