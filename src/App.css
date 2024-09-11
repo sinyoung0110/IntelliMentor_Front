@@ -272,6 +272,10 @@ tbody tr {
   background-color: #6D8E6F;
 }
 
+
+
+
+
 /* CardLearn */
 .card-container-wrapper {
   overflow-x: auto; /* 가로 스크롤 활성화 */
@@ -464,4 +468,26 @@ transition: background-color 0.3s ease;
 
 .filter-button:hover {
 background-color: #709983; /* Hover effect color */
+}
+
+
+.arrow-container {
+  display: flex;
+  align-items: center; /* Align items vertically center */
+  gap: 8px; /* Space between items */
+}
+
+.arrow-container span {
+  font-size: 100px; /* Set font size for text */
+  color: #8FB299;/* Set color for text */
+}
+.eng {
+  font-size: 100px; /* Set font size for text */
+  color: black;/* Set color for text */
+}
+
+.arrow-container svg {
+  width: 100px; /* 아이콘의 고정 크기 설정 */
+  height: 100px; /* 아이콘의 고정 크기 설정 */
+  margin-bottom: 20px; /* 아이콘과 텍스트 사이의 간격 조정 */
 }

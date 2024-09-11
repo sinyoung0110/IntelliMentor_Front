@@ -41,7 +41,7 @@ const LearnIndexComponent = () => {
     const maxSection = vocabularyData?.maxSection || 0;
 
     const handleQuizCreation = () => {
-        navigate(`/learn/quiz?titleId=${titleId}&sectionNumber=${sectionNumber}`);
+        navigate(`/learn/chooseQuiz?titleId=${titleId}&sectionNumber=${sectionNumber}`);
     };
     const handleLearnCreation = () => {
         navigate(`/learn/card?titleId=${titleId}&sectionNumber=${sectionNumber}`);

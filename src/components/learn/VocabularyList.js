@@ -45,7 +45,7 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
         return <div>Loading...</div>;
     }
 
-    const { title, data: sections } = localVocabularyData;
+    const { data: sections } = localVocabularyData;
     const sectionData = sections.find(section => section.section === sectionNumber);
 
     if (!sectionData) {

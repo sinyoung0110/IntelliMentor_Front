@@ -69,7 +69,7 @@ const CardLearn = () => {
         navigate(`/learn/index?titleId=${titleId}&sectionNumber=${sectionNumber}`);
     };
     const handleQuizCreation = () => {
-        navigate(`/learn/quiz?titleId=${titleId}&sectionNumber=${sectionNumber}`);
+        navigate(`/learn/chooseQuiz?titleId=${titleId}&sectionNumber=${sectionNumber}`);
     };
 
 
