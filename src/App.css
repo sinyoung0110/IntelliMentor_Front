@@ -481,11 +481,6 @@ background-color: #709983; /* Hover effect color */
   font-size: 100px; /* Set font size for text */
   color: #8FB299;/* Set color for text */
 }
-.eng {
-  font-size: 100px; /* Set font size for text */
-  color: black;/* Set color for text */
-}
-
 .arrow-container svg {
   width: 100px; /* 아이콘의 고정 크기 설정 */
   height: 100px; /* 아이콘의 고정 크기 설정 */
