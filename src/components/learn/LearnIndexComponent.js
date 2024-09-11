@@ -3,8 +3,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import DaySelector from './DaySelector';
 import VocabularyList from './VocabularyList';
 import { readVocabulary } from '../../api/learnApi';
-import ProgressBarComponent from './ProgressBarComponent'
-import { useLocation,useNavigate } from 'react-router-dom';
+import ProgressBarComponent from './ProgressBarComponent';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const LearnIndexComponent = () => {
     const location = useLocation();
@@ -14,6 +14,7 @@ const LearnIndexComponent = () => {
     const [selectedDay, setSelectedDay] = useState('Day1');
     const sectionNumber = parseInt(selectedDay.replace('Day', ''), 10);
     const [vocabularyData, setVocabularyData] = useState(null);
+    const [grades, setGrades] = useState([]); // 성적 데이터를 위한 상태 추가
 
     const navigate = useNavigate();
 
@@ -22,6 +23,11 @@ const LearnIndexComponent = () => {
             try {
                 const data = await readVocabulary(titleId);
                 setVocabularyData(data);
+
+                // 성적 데이터를 설정 (여기서는 data에 성적이 포함되어 있다고 가정)
+                if (data && data.grades) {
+                    setGrades(data.grades);
+                }
             } catch (error) {
                 console.error('Error fetching vocabulary data:', error);
             }
@@ -41,8 +47,6 @@ const LearnIndexComponent = () => {
         navigate(`/learn/card?titleId=${titleId}&sectionNumber=${sectionNumber}`);
     };
 
-
-
     return (
         <Container fluid>
             <Row>
@@ -51,26 +55,24 @@ const LearnIndexComponent = () => {
                         selectedDay={selectedDay} 
                         setSelectedDay={setSelectedDay} 
                         section={maxSection}
+                        grades={grades} // 성적 데이터를 DaySelector에 전달
                     />
                     {vocabularyData ? (
                         <VocabularyList sectionNumber={sectionNumber} vocabularyData={vocabularyData} />
                     ) : (
                         <div>Loading...</div>
                     )}
-                   <div className="bottom-controls">
-                    <ProgressBarComponent className="custom-progress-bar" />
-                    <div className="dash-button-container">
-                    <button onClick={handleLearnCreation} className="quiz-button learning">
-                     학습하기
-                    </button>
-                    <button onClick={handleQuizCreation} className="quiz-button">
-                        퀴즈풀기
-                    </button>
-                </div>
-            </div>
-
-
-
+                    <div className="bottom-controls">
+                        <ProgressBarComponent className="custom-progress-bar" />
+                        <div className="dash-button-container">
+                            <button onClick={handleLearnCreation} className="quiz-button learning">
+                                학습하기
+                            </button>
+                            <button onClick={handleQuizCreation} className="quiz-button">
+                                퀴즈풀기
+                            </button>
+                        </div>
+                    </div>
                 </Col>
             </Row>
         </Container>

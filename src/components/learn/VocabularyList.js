@@ -64,7 +64,8 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
     return (
         <div className="vocabulary-list">
     <div className="vocabulary-list-header">
-        <h3>{title} - Section {sectionNumber} (총 {word.length}개)</h3>
+        <h2 className='main-text'>{vocabularyData?.title}</h2>
+       
         <button 
             className="save-button" 
             onClick={handleSave} 
@@ -73,6 +74,7 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
             {isSaving ? 'Saving...' : 'Save Bookmark'}
         </button>
     </div>
+    <h5 style={{color:'#BFBFBF', fontWeight:'800',}}> Day {sectionNumber} - 총 {word.length}개</h5>
     <div className="table-container">
         <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 15px' }}>
             <thead>
