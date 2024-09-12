@@ -11,7 +11,7 @@ const ChooseQuiz = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const titleId = queryParams.get('titleId');
-  const sectionId = queryParams.get('sectionNumber');
+  const sectionId = queryParams.get('sectionId');
 
   const [selectedQuizzes, setSelectedQuizzes] = useState({
     e: false,

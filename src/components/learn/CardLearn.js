@@ -9,6 +9,7 @@ const CardLearn = () => {
     const queryParams = new URLSearchParams(location.search);
     const titleId = queryParams.get('titleId');
     const sectionNumber = parseInt(queryParams.get('sectionNumber'), 10);
+    const sectionId = queryParams.get('sectionId');
 
     const [vocabularyData, setVocabularyData] = useState(null);
     const [showFilters, setShowFilters] = useState(false);
@@ -69,7 +70,7 @@ const CardLearn = () => {
         navigate(`/learn/index?titleId=${titleId}&sectionNumber=${sectionNumber}`);
     };
     const handleQuizCreation = () => {
-        navigate(`/learn/chooseQuiz?titleId=${titleId}&sectionNumber=${sectionNumber}`);
+        navigate(`/learn/chooseQuiz?titleId=${titleId}&sectionId=${sectionId}`);
     };
 
 

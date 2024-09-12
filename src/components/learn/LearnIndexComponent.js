@@ -15,6 +15,7 @@ const LearnIndexComponent = () => {
     const sectionNumber = parseInt(selectedDay.replace('Day', ''), 10);
     const [vocabularyData, setVocabularyData] = useState(null);
     const [grades, setGrades] = useState([]); // 성적 데이터를 위한 상태 추가
+    const [sectionId, setSectionId] = useState(null); // sectionId의 초기 상태를 null로 변경
 
     const navigate = useNavigate();
 
@@ -27,6 +28,13 @@ const LearnIndexComponent = () => {
                 // 성적 데이터를 설정 (여기서는 data에 성적이 포함되어 있다고 가정)
                 if (data && data.grades) {
                     setGrades(data.grades);
+                }
+
+                // data 배열에서 sectionId 추출
+                if (data && data.data && data.data.length > 0) {
+                    setSectionId(data.data[0].sectionId); // 첫 번째 항목의 sectionId를 설정
+                } else {
+                    console.error('sectionId is missing from the API response. Data:', data);
                 }
             } catch (error) {
                 console.error('Error fetching vocabulary data:', error);
@@ -41,10 +49,16 @@ const LearnIndexComponent = () => {
     const maxSection = vocabularyData?.maxSection || 0;
 
     const handleQuizCreation = () => {
-        navigate(`/learn/chooseQuiz?titleId=${titleId}&sectionNumber=${sectionNumber}`);
+        // sectionId가 유효한 경우에만 퀴즈로 이동
+        if (sectionId) {
+            navigate(`/learn/chooseQuiz?titleId=${titleId}&sectionId=${sectionId}`);
+        } else {
+            console.error('sectionId is undefined.');
+        }
     };
+
     const handleLearnCreation = () => {
-        navigate(`/learn/card?titleId=${titleId}&sectionNumber=${sectionNumber}`);
+        navigate(`/learn/card?titleId=${titleId}&sectionNumber=${sectionNumber}&sectionId=${sectionId}`);
     };
 
     return (
