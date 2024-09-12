@@ -39,3 +39,14 @@ export const updateBookmark = async (titleId, trueIdList, falseIdList) => {
         throw error;
     }
 };
+
+// Send selected quiz type to the server (e.g., ek, ks, es)
+export const submitQuizSelection = async (sectionId, selectedTypes) => {
+    try {
+        const response = await apiClient.get(`${host}/quiz/${selectedTypes}/${sectionId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error submitting quiz selection:', error);
+        throw error;
+    }
+};

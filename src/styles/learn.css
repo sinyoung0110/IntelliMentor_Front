@@ -1,0 +1,366 @@
+/* 단어장 대쉬보드 */
+
+.vocabulary-list {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    background-color: #F7F9F8;
+    margin-bottom: 20px;
+  }
+  
+  .vocabulary-list-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .table-container {
+    max-height: 500px;
+    overflow-y: auto; /* tbody 스크롤 가능 */
+    position: relative;
+  }
+  
+  .table-container table {
+    width: 100%;
+    border-collapse: separate; /* 셀 간격 유지 */
+    border-spacing: 0 10px; /* 행 간 간격 설정 */
+  }
+  
+  thead {
+    position: sticky;
+    background-color: #F7F9F8;
+    top: 0;
+    z-index: 1;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 10px; /* 셀 내부 여백 추가 */
+  }
+  
+  tbody td {
+    background-color: white;
+    word-break: break-word;
+    text-align: left;
+  }
+  
+  tbody tr {
+    background-color: white;
+    border-radius: 10px; /* 행 모서리 둥글게 */
+  }
+  
+  /* DaySelector 스타일 */
+  .day-selector-container {
+    position: sticky;
+    overflow-x: auto; /* 가로 스크롤 가능 */
+    white-space: nowrap; /* 버튼들이 가로로 정렬되도록 설정 */
+    padding: 10px 10px 10px ; /* 상하 여백 */
+    
+  }
+  
+  .day-selector {
+    display: inline-flex; /* 버튼들을 가로로 배치 */
+    gap: 10px; /* 버튼 간격 */
+  }
+  
+  .day-button {
+    background-color: #BFBFBF; /* 기본 배경 색상 */
+    color: white; /* 텍스트 색상 */
+    border: none; /* 기본 테두리 제거 */
+    border-radius: 20px; /* 버튼을 둥글게 만들기 */
+    padding: 10px 10px; /* 버튼 안쪽 여백 */
+    font-size: 16px; /* 텍스트 크기 */
+    cursor: pointer; /* 클릭 커서 */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* 부드러운 색상 전환 및 클릭 효과 */
+    outline: none; /* 포커스 시 기본 테두리 제거 */
+    white-space: nowrap; /* 버튼 텍스트가 줄 바꿈되지 않도록 설정 */
+  }
+  
+  .day-button:hover {
+    background-color: #8FB299; /* 호버 시 배경 색상 변경 */
+  }
+  
+  .day-button.selected {
+    background-color: #8FB299; /* 선택된 버튼의 배경 색상 */
+    font-weight: bold; /* 선택된 버튼의 글씨를 두껍게 */
+    transform: scale(1.1); /* 버튼 클릭 시 크기 확대 효과 */
+  }
+  
+  .day-button:active {
+    transform: scale(0.95); /* 클릭 시 버튼을 약간 줄어들게 하여 클릭 효과 추가 */
+  }
+  
+  /* Day Grade Styles */
+  .day-grade {
+    font-size: 14px; /* Font size for grade */
+  }
+  
+  /*아래 버튼(프로그래스,학습,퀴즈버튼)*/
+  .bottom-controls {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 20px; /* 프로그래스바와 버튼 컨테이너 사이의 간격 */
+  }
+  .progress-bar-container {
+    width: 90%;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    background-color: #F7F9F8;
+    padding:30px;
+    
+  }
+  
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .progress-bar {
+    width: 100%;
+    background-color: #E5E5E5;
+    border-radius: 10px;
+    height: 20px;
+  }
+  
+  .progress {
+    background-color: #B3C0B5;
+    height: 100%;
+    border-radius: 10px;
+  }
+  .dash-button-container {
+    display: flex;
+    flex-direction: column; /* 버튼들을 수직으로 정렬 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+    gap: 10px; /* 버튼 사이의 간격 */
+    margin-top:-20px;
+  }
+  .quiz-button-container {
+    display: flex;
+    gap: 10px; /* 버튼 사이의 간격 */
+    justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
+  }
+  .quiz-button {
+  
+    background-color: #8FB299;
+    color: #FFF;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    border: none;
+  }
+  .quiz-button:hover {
+    background-color: #6D8E6F;
+  }
+  .quiz-button.learning {
+    background-color: #F7F9F8; /* '학습하기' 버튼의 배경 색상 */
+    color: #000; /* 텍스트 색상 설정, 원하는 색상으로 변경 가능 */
+    border: 1px solid #ddd;
+  }
+  
+  .quiz-button.learning:hover {
+    background-color: #E5E5E5; /* 호버 시 색상 변경 */
+  }
+  
+  .save-button {
+    padding: 0px 20px 0px 20px;
+    background-color: #8FB299;
+    color: white;
+    border-radius: 20px; /* 버튼을 둥글게 만들기 */
+    cursor: pointer;
+  }
+  
+  .save-button:hover {
+    background-color: #6D8E6F;
+  }
+  
+  
+  
+  
+  
+  /* CardLearn */
+  .card-container-wrapper {
+    overflow-x: auto; /* 가로 스크롤 활성화 */
+    overflow-y: hidden; /* 세로 스크롤 숨기기 */
+    white-space: nowrap; /* 카드들이 한 줄로 쌓이지 않도록 */
+    padding: 10px 0;
+  }
+  
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px); /* 카드 너비 300px로 고정 */
+    grid-template-rows: repeat(2, 200px); /* 2행 고정 */
+    gap: 30px;
+    grid-auto-flow: column; /* 열 기준으로 흐름 설정 */
+    justify-content: start;
+  }
+  
+  .card {
+    width: 300px;
+    height: 180px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border:0;
+    
+  }
+  
+  .card-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    
+  }
+  
+  .card.flipped .card-content {
+    transform: rotateY(180deg);
+  }
+  
+  .card-front, .card-back {
+    position: absolute; /* 앞뒤면 모두 절대 위치로 설정 */
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* 뒤집힌 면을 가림 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card-front {
+    background-color: #F7F9F8;
+    color: #000000;
+  }
+  
+  .card-back {
+    background-color: #f7f4f0;
+    color: #000000;
+    transform: rotateY(180deg); /* 뒤집혀서 뒷면이 보이도록 설정 */
+  }
+  .card-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .bookmark-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .mistakes {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 14px;
+  }
+  
+  /* 스크롤바 스타일링 */
+  .card-container-wrapper::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .card-container-wrapper::-webkit-scrollbar-thumb {
+    background-color: #8FB299;
+    border-radius: 10px;
+  }
+  
+  .card-container-wrapper::-webkit-scrollbar-track {
+    background-color: #F7F9F8;
+  }
+  .filter-button {
+    background-color: #8FB299; /* Primary button color */
+    color: #ffffff; /* Button text color */
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Filter Options - Horizontal Layout */
+.filter-options {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #F7F9F8; /* Light background for the filter area */
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row; /* Horizontal layout */
+  gap: 20px; /* Space between each filter */
+  width: auto; /* Adjust width automatically to fit content */
+  justify-content: flex-start; /* Align items to the left */
+  }
+  
+  
+/* Filter Labels */
+.filter-options label {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between checkbox/radio and text */
+  color: #333; /* Text color */
+}
+  /* Checkbox & Radio Buttons */
+input[type="checkbox"], input[type="radio"] {
+  accent-color: #8FB299; /* Custom color for inputs */
+  width: 18px;
+  height: 18px;
+}
+
+/* Optional: Center the Filter Options */
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start; /* Left align the filter options */
+  margin-bottom: 20px;
+}
+/* Layout for filter and buttons */
+.filter-and-button-container {
+  display: flex;
+  justify-content: space-between; /* Space between filter and buttons */
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Filter Section */
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Button Section */
+.button-section {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
+
+  .filter-button:hover {
+    background-color: #709983; /* Hover effect color */
+    }
+  .arrow-container {
+    display: flex;
+    align-items: center; /* Align items vertically center */
+    gap: 8px; /* Space between items */
+  }
+  
+  .arrow-container span {
+    font-size: 100px; /* Set font size for text */
+    color: #8FB299;/* Set color for text */
+  }
+  .arrow-container svg {
+    width: 100px; /* 아이콘의 고정 크기 설정 */
+    height: 100px; /* 아이콘의 고정 크기 설정 */
+    margin-bottom: 20px; /* 아이콘과 텍스트 사이의 간격 조정 */
+  }

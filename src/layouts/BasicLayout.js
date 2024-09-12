@@ -3,6 +3,8 @@ import BasicMenu from "../components/menus/BasicMenu";
 import Footer from "../components/menus/Footer";
 import { Container } from 'react-bootstrap';
 import '../App.css';
+import '../styles/learn.css';  // Adjust based on the actual path
+
 
 function BasicLayout({children}) {
   return (
