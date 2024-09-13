@@ -5,6 +5,7 @@ const Loading = <div className={'bg-red-700'}>Loading....</div>
 const Index = lazy(() => import("../pages/learn/LearnIndexPage"));
 const Learn = lazy(() => import("../pages/learn/CardLearnPage"));
 const ChooseQuiz=lazy(()=>import("../pages/learn/ChooseQuizPage"))
+const QuizSolve=lazy(()=>import("../pages/learn/QuizSolvePage"))
 
 const learnRouter = () => {
     return [
@@ -19,6 +20,10 @@ const learnRouter = () => {
         {path:'chooseQuiz',
           element:<Suspense fallback={Loading}><ChooseQuiz/></Suspense>
         },
+        {
+          path: 'quiz/:selectedType/:sectionId',
+          element: <Suspense fallback={Loading}><QuizSolve /></Suspense>
+      }
     ];
 };
 

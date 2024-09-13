@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { MdOutlineArrowForward, MdOutlineQuestionMark } from "react-icons/md";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Container, Button, Row, Col } from 'react-bootstrap';
-import { submitQuizSelection } from '../../api/learnApi';
-
+import { submitQuizSelection } from '../../api/learnApi'; // 퀴즈 데이터를 불러오는 API 함수
 
 
 const ChooseQuiz = () => {
@@ -28,20 +27,21 @@ const ChooseQuiz = () => {
 
   const handleSubmit = async () => {
     try {
-    // 선택된 퀴즈 유형을 기반으로 서버로 GET 요청
-    const selectedTypes = Object.keys(selectedQuizzes)
-      .filter((key) => selectedQuizzes[key]) // 선택된 것만 필터링
-      .join(''); // 'e', 'k', 's'가 조합된 문자열 생성
-      const data = await submitQuizSelection(sectionId, selectedTypes);
-      console.log('Quiz data received:', data);
-        navigate(`/learn/quiz/${selectedTypes}/${sectionId}`, {
-          state: { titleId, sectionId }
-        });
+      const selectedTypes = Object.keys(selectedQuizzes)
+        .filter((key) => selectedQuizzes[key])
+        .join('');
+  
+      const quizData = await submitQuizSelection(sectionId, selectedTypes);
+      console.log('Quiz data received:', quizData);
+  
+      navigate(`/learn/quiz/${selectedTypes}/${sectionId}`, {
+        state: { titleId, sectionId, selectedTypes, quizData } // quizData 전달
+      });
     } catch (error) {
-        console.error('Error during quiz submission:', error);
+      console.error('Error during quiz submission:', error);
     }
   };
-
+  
   return (
     <Container className="mt-4">
       <Row className="justify-content-center mb-4">
@@ -86,12 +86,11 @@ const ChooseQuiz = () => {
       </div>
 
       <div className="quiz-button-container">
-      <Button onClick={handleSubmit} className="quiz-button">
-        선택 완료
-      </Button>
+        <Button onClick={handleSubmit} className="quiz-button">
+          선택 완료
+        </Button>
       </div>
     </Container>
-    
   );
 };
 
