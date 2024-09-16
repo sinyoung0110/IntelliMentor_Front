@@ -4,40 +4,34 @@ import { updateBookmark } from '../../api/learnApi';
 
 const VocabularyList = ({ sectionNumber, vocabularyData }) => {
     const [localVocabularyData, setLocalVocabularyData] = useState(vocabularyData);
-    const [modifiedIds, setModifiedIds] = useState({ trueIdList: [], falseIdList: [] });
-    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         setLocalVocabularyData(vocabularyData);
     }, [vocabularyData]);
 
-    const toggleBookmark = (index, wordIndex) => {
+    const toggleBookmark = async (index, wordIndex) => {
         const updatedData = { ...localVocabularyData };
         const word = updatedData.data[sectionNumber - 1].word[wordIndex];
-        word.bookmark = !word.bookmark;
+        const updatedBookmark = !word.bookmark;
+        word.bookmark = updatedBookmark;
 
-        const updatedTrueIdList = word.bookmark
-            ? [...modifiedIds.trueIdList, word.id]
-            : modifiedIds.trueIdList.filter(id => id !== word.id);
-        
-        const updatedFalseIdList = !word.bookmark
-            ? [...modifiedIds.falseIdList, word.id]
-            : modifiedIds.falseIdList.filter(id => id !== word.id);
-
-        setModifiedIds({ trueIdList: updatedTrueIdList, falseIdList: updatedFalseIdList });
+        // Update local state
         setLocalVocabularyData(updatedData);
-    };
 
-    const handleSave = async () => {
-        setIsSaving(true);
+        // Prepare the lists for the API call
+        const updatedTrueIdList = updatedBookmark
+            ? [word.id]
+            : [];
+        
+        const updatedFalseIdList = !updatedBookmark
+            ? [word.id]
+            : [];
+
         try {
-            await updateBookmark(vocabularyData.titleId, modifiedIds.trueIdList, modifiedIds.falseIdList);
-            // 성공적인 저장 후 상태 초기화
-            setModifiedIds({ trueIdList: [], falseIdList: [] });
+            // Update the bookmark status on the server
+            await updateBookmark(vocabularyData.titleId, updatedTrueIdList, updatedFalseIdList);
         } catch (error) {
-            console.error('Failed to save bookmark changes', error);
-        } finally {
-            setIsSaving(false);
+            console.error('Failed to update bookmark', error);
         }
     };
 
@@ -63,75 +57,66 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
 
     return (
         <div className="vocabulary-list">
-    <div className="vocabulary-list-header">
-        <h2 className='main-text'>{vocabularyData?.title}</h2>
-       
-        <button 
-            className="save-button" 
-            onClick={handleSave} 
-            disabled={isSaving}
-        >
-            {isSaving ? 'Saving...' : 'Save Bookmark'}
-        </button>
-    </div>
-    <h5 style={{color:'#BFBFBF', fontWeight:'800',}}> Day {sectionNumber} - 총 {word.length}개</h5>
-    <div className="table-container">
-        <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 15px' }}>
-            <thead>
-                <tr>
-                    <th style={{ textAlign: 'left', paddingLeft: '15px' }}>단어 (영어)</th>
-                    <th style={{ textAlign: 'left', paddingLeft: '15px' }}>단어 (한글)</th>
-                    <th style={{ textAlign: 'center' }}>북마크</th>
-                    <th style={{ textAlign: 'center' }}>오답횟수</th>
-                    <th style={{ textAlign: 'left', paddingLeft: '15px' }}>단어 (영어)</th>
-                    <th style={{ textAlign: 'left', paddingLeft: '15px' }}>단어 (한글)</th>
-                    <th style={{ textAlign: 'center' }}>북마크</th>
-                    <th style={{ textAlign: 'center' }}>오답횟수</th>
-                </tr>
-            </thead>
-            <tbody className="scrollable-tbody">
-                {wordPairs.map((pair, index) => (
-                    <tr key={index} style={{ backgroundColor: 'white', borderRadius: '10px', padding: '10px' }}>
-                        <td style={{ padding: '10px 20px' }}>{pair.word1.eng}</td>
-                        <td style={{ padding: '10px 20px' }}>{pair.word1.kor}</td>
-                        <td style={{ textAlign: 'center' }}>
-                            <span 
-                                style={{ fontSize: '20px', cursor: 'pointer', color: pair.word1.bookmark ? 'gold' : 'gray' }}
-                                onClick={() => toggleBookmark(index, index * 2)} // Bookmark index
-                            >
-                                ★
-                            </span>
-                        </td>
-                        <td style={{ textAlign: 'center' }}>{pair.word1.mistakes}</td>
-                        {pair.word2 ? (
-                            <>
-                                <td style={{ padding: '10px 20px' }}>{pair.word2.eng}</td>
-                                <td style={{ padding: '10px 20px' }}>{pair.word2.kor}</td>
+            <div className="vocabulary-list-header">
+                <h2 className='main-text' style={{textAlign: 'left'}}>{vocabularyData?.title}</h2>
+                <h5 style={{ color: '#BFBFBF', fontWeight: '800' }}> Day {sectionNumber} - 총 {word.length}개</h5>
+            </div>
+            <div className="table-container">
+                <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 15px' }}>
+                    <thead>
+                        <tr>
+                            <th style={{ textAlign: 'left', paddingLeft: '15px' }}>단어 (영어)</th>
+                            <th style={{ textAlign: 'left', paddingLeft: '15px' }}>단어 (한글)</th>
+                            <th style={{ textAlign: 'center' }}>북마크</th>
+                            <th style={{ textAlign: 'center' }}>오답횟수</th>
+                            <th style={{ textAlign: 'left', paddingLeft: '15px' }}>단어 (영어)</th>
+                            <th style={{ textAlign: 'left', paddingLeft: '15px' }}>단어 (한글)</th>
+                            <th style={{ textAlign: 'center' }}>북마크</th>
+                            <th style={{ textAlign: 'center' }}>오답횟수</th>
+                        </tr>
+                    </thead>
+                    <tbody className="scrollable-tbody">
+                        {wordPairs.map((pair, index) => (
+                            <tr key={index} style={{ backgroundColor: 'white', borderRadius: '10px', padding: '10px' }}>
+                                <td style={{ padding: '10px 20px' }}>{pair.word1.eng}</td>
+                                <td style={{ padding: '10px 20px' }}>{pair.word1.kor}</td>
                                 <td style={{ textAlign: 'center' }}>
                                     <span 
-                                        style={{ fontSize: '20px', cursor: 'pointer', color: pair.word2.bookmark ? 'gold' : 'gray' }}
-                                        onClick={() => toggleBookmark(index, index * 2 + 1)} // Bookmark index
+                                        style={{ fontSize: '20px', cursor: 'pointer', color: pair.word1.bookmark ? 'gold' : 'gray' }}
+                                        onClick={() => toggleBookmark(index, index * 2)} // Bookmark index
                                     >
                                         ★
                                     </span>
                                 </td>
-                                <td style={{ textAlign: 'center' }}>{pair.word2.mistakes}</td>
-                            </>
-                        ) : (
-                            <>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </>
-                        )}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    </div>
-</div>
-
+                                <td style={{ textAlign: 'center' }}>{pair.word1.mistakes}</td>
+                                {pair.word2 ? (
+                                    <>
+                                        <td style={{ padding: '10px 20px' }}>{pair.word2.eng}</td>
+                                        <td style={{ padding: '10px 20px' }}>{pair.word2.kor}</td>
+                                        <td style={{ textAlign: 'center' }}>
+                                            <span 
+                                                style={{ fontSize: '20px', cursor: 'pointer', color: pair.word2.bookmark ? 'gold' : 'gray' }}
+                                                onClick={() => toggleBookmark(index, index * 2 + 1)} // Bookmark index
+                                            >
+                                                ★
+                                            </span>
+                                        </td>
+                                        <td style={{ textAlign: 'center' }}>{pair.word2.mistakes}</td>
+                                    </>
+                                ) : (
+                                    <>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     );
 };
 

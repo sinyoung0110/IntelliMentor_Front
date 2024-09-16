@@ -9,7 +9,9 @@
   }  
   .vocabulary-list-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: left;
+    gap: 5px; /* h2와 h5 사이의 간격을 조정 */
   }
   
   .table-container {
