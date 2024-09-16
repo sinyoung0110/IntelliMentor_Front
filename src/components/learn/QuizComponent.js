@@ -2,88 +2,107 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
+
 const QuizComponent = () => {
   const location = useLocation();
-  const { quizData } = location.state || {}; // quizData를 location.state로부터 가져옴
-
+  const { quizData } = location.state || {};
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
-  const [quizResult, setQuizResult] = useState([]);
+  const [feedbackMessage, setFeedbackMessage] = useState('');
+  const [feedbackType, setFeedbackType] = useState('');
+  const [results, setResults] = useState([]);
 
-  // quizData가 유효하지 않을 경우 초기 상태를 설정
   useEffect(() => {
-    if (!quizData || quizData.length === 0) {
-      console.log("No quiz data available"); // 디버깅용
+    if (!quizData || quizData.quiz.length === 0) {
+      console.log("No quiz data available");
     } else {
-      console.log('Quiz data:', quizData); // quizData 확인
+      console.log('Quiz data:', quizData);
     }
   }, [quizData]);
 
   const handleAnswerSelect = (questionIndex, answerId) => {
+    const correctAnswerId = quizData.quiz[questionIndex][0].id;
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
       [questionIndex]: answerId,
     }));
+    if (answerId === correctAnswerId) {
+      setFeedbackMessage('정답입니다!');
+      setFeedbackType('correct');
+    } else {
+      setFeedbackMessage('틀렸습니다!');
+      setFeedbackType('incorrect');
+    }
+    setTimeout(() => {
+      if (currentQuestion < quizData.quiz.length - 1) {
+        setCurrentQuestion((prev) => prev + 1);
+        setFeedbackMessage('');
+        setFeedbackType('');
+      }
+    }, 1000);
   };
 
   const checkAnswers = () => {
-    const result = quizData.map((questionSet, index) => {
+    const finalResults = quizData.quiz.map((questionSet, index) => {
       const correctAnswerId = questionSet[0].id; // 문제의 ID
       const selectedAnswerId = answers[index];   // 사용자가 선택한 답변의 ID
-      return correctAnswerId === selectedAnswerId; // 정답 여부 확인
+      const isCorrect = correctAnswerId === selectedAnswerId; // 정답 여부 확인
+      return {
+        id: correctAnswerId,
+        type: questionSet[0].eng ? 'eng' : 'kor',
+        correct: isCorrect,
+      };
     });
-    setQuizResult(result);
-    console.log('Quiz Results:', result); // 정답 여부 결과를 콘솔에 출력
+    setResults(finalResults);
+    console.log('Quiz Results:', finalResults); // 결과를 콘솔에 출력
   };
 
   return (
     <Container className="mt-4">
-      <Row className="justify-content-center mb-4">
+      <Row className="justify-content-center">
         <Col xs="auto">
           <h2 className="main-text">퀴즈 풀기</h2>
         </Col>
       </Row>
 
-      {quizData.length > 0 ? (
+      {quizData && quizData.quiz && quizData.quiz.length > 0 && (
         <>
-          <div className="quiz-question-container">
-            <h4>문제 {currentQuestion + 1} / {quizData.length}</h4>
-            <p>{quizData[currentQuestion][0].eng || quizData[currentQuestion][0].kor}</p>
+          <div className="quiz-question-container text-center">
+            <div className="question-number">{`문제 ${currentQuestion + 1} / ${quizData.quiz.length}`}</div>
+            <p className="question-text">
+              {quizData.quiz[currentQuestion][0].eng || quizData.quiz[currentQuestion][0].kor}
+            </p>
+            <div className={`feedback-message ${feedbackType}`}>
+              {feedbackMessage}
+            </div>
           </div>
-          
+
           <div className="quiz-answers-container">
-            {quizData[currentQuestion].slice(1).map((option, idx) => (
+            {quizData.quiz[currentQuestion].slice(1).map((option) => (
               <Button
-                key={idx}
+                key={option.id}
                 onClick={() => handleAnswerSelect(currentQuestion, option.id)}
-                className={`answer-button ${answers[currentQuestion] === option.id ? 'selected' : ''}`}
+                className={`answer-button ${
+                  answers[currentQuestion] === option.id
+                    ? quizData.quiz[currentQuestion][0].id === option.id
+                      ? 'correct'
+                      : 'incorrect'
+                    : ''
+                }`}
               >
                 {option.eng || option.kor}
               </Button>
             ))}
           </div>
 
-          <div className="quiz-navigation-container">
-            {currentQuestion > 0 && (
-              <Button onClick={() => setCurrentQuestion((prev) => prev - 1)}>
-                이전 문제
-              </Button>
-            )}
-            {currentQuestion < quizData.length - 1 && (
-              <Button onClick={() => setCurrentQuestion((prev) => prev + 1)}>
-                다음 문제
-              </Button>
-            )}
-          </div>
-
-          {currentQuestion === quizData.length - 1 && (
-            <Button onClick={checkAnswers} className="quiz-submit-button">
+          {currentQuestion === quizData.quiz.length - 1 && (
+            <div className="quiz-submit-container">
+            <Button onClick={checkAnswers} className="quiz-submit-button mt-3">
               결과 제출
             </Button>
+            </div>
           )}
         </>
-      ) : (
-        <div>퀴즈 데이터를 불러오는 중...</div>
       )}
     </Container>
   );

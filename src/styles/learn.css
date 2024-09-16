@@ -6,8 +6,7 @@
     border-radius: 20px;
     background-color: #F7F9F8;
     margin-bottom: 20px;
-  }
-  
+  }  
   .vocabulary-list-header {
     display: flex;
     justify-content: space-between;
@@ -106,6 +105,7 @@
     margin-bottom: 20px;
     background-color: #F7F9F8;
     padding:30px;
+    border: 1px solid #ddd;
     
   }
   
@@ -132,35 +132,43 @@
     flex-direction: column; /* 버튼들을 수직으로 정렬 */
     align-items: flex-start; /* 왼쪽 정렬 */
     gap: 10px; /* 버튼 사이의 간격 */
-    margin-top:-20px;
-  }
-  .quiz-button-container {
-    display: flex;
+    margin-top: -20px;
+}
+
+.quiz-button-container {
     gap: 10px; /* 버튼 사이의 간격 */
     justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
-  }
-  .quiz-button {
-  
+}
+
+.quiz-button {
     background-color: #8FB299;
     color: #FFF;
     padding: 10px 20px;
     border-radius: 20px;
     cursor: pointer;
-    border: none;
-  }
-  .quiz-button:hover {
+    border: 1px solid #8FB299;
+    /* 텍스트 줄바꿈을 허용 */
+    word-break: break-word;
+    white-space: normal;
+    text-align: center; /* 버튼 내 텍스트 중앙 정렬 */
+    min-width: 100px; /* 버튼의 최소 너비 설정 */
+    flex-shrink: 0; /* 버튼이 줄어들지 않도록 설정 */
+}
+
+.quiz-button:hover {
     background-color: #6D8E6F;
-  }
-  .quiz-button.learning {
+}
+
+.quiz-button.learning {
     background-color: #F7F9F8; /* '학습하기' 버튼의 배경 색상 */
     color: #000; /* 텍스트 색상 설정, 원하는 색상으로 변경 가능 */
     border: 1px solid #ddd;
-  }
-  
-  .quiz-button.learning:hover {
+}
+
+.quiz-button.learning:hover {
     background-color: #E5E5E5; /* 호버 시 색상 변경 */
-  }
-  
+}
+
   .save-button {
     padding: 0px 20px 0px 20px;
     background-color: #8FB299;
@@ -356,11 +364,21 @@ input[type="checkbox"], input[type="radio"] {
   }
   
   .arrow-container span {
-    font-size: 100px; /* Set font size for text */
+    font-size: 80px; /* Set font size for text */
     color: #8FB299;/* Set color for text */
   }
   .arrow-container svg {
-    width: 100px; /* 아이콘의 고정 크기 설정 */
-    height: 100px; /* 아이콘의 고정 크기 설정 */
-    margin-bottom: 20px; /* 아이콘과 텍스트 사이의 간격 조정 */
+    width: 80px; /* 아이콘의 고정 크기 설정 */
+    height: 80px; /* 아이콘의 고정 크기 설정 */
+    margin-bottom: 10px; /* 아이콘과 텍스트 사이의 간격 조정 */
   }
+  .question-container {
+    display: flex;
+    align-items: center; /* Align items vertically center */
+  }
+  .question-container svg{
+    width: 90px; /* 아이콘의 고정 크기 설정 */
+    height: 90px; /* 아이콘의 고정 크기 설정 */
+    margin-bottom: 30px;
+  }
+  

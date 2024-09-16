@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MdOutlineArrowForward, MdOutlineQuestionMark } from "react-icons/md";
+import { MdOutlineArrowForward, MdOutlineQuestionMark,MdOutlineMinimize } from "react-icons/md";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import { submitQuizSelection } from '../../api/learnApi'; // 퀴즈 데이터를 불러오는 API 함수
@@ -59,7 +59,7 @@ const ChooseQuiz = () => {
           <div className="arrow-container">
             <span>A</span>
             <MdOutlineArrowForward color="#8FB299" />
-            <span style={{ fontSize: '90px' }}>가</span>
+            <span style={{ fontSize: '70px' }}>가</span>
           </div>
           영어 - 한글
         </Button>
@@ -69,7 +69,7 @@ const ChooseQuiz = () => {
           onClick={() => handleSelect('k')}
         >
           <div className="arrow-container">
-            <span style={{ fontSize: '90px' }}>가</span>
+            <span style={{ fontSize: '70px' }}>가</span>
             <MdOutlineArrowForward color="#8FB299" />
             <span>A</span>
           </div>
@@ -79,14 +79,17 @@ const ChooseQuiz = () => {
           type="button" 
           className={`choose-button ${selectedQuizzes.s ? 'selected' : ''}`} 
           onClick={() => handleSelect('s')}
-        >
+        ><div className="question-container">
+
           <MdOutlineQuestionMark color="#8FB299" />
+
+          </div>
           빈칸 맞추기
         </Button>
       </div>
 
-      <div className="quiz-button-container">
-        <Button onClick={handleSubmit} className="quiz-button">
+      <div className="quiz-button-container" style={{display :'flex', alignItems: 'center',justifyContent:'center'}}>
+        <Button onClick={handleSubmit} className="quiz-button" style={{display :'flex', alignItems: 'center',justifyContent:'center'}}>
           선택 완료
         </Button>
       </div>
