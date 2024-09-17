@@ -1,70 +1,84 @@
 import React from 'react';
-import { Container, Row, Col, Table, Card } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 
 const QuizResults = ({ results }) => {
-  const { scoreMap, scoreEng, scoreKor, scoreSen, grade, mistakes } = results;
+  // Default empty object and array to avoid undefined errors
+  const {
+    scoreMap = {},
+    scoreEng = 0,
+    scoreKor = 0,
+    scoreSen = 'N/A',
+    grade = 'N/A',
+    mistakes = [],
+  } = results || {}; // Ensure results is defined
 
   return (
     <Container className="mt-4">
       <Row>
-        {/* Left Column: Mistakes */}
+        {/* Display Scores */}
         <Col md={6}>
-          <h3>오답 단어</h3>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>영어</th>
-                <th>한국어</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mistakes.length > 0 ? (
-                mistakes.map((word, index) => (
-                  <tr key={word.id}>
-                    <td>{index + 1}</td>
-                    <td>{word.eng}</td>
-                    <td>{word.kor}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" className="text-center">
-                    오답이 없습니다.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </Table>
+          <div style={styles.card}>
+            <div style={styles.cardHeader}>My Scores</div>
+            <div style={styles.cardBody}>
+              <ul style={styles.list}>
+                <li>English Score: {scoreEng}</li>
+                <li>Korean Score: {scoreKor}</li>
+                <li>Sentence Score: {scoreSen}</li>
+                <li>Grade: {grade}</li>
+              </ul>
+            </div>
+          </div>
         </Col>
 
-        {/* Right Column: Scores & Rank */}
+        {/* Display Mistakes */}
         <Col md={6}>
-          <h3>나의 랭크</h3>
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>성적: {grade}</Card.Title>
-              <Card.Text>
-                <strong>English 점수: </strong> {scoreMap.e} <br />
-                <strong>Korean 점수: </strong> {scoreMap.k}
-              </Card.Text>
-            </Card.Body>
-          </Card>
-
-          <Card>
-            <Card.Body>
-              <Card.Title>저장된 점수</Card.Title>
-              <Card.Text>
-                <strong>영어 점수 (scoreEng):</strong> {scoreEng} <br />
-                <strong>한국어 점수 (scoreKor):</strong> {scoreKor} <br />
-                <strong>문장 점수 (scoreSen):</strong> {scoreSen}
-              </Card.Text>
-            </Card.Body>
-          </Card>
+          <div style={styles.card}>
+            <div style={styles.cardHeader}>Mistakes</div>
+            <div style={styles.cardBody}>
+              {mistakes.length > 0 ? (
+                <ul style={styles.list}>
+                  {mistakes.map((mistake) => (
+                    <li key={mistake.id}>
+                      <strong>English:</strong> {mistake.eng} - <strong>Korean:</strong> {mistake.kor}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No mistakes recorded.</p>
+              )}
+            </div>
+          </div>
         </Col>
       </Row>
     </Container>
   );
+};
+
+// Define custom styles for the card
+const styles = {
+  card: {
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    marginBottom: '20px',
+    padding: '10px'
+  },
+  cardHeader: {
+    backgroundColor: '#f7f7f7',
+    borderBottom: '1px solid #ddd',
+    padding: '10px',
+    fontSize: '1.25rem',
+    fontWeight: 'bold',
+    borderTopLeftRadius: '4px',
+    borderTopRightRadius: '4px'
+  },
+  cardBody: {
+    padding: '10px'
+  },
+  list: {
+    listStyleType: 'none',
+    padding: '0'
+  }
 };
 
 export default QuizResults;

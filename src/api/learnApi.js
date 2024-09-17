@@ -51,9 +51,9 @@ export const submitQuizSelection = async (sectionId, selectedTypes) => {
     }
 };
 
-export const submitQuizResults = async (quizResults) => {
+export const submitQuizResults = async (sectionId, quizResults) => {
     try {
-      const response = await apiClient.post('/api/learn/submitQuiz', quizResults);
+      const response = await apiClient.patch(`${host}/quiz/mark/${sectionId}`, quizResults);
       return response.data;
     } catch (error) {
       console.error('Error submitting quiz results:', error);
