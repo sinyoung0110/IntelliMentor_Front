@@ -50,3 +50,13 @@ export const submitQuizSelection = async (sectionId, selectedTypes) => {
         throw error;
     }
 };
+
+export const submitQuizResults = async (quizResults) => {
+    try {
+      const response = await apiClient.post('/api/learn/submitQuiz', quizResults);
+      return response.data;
+    } catch (error) {
+      console.error('Error submitting quiz results:', error);
+      throw error;
+    }
+  };

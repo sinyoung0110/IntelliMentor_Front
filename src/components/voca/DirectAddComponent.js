@@ -71,7 +71,7 @@ function DirectAddComponent() {
     return (
         <>
             <div className="main-text text-2xl font-bold mb-4">DirectAdd Page</div>
-            <div className="border-2 border-sky-200 mt-10 m-2 p-4">
+            <div className="mt-0 mr-40 ml-40 p-10">
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col mb-4">
                         <label htmlFor="title" className="text-gray-700">Title:</label>
@@ -121,19 +121,19 @@ function DirectAddComponent() {
                             </button>
                         </div>
                     ))}
-                    <div className="flex justify-center mt-4">
+                    <div className="flex justify-center mt-10">
                         <button
                             type="submit"
-                            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                            className="bg-gray text-white px-4 py-2 rounded-lg hover:bg-gray-400"
                         >
                             Add Another
                         </button>
                     </div>
-                    <div className="flex justify-center mt-4">
+                    <div className="flex justify-center mt-10">
                         <button
                             type="button"
                             onClick={handleClickAdd}
-                            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                            className="bg-green text-white px-4 py-2 rounded-lg hover:bg-green-600"
                         >
                             Add
                         </button>

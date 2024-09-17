@@ -9,16 +9,18 @@ html, body {
 .commonContainer {
   display: flex;
   flex-direction: row;
-  gap: 0;
+  gap: 10;
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 16px;
   box-shadow: 0 4px 8px rgba(186, 184, 184, 0.11);
-  padding:10px 30px 0 30px;
+  padding: 10px 30px;
   position: relative;
-  opacity: 0.8; 
+  opacity: 0.8;
   border: 1px solid #ddd;
+  height: 100%; /* 높이를 부모 컨테이너에 맞게 설정 */
 }
+
 .text-gray{
   color:#BFBFBF;
 }
@@ -41,6 +43,10 @@ html, body {
 }
 .bg-beige{
   background-color:#f7f4f0;
+}
+.bg-red{
+  background-color: #E57373;;
+
 }
 .no-underline-link {
   text-decoration: none; /* 밑줄 제거 */
