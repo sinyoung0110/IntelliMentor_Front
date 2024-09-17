@@ -76,12 +76,12 @@ function BasicMenu() {
             >
               Study
             </Nav.Link>
-            <Nav.Link as={Link} to="/notice/"
-              style={isActive('/notice/') ? activeLinkStyle : baseLinkStyle}
+            <Nav.Link as={Link} to="/faq"
+              style={isActive('/faq') ? activeLinkStyle : baseLinkStyle}
               onMouseEnter={(e) => e.currentTarget.style.color = '#8EB298'} // 호버 시 색상 변경
-              onMouseLeave={(e) => e.currentTarget.style.color = isActive('/notice/') ? '#8EB298' : '#BFBFBF'}
+              onMouseLeave={(e) => e.currentTarget.style.color = isActive('/faq') ? '#8EB298' : '#BFBFBF'}
             >
-              Hot List
+             FAQ
             </Nav.Link>
           </Nav>
           {loginState.email ? 

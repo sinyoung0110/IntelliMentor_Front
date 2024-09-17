@@ -3,7 +3,7 @@ import BasicLayout from '../layouts/BasicLayout';
 import VocaComponent from '../components/main/VocaComponent';
 import StudyComponent from '../components/main/StudyComponent';
 import DataComponent from '../components/main/DataComponent';
-import NoticeComponent from '../components/main/NoticeComponent';
+import FAQsmall from '../components/main/FAQsmall';
 import {Row,Col} from 'react-bootstrap';
 function MainPage(props) {
     return (
@@ -14,7 +14,7 @@ function MainPage(props) {
                 </Row><br/>
                 <Row>
                     <Col sm={7}> <DataComponent/></Col>
-                    <Col sm={5}><NoticeComponent/></Col>
+                    <Col sm={5}><FAQsmall/></Col>
                 </Row>
         </BasicLayout>
     );

@@ -2,7 +2,6 @@ html, body {
   min-width:900px; /* 최소 너비 설정 */
   overflow-x: auto; /* 수평 스크롤 허용 */
 }
-
 .container {
   max-width: 100%; /* 컨테이너가 화면 너비를 초과하지 않도록 설정 */
 }
@@ -140,12 +139,12 @@ html, body {
 
 .quiz-question-container {
   text-align: center;
-  position: relative;
+  position: relative; 
 }
 
 .question-number {
   font-size: 16px;
-  margin-bottom: 40px;
+  margin-bottom: 100px;
   font-weight: bold;
   color:#8FB299;
 
@@ -175,8 +174,8 @@ html, body {
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
   justify-content: center;
-  margin: 30px 150px 0 150px;
-  
+  margin: 90px;
+
 
 }
 
@@ -237,4 +236,42 @@ html, body {
 .quiz-submit-button:hover {
   background-color: #6D8E6F; /* Hover background color */
   color: white; /* Hover text color */
+}
+
+
+
+
+
+
+.faq-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.faq-list {
+  margin-top: 20px;
+}
+
+.faq-item {
+  margin-bottom: 15px;
+}
+
+.faq-question {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+  background-color: #e1e1e1;
+}
+
+.faq-answer {
+  margin-top: 10px;
+  padding-left: 20px;
+  font-style: italic;
 }

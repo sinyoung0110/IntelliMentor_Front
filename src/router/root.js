@@ -7,6 +7,7 @@ import memberRouter from "./memberRouter";
 const Loading=<div className={'bg-red-700'}>Loading....</div>
 
 const Main=lazy(()=>import("../pages/MainPage"))
+const FAQ=lazy(()=>import("../pages/faq/FAQPage"))
 
 const root=createBrowserRouter([
     {
@@ -24,7 +25,11 @@ const root=createBrowserRouter([
     {
         path: 'learn',
         children: learnRouter()
-    }
+    },
+    {
+        path: 'faq',
+        element: <Suspense fallback={Loading}><FAQ/></Suspense>
+    },
 
 ])
 
