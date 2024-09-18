@@ -53,10 +53,11 @@ export const submitQuizSelection = async (sectionId, selectedTypes) => {
 
 export const submitQuizResults = async (sectionId, quizResults) => {
     try {
-      const response = await apiClient.patch(`${host}/quiz/mark/${sectionId}`, quizResults);
-      return response.data;
+        // quizResults를 data 속성으로 감싸서 요청 본문에 포함
+        const response = await apiClient.patch(`${host}/quiz/mark/${sectionId}`, { data: quizResults });
+        return response.data;
     } catch (error) {
-      console.error('Error submitting quiz results:', error);
-      throw error;
+        console.error('Error submitting quiz results:', error);
+        throw error;
     }
-  };
+};

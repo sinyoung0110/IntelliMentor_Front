@@ -11,7 +11,7 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
 
     const toggleBookmark = async (index, wordIndex) => {
         const updatedData = { ...localVocabularyData };
-        const word = updatedData.data[sectionNumber - 1].word[wordIndex];
+        const word = updatedData.data[sectionNumber - 1].wordList[wordIndex];
         const updatedBookmark = !word.bookmark;
         word.bookmark = updatedBookmark;
 
@@ -29,7 +29,7 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
 
         try {
             // Update the bookmark status on the server
-            await updateBookmark(vocabularyData.titleId, updatedTrueIdList, updatedFalseIdList);
+            await updateBookmark(vocabularyData.title.id, updatedTrueIdList, updatedFalseIdList);
         } catch (error) {
             console.error('Failed to update bookmark', error);
         }
@@ -40,26 +40,26 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
     }
 
     const { data: sections } = localVocabularyData;
-    const sectionData = sections.find(section => section.section === sectionNumber);
+    const sectionData = sections.find(section => section.section.id === sectionNumber);
 
     if (!sectionData) {
         return <div>No data for section {sectionNumber}</div>;
     }
 
     const wordPairs = [];
-    const { word } = sectionData;
-    for (let i = 0; i < word.length; i += 2) {
+    const { wordList } = sectionData;
+    for (let i = 0; i < wordList.length; i += 2) {
         wordPairs.push({
-            word1: word[i],
-            word2: word[i + 1] || null, // Handle odd number of words
+            word1: wordList[i],
+            word2: wordList[i + 1] || null, // Handle odd number of words
         });
     }
 
     return (
         <div className="vocabulary-list">
             <div className="vocabulary-list-header">
-                <h2 className='main-text' style={{textAlign: 'left'}}>{vocabularyData?.title}</h2>
-                <h5 style={{ color: '#BFBFBF', fontWeight: '800' }}> Day {sectionNumber} - 총 {word.length}개</h5>
+                <h2 className='main-text' style={{textAlign: 'left'}}>{vocabularyData?.title.title}</h2>
+                <h5 style={{ color: '#BFBFBF', fontWeight: '800' }}> Day {sectionNumber} - 총 {wordList.length}개</h5>
             </div>
             <div className="table-container">
                 <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 15px' }}>
@@ -123,16 +123,28 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
 VocabularyList.propTypes = {
     sectionNumber: PropTypes.number.isRequired,
     vocabularyData: PropTypes.shape({
-        title: PropTypes.string.isRequired,
+        title: PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            title: PropTypes.string.isRequired,
+        }).isRequired,
         data: PropTypes.arrayOf(PropTypes.shape({
-            section: PropTypes.number.isRequired,
-            grade: PropTypes.string.isRequired,
-            word: PropTypes.arrayOf(PropTypes.shape({
+            section: PropTypes.shape({
+                id: PropTypes.number.isRequired,
+                section: PropTypes.number.isRequired,
+                vocaCount: PropTypes.number.isRequired,
+                grade: PropTypes.string.isRequired,
+                engScore: PropTypes.number,
+                korScore: PropTypes.number,
+                senScore: PropTypes.number,
+                progress: PropTypes.number.isRequired,
+            }).isRequired,
+            wordList: PropTypes.arrayOf(PropTypes.shape({
                 id: PropTypes.number.isRequired,
                 eng: PropTypes.string.isRequired,
                 kor: PropTypes.string.isRequired,
                 bookmark: PropTypes.bool.isRequired,
                 mistakes: PropTypes.number.isRequired,
+                sentence: PropTypes.string,
             })).isRequired,
         })).isRequired,
     }).isRequired,

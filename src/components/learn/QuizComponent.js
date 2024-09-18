@@ -12,7 +12,7 @@ const QuizComponent = () => {
   const [answers, setAnswers] = useState({});
   const [feedbackMessage, setFeedbackMessage] = useState('');
   const [feedbackType, setFeedbackType] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(null); // 초기값을 null로 설정
   const [quizCompleted, setQuizCompleted] = useState(false);
 
   useEffect(() => {
@@ -57,14 +57,12 @@ const QuizComponent = () => {
       };
     });
 
-    const dataToSend = finalResults;
-
-    setResults(finalResults);
-    console.log('Quiz Results:', finalResults); // 결과를 콘솔에 출력
+    const dataToSend =  finalResults; // 서버에 전송할 데이터 형식
 
     try {
-      await submitQuizResults(sectionId, dataToSend); // 서버로 데이터 전송
-      console.log('Quiz results submitted successfully');
+      const response = await submitQuizResults(sectionId, dataToSend); // 서버로 데이터 전송
+      setResults(response); // 서버 응답을 results 상태에 저장
+      console.log('Quiz results submitted successfully', response);
       setQuizCompleted(true); // 퀴즈 완료 상태로 전환
     } catch (error) {
       console.error('Error submitting quiz results:', error);

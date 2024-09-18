@@ -12,6 +12,9 @@ const QuizResults = ({ results }) => {
     mistakes = [],
   } = results || {}; // Ensure results is defined
 
+  // Debug: Log the results to verify data structure
+  console.log('Quiz Results:', results);
+
   return (
     <Container className="mt-4">
       <Row>
@@ -21,10 +24,30 @@ const QuizResults = ({ results }) => {
             <div style={styles.cardHeader}>My Scores</div>
             <div style={styles.cardBody}>
               <ul style={styles.list}>
-                <li>English Score: {scoreEng}</li>
-                <li>Korean Score: {scoreKor}</li>
-                <li>Sentence Score: {scoreSen}</li>
-                <li>Grade: {grade}</li>
+                <li style={styles.scoreItem}>
+                  <strong>English Score:</strong> {scoreEng}
+                </li>
+                <li style={styles.scoreItem}>
+                  <strong>Korean Score:</strong> {scoreKor}
+                </li>
+                <li style={styles.scoreItem}>
+                  <strong>Sentence Score:</strong> {scoreSen}
+                </li>
+                <li style={styles.scoreItem}>
+                  <strong>Grade:</strong> <span style={styles.grade}>{grade}</span>
+                </li>
+                {Object.keys(scoreMap).length > 0 && (
+                  <li style={styles.scoreItem}>
+                    <strong>Korean Map Score:</strong>
+                    <ul style={styles.nestedList}>
+                      {Object.keys(scoreMap).map((key) => (
+                        <li key={key}>
+                          <strong>{key}:</strong> {scoreMap[key]}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
@@ -38,7 +61,7 @@ const QuizResults = ({ results }) => {
               {mistakes.length > 0 ? (
                 <ul style={styles.list}>
                   {mistakes.map((mistake) => (
-                    <li key={mistake.id}>
+                    <li key={mistake.id} style={styles.mistakeItem}>
                       <strong>English:</strong> {mistake.eng} - <strong>Korean:</strong> {mistake.kor}
                     </li>
                   ))}
@@ -78,6 +101,24 @@ const styles = {
   list: {
     listStyleType: 'none',
     padding: '0'
+  },
+  scoreItem: {
+    marginBottom: '10px',
+    fontSize: '1rem'
+  },
+  nestedList: {
+    listStyleType: 'none',
+    padding: '0',
+    margin: '0'
+  },
+  mistakeItem: {
+    marginBottom: '10px',
+    fontSize: '1rem'
+  },
+  grade: {
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    color: '#007bff' // Highlight color for grade
   }
 };
 

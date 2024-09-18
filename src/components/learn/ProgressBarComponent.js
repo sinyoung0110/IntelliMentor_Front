@@ -10,9 +10,8 @@ const ProgressBarComponent = ({ progress, topRecord, total }) => {
       <div className="progress-bar">
         <div 
           className="progress" 
-          //style={{ width: `${progress}%` }}
-          style={{ width: '60%'}}
-          >
+          style={{ width: `${progress}%` }}
+        >
         </div>
       </div>
     </div>
