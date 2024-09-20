@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const Card = ({ word, onBookmarkToggle, defaultLanguage }) => {
-    const [isFlipped, setIsFlipped] = useState(defaultLanguage === 'kor'); // Start with the correct language
+    const [isFlipped, setIsFlipped] = useState(defaultLanguage === 'kor');
 
-    // Whenever the defaultLanguage changes, reset the card's state
     useEffect(() => {
         setIsFlipped(defaultLanguage === 'kor');
     }, [defaultLanguage]);
 
     const handleCardClick = () => {
-        setIsFlipped(!isFlipped); // Toggle between English and Korean
+        setIsFlipped(!isFlipped);
     };
 
     return (
@@ -24,6 +23,7 @@ const Card = ({ word, onBookmarkToggle, defaultLanguage }) => {
                                 e.stopPropagation();
                                 onBookmarkToggle(word.id);
                             }}
+                            style={{ color: word.bookmark ? 'gold' : 'gray' }} // 별 색상 적용
                         >
                             {word.bookmark ? '★' : '☆'}
                         </span>
@@ -39,6 +39,7 @@ const Card = ({ word, onBookmarkToggle, defaultLanguage }) => {
                                 e.stopPropagation();
                                 onBookmarkToggle(word.id);
                             }}
+                            style={{ color: word.bookmark ? 'gold' : 'gray' }} // 별 색상 적용
                         >
                             {word.bookmark ? '★' : '☆'}
                         </span>
@@ -60,7 +61,7 @@ Card.propTypes = {
         mistakes: PropTypes.number.isRequired,
     }).isRequired,
     onBookmarkToggle: PropTypes.func.isRequired,
-    defaultLanguage: PropTypes.string.isRequired, // Add the defaultLanguage prop
+    defaultLanguage: PropTypes.string.isRequired,
 };
 
 export default Card;

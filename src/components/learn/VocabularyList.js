@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+
 import { updateBookmark } from '../../api/learnApi';
 
 const VocabularyList = ({ sectionNumber, vocabularyData }) => {
@@ -11,55 +11,45 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
 
     const toggleBookmark = async (index, wordIndex) => {
         const updatedData = { ...localVocabularyData };
-        const word = updatedData.data[sectionNumber - 1].wordList[wordIndex];
+        const word = updatedData.wordList[wordIndex]; // `wordList`에서 단어 가져옴
         const updatedBookmark = !word.bookmark;
         word.bookmark = updatedBookmark;
 
-        // Update local state
+        // 로컬 상태 업데이트
         setLocalVocabularyData(updatedData);
 
-        // Prepare the lists for the API call
-        const updatedTrueIdList = updatedBookmark
-            ? [word.id]
-            : [];
-        
-        const updatedFalseIdList = !updatedBookmark
-            ? [word.id]
-            : [];
+        // 북마크 상태 API 호출
+        const updatedTrueIdList = updatedBookmark ? [word.id] : [];
+        const updatedFalseIdList = !updatedBookmark ? [word.id] : [];
 
         try {
-            // Update the bookmark status on the server
-            await updateBookmark(vocabularyData.title.id, updatedTrueIdList, updatedFalseIdList);
+            await updateBookmark(vocabularyData.sectionId, updatedTrueIdList, updatedFalseIdList);
         } catch (error) {
             console.error('Failed to update bookmark', error);
         }
     };
 
     if (!localVocabularyData) {
-        return <div>Loading...</div>;
+        return <div>Loading...</div>; // 데이터가 없을 경우 로딩 메시지 표시
     }
 
-    const { data: sections } = localVocabularyData;
-    const sectionData = sections.find(section => section.section.id === sectionNumber);
+    const { wordList } = localVocabularyData;
 
-    if (!sectionData) {
-        return <div>No data for section {sectionNumber}</div>;
-    }
-
+    // 단어 목록을 2개씩 나누기
     const wordPairs = [];
-    const { wordList } = sectionData;
     for (let i = 0; i < wordList.length; i += 2) {
         wordPairs.push({
             word1: wordList[i],
-            word2: wordList[i + 1] || null, // Handle odd number of words
+            word2: wordList[i + 1] || null, // 단어가 홀수인 경우 마지막 단어만 표시
         });
     }
 
     return (
         <div className="vocabulary-list">
             <div className="vocabulary-list-header">
-                <h2 className='main-text' style={{textAlign: 'left'}}>{vocabularyData?.title.title}</h2>
-                <h5 style={{ color: '#BFBFBF', fontWeight: '800' }}> Day {sectionNumber} - 총 {wordList.length}개</h5>
+                <h2 className='main-text' style={{ textAlign: 'left' }}>
+                    Day {sectionNumber} - 총 {wordList.length}개
+                </h2>
             </div>
             <div className="table-container">
                 <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 15px' }}>
@@ -118,36 +108,6 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
             </div>
         </div>
     );
-};
-
-VocabularyList.propTypes = {
-    sectionNumber: PropTypes.number.isRequired,
-    vocabularyData: PropTypes.shape({
-        title: PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            title: PropTypes.string.isRequired,
-        }).isRequired,
-        data: PropTypes.arrayOf(PropTypes.shape({
-            section: PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                section: PropTypes.number.isRequired,
-                vocaCount: PropTypes.number.isRequired,
-                grade: PropTypes.string.isRequired,
-                engScore: PropTypes.number,
-                korScore: PropTypes.number,
-                senScore: PropTypes.number,
-                progress: PropTypes.number.isRequired,
-            }).isRequired,
-            wordList: PropTypes.arrayOf(PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                eng: PropTypes.string.isRequired,
-                kor: PropTypes.string.isRequired,
-                bookmark: PropTypes.bool.isRequired,
-                mistakes: PropTypes.number.isRequired,
-                sentence: PropTypes.string,
-            })).isRequired,
-        })).isRequired,
-    }).isRequired,
 };
 
 export default VocabularyList;

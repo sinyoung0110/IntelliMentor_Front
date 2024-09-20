@@ -13,6 +13,18 @@ export const readVocabulary = async (titleId) => {
         throw error;
     }
 };
+// api/learnApi.js
+export const readVocabularyBySection = async (sectionId) => {
+    try {
+        const response = await apiClient.get(`${host}/read?sectionId=${sectionId}`);
+        console.log('API response data:', response.data); // API 응답 데이터 확인
+        return response.data;
+    } catch (error) {
+        console.error('Error reading vocabulary by section:', error); // 에러 로그 출력
+        throw error;
+    }
+};
+
 
 
 // 단어장 섹션 업데이트 함수
@@ -27,12 +39,9 @@ export const updateSection = async (titleId, section) => {
 };
 
 // 북마크를 업데이트하는 API 함수
-export const updateBookmark = async (titleId, trueIdList, falseIdList) => {
+export const updateBookmark = async (vocaId) => {
     try {
-        const response = await apiClient.patch(`${host}/modify/bookmark/${titleId}`, {
-            trueIdList,
-            falseIdList
-        });
+        const response = await apiClient.patch(`${host}/bookmark/${vocaId}`);
         console.log('Update response data:', response.data);
     } catch (error) {
         console.error('Error updating bookmarks:', error);
