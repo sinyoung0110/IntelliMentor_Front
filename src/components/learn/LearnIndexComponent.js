@@ -56,12 +56,12 @@ const LearnIndexComponent = () => {
             navigate(`/learn/card?titleId=${titleId}&sectionNumber=${currentSection.section}&sectionId=${currentSection.sectionId}`);
         }
     };
-    console.log("sectionData:",sectionData);
+
+    console.log("sectionData:", sectionData);
 
     const totalSections = currentSection ? currentSection.wordList.length * 3 : 0; // 현재 섹션의 단어 수 * 3
-    const progress ='3';// 현재 섹션의 progress 값
-    console.log(sectionData[1]);
-
+    const progress = currentSection ? currentSection.progress : 0; // 현재 섹션의 progress 값
+    console.log("progress:", progress, "totalSections:", totalSections);
 
     return (
         <Container fluid>
