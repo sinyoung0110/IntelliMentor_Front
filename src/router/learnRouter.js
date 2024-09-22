@@ -21,7 +21,7 @@ const learnRouter = () => {
           element:<Suspense fallback={Loading}><ChooseQuiz/></Suspense>
         },
         {
-          path: 'quiz/:selectedType/:sectionId',
+          path: 'quiz/:selectedType/:sectionId/:titleId',
           element: <Suspense fallback={Loading}><QuizSolve /></Suspense>
       }
     ];

@@ -34,13 +34,14 @@ const ChooseQuiz = () => {
       const quizData = await submitQuizSelection(sectionId, selectedTypes);
       console.log('Quiz data received:', quizData);
   
-      navigate(`/learn/quiz/${selectedTypes}/${sectionId}`, {
-        state: { titleId, sectionId, selectedTypes, quizData } // quizData 전달
+      navigate(`/learn/quiz/${selectedTypes}/${sectionId}/${titleId}`, { // titleId 추가
+        state: { titleId, sectionId, selectedTypes, quizData }
       });
     } catch (error) {
       console.error('Error during quiz submission:', error);
     }
   };
+
   
   return (
     <Container className="mt-4">
