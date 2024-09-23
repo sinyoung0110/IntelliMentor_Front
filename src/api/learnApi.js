@@ -2,7 +2,7 @@ import apiClient from './api';
 
 const host = `${process.env.REACT_APP_API_SERVER_HOST}/api/learn`;
 
-// 단어장 데이터를 가져오는 API 함수
+// 전체 단어장 데이터를 가져오는 API 함수
 export const readVocabulary = async (titleId) => {
     try {
         const response = await apiClient.get(`${host}/read/${titleId}`);
@@ -13,10 +13,10 @@ export const readVocabulary = async (titleId) => {
         throw error;
     }
 };
-// api/learnApi.js
+// 섹션별 api/learnApi.js
 export const readVocabularyBySection = async (sectionId) => {
     try {
-        const response = await apiClient.get(`${host}/read?sectionId=${sectionId}`);
+        const response = await apiClient.get(`${host}/read/section/${sectionId}`);
         console.log('API response data:', response.data); // API 응답 데이터 확인
         return response.data;
     } catch (error) {

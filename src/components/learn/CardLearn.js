@@ -13,6 +13,7 @@ const CardLearn = () => {
     const [vocabularyData, setVocabularyData] = useState(null);
     const [showFilters, setShowFilters] = useState(false);
     const [bookmarkOnly, setBookmarkOnly] = useState(false);
+    const [showSentences, setShowSentences] = useState(false); // 문장 필터 상태 추가
     const [defaultLanguage, setDefaultLanguage] = useState('eng');
 
     const navigate = useNavigate();
@@ -34,12 +35,12 @@ const CardLearn = () => {
 
     const handleBookmarkToggle = async (wordId) => {
         try {
-            const word = vocabularyData.wordList.find(w => w.id === wordId);
+            const word = vocabularyData.vocaItemDTOS.find(w => w.id === wordId);
             const updatedBookmark = !word.bookmark;
 
             setVocabularyData(prevData => ({
                 ...prevData,
-                wordList: prevData.wordList.map(w =>
+                vocaItemDTOS: prevData.vocaItemDTOS.map(w =>
                     w.id === wordId ? { ...w, bookmark: updatedBookmark } : w
                 )
             }));
@@ -51,9 +52,10 @@ const CardLearn = () => {
         }
     };
 
-    const filteredWords = bookmarkOnly
-        ? vocabularyData?.wordList.filter(word => word.bookmark)
-        : vocabularyData?.wordList;
+    const filteredWords = vocabularyData?.vocaItemDTOS.filter(word => 
+        (!bookmarkOnly || word.bookmark) && 
+        (!showSentences || (word.sentenceEng && word.sentenceKor))
+    );
 
     const handleLanguageToggle = (lang) => {
         setDefaultLanguage(lang);
@@ -85,6 +87,14 @@ const CardLearn = () => {
                                     onChange={() => setBookmarkOnly(!bookmarkOnly)}
                                 />
                                 Show only bookmarked
+                            </label>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={showSentences}
+                                    onChange={() => setShowSentences(!showSentences)}
+                                />
+                                Show sentences
                             </label>
                             <label>
                                 <input
@@ -126,6 +136,7 @@ const CardLearn = () => {
                             word={word}
                             onBookmarkToggle={handleBookmarkToggle}
                             defaultLanguage={defaultLanguage}
+                            showSentences={showSentences} // 문장 표시 여부 전달
                         />
                     ))}
                 </div>

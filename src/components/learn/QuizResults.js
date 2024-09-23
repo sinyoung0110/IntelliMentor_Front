@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { updateBookmark } from '../../api/learnApi';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Tooltip, OverlayTrigger } from 'react-bootstrap'; // Tooltip 추가
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 const QuizResults = ({ results }) => {
   const navigate = useNavigate();
@@ -75,23 +75,26 @@ const QuizResults = ({ results }) => {
             <div style={styles.cardHeader}>
               퀴즈 결과
               {results && (
-  <OverlayTrigger
-    placement="end"
-    overlay={
-      <Tooltip id="tooltip">
-        F 이하: F, 60%: D, 70%: C, 80%: B, 100%: A
-      </Tooltip>
-    }
-  >
-    <span style={styles.infoIcon}>?</span>
-  </OverlayTrigger>
-)}
-
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip
+                      id={`tooltip-top`}
+                      style={styles.customTooltip}
+                    >
+                      50% 이하: F, 60%: D, 70%: C, 80%: B, 100%: A
+                    </Tooltip>
+                  }
+                >
+                  <span style={styles.infoIcon}>?</span>
+                </OverlayTrigger>
+              )}
             </div>
-            <div style={styles.gradeContainer}>
-              <div style={styles.progress}>
+            <div style={styles.progress}>
                 {progress} / {vocaCount * 3}
               </div>
+            <div style={styles.gradeContainer}>
+              
               <div style={styles.grade}>
                 {grade}
               </div>
@@ -136,15 +139,23 @@ const styles = {
   cardHeader: {
     fontSize: '1.5rem',
     fontWeight: 'bold',
-    marginBottom: '20px',
+    marginBottom: '20px',   
     display: 'flex',
-    justifyContent: 'space-between', // 헤더 안에서 공간 배분
+    justifyContent: 'space-between',
     alignItems: 'center',
   },
   infoIcon: {
     marginLeft: '10px',
     cursor: 'pointer',
-    fontSize: '1.2rem', // 아이콘 크기 조정
+    fontSize: '1.2rem',
+    color: '#8FB299', // 아이콘 색상
+  },
+  customTooltip: {
+    backgroundColor: '#8FB299', // 툴팁 배경을 녹색으로 변경
+    color: '#fff', // 텍스트 색상을 흰색으로 설정
+    borderRadius: '8px',
+    padding: '5px 10px',
+    fontSize: '0.9rem',
   },
   gradeContainer: {
     display: 'flex',
@@ -155,6 +166,7 @@ const styles = {
   grade: {
     fontSize: '15rem',
     color: '#333',
+    marginTop:'-30px',
     marginBottom:'-30px',
   },
   progress: {

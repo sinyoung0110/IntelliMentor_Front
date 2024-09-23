@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const Card = ({ word, onBookmarkToggle, defaultLanguage }) => {
+const Card = ({ word, onBookmarkToggle, defaultLanguage, showSentences }) => {
     const [isFlipped, setIsFlipped] = useState(defaultLanguage === 'kor');
 
     useEffect(() => {
@@ -23,13 +23,16 @@ const Card = ({ word, onBookmarkToggle, defaultLanguage }) => {
                                 e.stopPropagation();
                                 onBookmarkToggle(word.id);
                             }}
-                            style={{ color: word.bookmark ? 'gold' : 'gray' }} // 별 색상 적용
+                            style={{ color: word.bookmark ? 'gold' : 'gray' }}
                         >
                             {word.bookmark ? '★' : '☆'}
                         </span>
                         <span className="mistakes">{word.mistakes} mistakes</span>
                     </div>
+                    <div className='dash-button-container'>
                     <h3>{word.eng}</h3>
+                    {showSentences && <p>{word.sentenceEng}</p>} {/* 영어 문장 조건부 표시 */}
+                    </div>
                 </div>
                 <div className="card-back">
                     <div className="card-header">
@@ -39,13 +42,14 @@ const Card = ({ word, onBookmarkToggle, defaultLanguage }) => {
                                 e.stopPropagation();
                                 onBookmarkToggle(word.id);
                             }}
-                            style={{ color: word.bookmark ? 'gold' : 'gray' }} // 별 색상 적용
+                            style={{ color: word.bookmark ? 'gold' : 'gray' }}
                         >
                             {word.bookmark ? '★' : '☆'}
                         </span>
                         <span className="mistakes">{word.mistakes} mistakes</span>
                     </div>
                     <h3>{word.kor}</h3>
+                    {showSentences && <p>{word.sentenceKor}</p>} {/* 한국어 문장 조건부 표시 */}
                 </div>
             </div>
         </div>
@@ -59,9 +63,12 @@ Card.propTypes = {
         kor: PropTypes.string.isRequired,
         bookmark: PropTypes.bool.isRequired,
         mistakes: PropTypes.number.isRequired,
+        sentenceEng: PropTypes.string.isRequired,
+        sentenceKor: PropTypes.string.isRequired,
     }).isRequired,
     onBookmarkToggle: PropTypes.func.isRequired,
     defaultLanguage: PropTypes.string.isRequired,
+    showSentences: PropTypes.bool.isRequired, // 추가된 prop
 };
 
 export default Card;

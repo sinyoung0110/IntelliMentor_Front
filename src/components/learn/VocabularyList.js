@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import { updateBookmark } from '../../api/learnApi';
 
 const VocabularyList = ({ sectionNumber, vocabularyData }) => {
@@ -9,9 +8,9 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
         setLocalVocabularyData(vocabularyData);
     }, [vocabularyData]);
 
-    const toggleBookmark = async (index, wordIndex) => {
+    const toggleBookmark = async (index) => {
         const updatedData = { ...localVocabularyData };
-        const word = updatedData.wordList[wordIndex]; // `wordList`에서 단어 가져옴
+        const word = updatedData.vocaItemDTOS[index]; // `vocaItemDTOS`에서 단어 가져옴
         const updatedBookmark = !word.bookmark;
         word.bookmark = updatedBookmark;
 
@@ -33,14 +32,14 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
         return <div>Loading...</div>; // 데이터가 없을 경우 로딩 메시지 표시
     }
 
-    const { wordList } = localVocabularyData;
+    const { vocaItemDTOS } = localVocabularyData;
 
     // 단어 목록을 2개씩 나누기
     const wordPairs = [];
-    for (let i = 0; i < wordList.length; i += 2) {
+    for (let i = 0; i < vocaItemDTOS.length; i += 2) {
         wordPairs.push({
-            word1: wordList[i],
-            word2: wordList[i + 1] || null, // 단어가 홀수인 경우 마지막 단어만 표시
+            word1: vocaItemDTOS[i],
+            word2: vocaItemDTOS[i + 1] || null, // 단어가 홀수인 경우 마지막 단어만 표시
         });
     }
 
@@ -48,7 +47,7 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
         <div className="vocabulary-list">
             <div className="vocabulary-list-header">
                 <h2 className='main-text' style={{ textAlign: 'left' }}>
-                    Day {sectionNumber} - 총 {wordList.length}개
+                    Day {sectionNumber} - 총 {vocaItemDTOS.length}개
                 </h2>
             </div>
             <div className="table-container">
@@ -73,7 +72,7 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
                                 <td style={{ textAlign: 'center' }}>
                                     <span 
                                         style={{ fontSize: '20px', cursor: 'pointer', color: pair.word1.bookmark ? 'gold' : 'gray' }}
-                                        onClick={() => toggleBookmark(index, index * 2)} // Bookmark index
+                                        onClick={() => toggleBookmark(index * 2)} // Bookmark index
                                     >
                                         ★
                                     </span>
@@ -86,7 +85,7 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
                                         <td style={{ textAlign: 'center' }}>
                                             <span 
                                                 style={{ fontSize: '20px', cursor: 'pointer', color: pair.word2.bookmark ? 'gold' : 'gray' }}
-                                                onClick={() => toggleBookmark(index, index * 2 + 1)} // Bookmark index
+                                                onClick={() => toggleBookmark(index * 2 + 1)} // Bookmark index
                                             >
                                                 ★
                                             </span>

@@ -140,7 +140,6 @@
 .quiz-button-container {
     gap: 10px; /* 버튼 사이의 간격 */
     justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
-    border:#000 solid 1px;
 }
 
 .quiz-button {
@@ -272,6 +271,7 @@
     font-size: 14px;
   }
   
+  
   /* 스크롤바 스타일링 */
   .card-container-wrapper::-webkit-scrollbar {
     height: 8px;
@@ -384,3 +384,6 @@ input[type="checkbox"], input[type="radio"] {
     margin-bottom: 30px;
   }
   
+  .custom-tooltip{
+    background-color: #8FB299;
+  }

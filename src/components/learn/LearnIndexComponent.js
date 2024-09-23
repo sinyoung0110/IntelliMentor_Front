@@ -23,8 +23,8 @@ const LearnIndexComponent = () => {
             try {
                 const data = await readVocabulary(titleId);
                 setVocabularyData(data);
-                setSectionData(data.data); // 전체 단어 데이터를 저장
-                setGrades(data.data.map(section => section.grade)); // 섹션별 성적 저장
+                setSectionData(data.vocaSectionDTOs); // 수정된 데이터 구조에 맞게 설정
+                setGrades(data.vocaSectionDTOs.map(section => section.grade)); // 성적 저장
             } catch (error) {
                 console.error('Error fetching vocabulary data:', error);
             }
@@ -57,11 +57,8 @@ const LearnIndexComponent = () => {
         }
     };
 
-    console.log("sectionData:", sectionData);
-
-    const totalSections = currentSection ? currentSection.wordList.length * 3 : 0; // 현재 섹션의 단어 수 * 3
-    const progress = currentSection ? currentSection.progress : 0; // 현재 섹션의 progress 값
-    console.log("progress:", progress, "totalSections:", totalSections);
+    const totalSections = currentSection ? currentSection.vocaItemDTOS.length * 3 : 0; // 단어 수 * 3
+    const progress = currentSection ? currentSection.progress : 0; // progress 값
 
     return (
         <Container fluid>
