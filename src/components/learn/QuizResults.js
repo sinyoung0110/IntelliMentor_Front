@@ -82,7 +82,11 @@ const QuizResults = ({ results }) => {
                       id={`tooltip-top`}
                       style={styles.customTooltip}
                     >
-                      50% 이하: F, 60%: D, 70%: C, 80%: B, 100%: A
+                      A : 90% 
+                      B : 80% 
+                      C : 65% 
+                      D : 40% 
+                      F : 40% 
                     </Tooltip>
                   }
                 >

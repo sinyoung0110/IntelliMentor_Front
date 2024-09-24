@@ -5,22 +5,21 @@ import { Container } from 'react-bootstrap';
 import '../App.css';
 import '../styles/learn.css';  // Adjust based on the actual path
 
-
 function BasicLayout({children}) {
   return (
     <>
       <BasicMenu/>
-      <Container>
+      <Container>  {/* 좌우 여백 추가 */}
         <div>
           <main 
-            className="w-full px-5 py-5"> {/* 상단 여백 py-40 변경 flex 제거 */}
+            className="w-full px-5 py-5"> {/* 상단 여백 py-40 */}
             {children}
           </main>
         </div>
       </Container>
       <Footer/>
     </>
-    );
+  );
 }
 
 export default BasicLayout;

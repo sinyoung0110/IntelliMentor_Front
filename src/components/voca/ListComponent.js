@@ -17,10 +17,10 @@ const ListComponent = () => {
     const fetchVocabularyList = async () => {
       try {
         const data = await checkVocaExists();
-        setVocabularyList(data); // API 응답이 배열 형식이므로 바로 설정
+        setVocabularyList(data);
       } catch (error) {
         console.error('Failed to fetch vocabulary list', error);
-        setVocabularyList([]); // 에러 발생 시 빈 배열로 설정
+        setVocabularyList([]);
       }
     };
 
@@ -54,28 +54,24 @@ const ListComponent = () => {
 
   const handleModalSubmit = async () => {
     try {
-      
-        // API를 호출하여 섹션 값을 업데이트
-        await updateSection(selectedVoca.titleId, sectionValue);
-        // 섹션 업데이트 후, 관련 데이터를 다시 불러올 수 있다면 여기에 추가
-        await readVocabulary(selectedVoca.titleId);
-        navigate(`/learn/index?titleId=${encodeURIComponent(selectedVoca.titleId)}`);
+      await updateSection(selectedVoca.titleId, sectionValue);
+      await readVocabulary(selectedVoca.titleId);
+      navigate(`/learn/index?titleId=${encodeURIComponent(selectedVoca.titleId)}`);
     } catch (error) {
-        console.error('Failed to update vocabulary section', error);
+      console.error('Failed to update vocabulary section', error);
     } finally {
-        setShowModal(false);
+      setShowModal(false);
     }
-};
-
+  };
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4" style={{marginBottom:'100px'}}>
       <Row className="justify-content-center mb-4">
         <Col xs="auto">
           <h2 className="main-text">VOCA LIST</h2>
         </Col>
       </Row>
-      <Row className="justify-content-end mb-3">
+      <Row className="justify-content-end mb-4 mt-5" style={{ paddingRight:'100px'}}>
         <Col xs="auto">
           <Button 
             variant="outline-primary" 
@@ -106,53 +102,94 @@ const ListComponent = () => {
         </Col>
       </Row>
       {vocabularyList.length > 0 ? (
-        <Table bordered={false} hover={false} responsive="sm" className="text-center table-borderless">
-          <thead style={{ fontSize: '1.2rem' }}>
-            <tr>
-              <th className="align-middle"><span style={{ borderBottom: '2px solid #8FB299', paddingBottom: '0.5rem' }}>Title</span></th>
-              <th className="align-middle"><span style={{ borderBottom: '2px solid #8FB299', paddingBottom: '0.5rem' }}>Total</span></th>
-              <th className="align-middle"><span style={{ borderBottom: '2px solid #8FB299', paddingBottom: '0.5rem' }}>Section</span></th>
-              <th className="align-middle"><span style={{ borderBottom: '2px solid #8FB299', paddingBottom: '0.5rem' }}>Edit</span></th>
-            </tr>
-          </thead>
-          <tbody style={{ fontSize: '1.1rem' }}>
-            {vocabularyList.map((voca, index) => (
-              <tr 
-                key={voca.titleId} 
+        <Table 
+        bordered={false} 
+        hover={false} 
+        responsive="sm" 
+        className="text-center table-borderless mx-auto" // 테이블 가운데 정렬
+        style={{ width: '80%' }} // 테이블 너비 설정
+        
+      >
+        <thead style={{ fontSize: '1.2rem' }}>
+          <tr>
+            <th className="text-center align-middle" style={{width:'40%'}}>
+              <span style={{ borderBottom: '2px solid #8FB299', paddingBottom: '0.5rem'}}>Title</span>
+            </th>
+            <th className="text-center align-middle"  >
+              <span style={{ borderBottom: '2px solid #8FB299', paddingBottom: '0.5rem' }}>Total</span>
+            </th>
+            <th className="text-center align-middle" >
+              <span style={{ borderBottom: '2px solid #8FB299', paddingBottom: '0.5rem'}}>Day</span>
+            </th>
+            <th className="text-center align-middle" >
+              <span style={{ borderBottom: '2px solid #8FB299', paddingBottom: '0.5rem' }}>Edit</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody style={{ fontSize: '1.1rem' }}>
+          {vocabularyList.map((voca, index) => (
+            <tr 
+              key={voca.titleId} 
+              style={{ 
+                fontWeight: 'bold', 
+                cursor: 'pointer',
+                transition: 'background-color 0.3s',
+                borderRadius: '24px',
+                padding: 0
+              }}
+              onMouseEnter={() => setHoveredRowIndex(index)}
+              onMouseLeave={() => setHoveredRowIndex(null)}
+              onClick={() => handleTitleClickWrapper(voca.titleId)}
+            >
+              <td 
+                className="text-center align-middle" 
                 style={{ 
-                  fontWeight: 'bold', 
-                  cursor: 'pointer',
-                  transition: 'background-color 0.3s',
-                  borderRadius: '24px'
+                  borderTopLeftRadius: '24px', 
+                  borderBottomLeftRadius: '24px', 
+                  backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent' 
                 }}
-                onMouseEnter={() => setHoveredRowIndex(index)}
-                onMouseLeave={() => setHoveredRowIndex(null)}
-                onClick={() => handleTitleClickWrapper(voca.titleId)}
               >
-                <td className="align-middle" style={{ borderTopLeftRadius: '24px', borderBottomLeftRadius: '24px', backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent' }}>{voca.title}</td>
-                <td className="align-middle" style={{ backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent' }}>{voca.count}</td>
-                <td className="align-middle" style={{ borderTopRightRadius: '24px', borderBottomRightRadius: '24px', backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent' }}>{voca.section}</td>
-                <td className="align-middle">
-                  <Button
-                    variant="link" 
-                    onClick={(e) => {
-                      e.stopPropagation(); // Edit 버튼 클릭 시 행 클릭 이벤트가 발생하지 않도록 함
-                      navigate(`/voca/read/${voca.titleId}`);
-                    }}
-                    style={{ padding: 0 }}
-                  >
-                    <FaEdit size={20} color="#8FB299" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+                {voca.title}
+              </td>
+              <td 
+                className="text-center align-middle" 
+                style={{ 
+                  backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent' 
+                }}
+              >
+                {voca.count}
+              </td>
+              <td 
+                className="text-center align-middle" 
+                style={{ 
+                  borderTopRightRadius: '24px', 
+                  borderBottomRightRadius: '24px', 
+                  backgroundColor: hoveredRowIndex === index ? 'rgba(235, 240, 234, 0.7)' : 'transparent' 
+                }}
+              >
+                {voca.section}
+              </td>
+              <td className="text-center align-middle">
+                <Button
+                  variant="link" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/voca/read/${voca.titleId}`);
+                  }}
+                  style={{ padding: 0 }}
+                >
+                  <FaEdit size={20} color="#8FB299" />
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      
       ) : (
         <p className="text-center">No vocabulary lists found.</p>
       )}
 
-      {/* Modal for editing section */}
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Section</Modal.Title>
@@ -169,7 +206,7 @@ const ListComponent = () => {
                 type="number" 
                 value={sectionValue} 
                 onChange={(e) => setSectionValue(Number(e.target.value))} 
-                min="0" // 최소값을 0으로 설정
+                min="0"
               />
             </Form.Group>
           </Form>

@@ -50,14 +50,25 @@ const QuizComponent = () => {
       const correctAnswerId = questionSet[0].id;
       const selectedAnswerId = answers[index];
       const isCorrect = correctAnswerId === selectedAnswerId;
+
+      // 문제의 타입을 결정하는 로직 추가 ("e", "k", "s")
+      let questionType;
+      if (questionSet[0].eng) {
+        questionType = 'e'; // 영어
+      } else if (questionSet[0].kor) {
+        questionType = 'k'; // 한국어
+      } else if (questionSet[0].sentence) {
+        questionType = 's'; // 문장
+      }
+
       return {
         id: correctAnswerId,
-        type: questionSet[0].eng ? 'e' : 'k', // 'eng'는 'e', 'kor'는 'k'로 변경
+        type: questionType,
         correct: isCorrect,
       };
     });
 
-    const dataToSend =  finalResults; // 서버에 전송할 데이터 형식
+    const dataToSend = finalResults; // 서버에 전송할 데이터 형식
 
     try {
       const response = await submitQuizResults(sectionId, dataToSend); // 서버로 데이터 전송
@@ -86,7 +97,9 @@ const QuizComponent = () => {
               <div className="quiz-question-container text-center">
                 <div className="question-number">{`문제 ${currentQuestion + 1} / ${quizData.quiz.length}`}</div>
                 <p className="question-text">
-                  {quizData.quiz[currentQuestion][0].eng || quizData.quiz[currentQuestion][0].kor}
+                  {quizData.quiz[currentQuestion][0].eng ||
+                    quizData.quiz[currentQuestion][0].kor ||
+                    quizData.quiz[currentQuestion][0].sentence}
                 </p>
                 <div className={`feedback-message ${feedbackType}`}>
                   {feedbackMessage}
@@ -106,7 +119,7 @@ const QuizComponent = () => {
                         : ''
                     }`}
                   >
-                    {option.eng || option.kor}
+                    {option.eng || option.kor || option.sentence}
                   </Button>
                 ))}
               </div>
