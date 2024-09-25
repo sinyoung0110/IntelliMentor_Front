@@ -1,5 +1,5 @@
 html, body {
-  min-width:900px; /* 최소 너비 설정 */
+  min-width:1000px; /* 최소 너비 설정 */
   overflow-x: auto; /* 수평 스크롤 허용 */
 }
 .container {

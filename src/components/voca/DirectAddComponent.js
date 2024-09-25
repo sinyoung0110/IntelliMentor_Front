@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { directAdd } from '../../api/vocaApi';
 import ResultModal from '../common/ResultModal';
 import {useNavigate} from "react-router-dom";
+import { FaPlusCircle } from 'react-icons/fa';
 
 const initState = {
     title: '',
@@ -70,10 +71,10 @@ function DirectAddComponent() {
 
     return (
         <>
-            <div className="main-text text-2xl font-bold mb-4">DirectAdd Page</div>
-            <div className="mt-0 mr-40 ml-40 p-10">
+            <div className="main-text text-2xl font-bold">DirectAdd Page</div>
+            <div className="mr-25 ml-10 p-20">
                 <form onSubmit={handleSubmit}>
-                    <div className="flex flex-col mb-4">
+                    <div className="flex flex-col mb-8">
                         <label htmlFor="title" className="text-gray-700">Title:</label>
                         <input
                             type="text"
@@ -88,7 +89,7 @@ function DirectAddComponent() {
                     </div>
                     {formData.eng.map((engWord, index) => (
                         <div key={index} className="flex items-center mb-4 gap-4">
-                            <div className="flex-1 min-w-[30%]">
+                            <div className="flex-1 min-w-[40%]">
                                 <label htmlFor={`eng-${index}`} className="text-gray-700">English Word:</label>
                                 <input
                                     type="text"
@@ -100,7 +101,7 @@ function DirectAddComponent() {
                                     required
                                 />
                             </div>
-                            <div className="flex-1 min-w-[30%]">
+                            <div className="flex-1 min-w-[40%]">
                                 <label htmlFor={`kor-${index}`} className="text-gray-700">Korean Translation:</label>
                                 <input
                                     type="text"
@@ -126,10 +127,10 @@ function DirectAddComponent() {
                             type="submit"
                             className="bg-gray text-white px-4 py-2 rounded-lg hover:bg-gray-400"
                         >
-                            Add Another
+                            <FaPlusCircle />
                         </button>
                     </div>
-                    <div className="flex justify-center mt-10">
+                    <div className="flex justify-center mt-4">
                         <button
                             type="button"
                             onClick={handleClickAdd}

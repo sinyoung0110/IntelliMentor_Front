@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { readVocabularyBySection, updateBookmark } from '../../api/learnApi'; 
 import Card from './Card';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners'; // 스피너 추가
 
 const CardLearn = () => {
     const location = useLocation();
@@ -11,9 +12,10 @@ const CardLearn = () => {
     const sectionId = queryParams.get('sectionId');
 
     const [vocabularyData, setVocabularyData] = useState(null);
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
     const [showFilters, setShowFilters] = useState(false);
     const [bookmarkOnly, setBookmarkOnly] = useState(false);
-    const [showSentences, setShowSentences] = useState(false); // 문장 필터 상태 추가
+    const [showSentences, setShowSentences] = useState(false);
     const [defaultLanguage, setDefaultLanguage] = useState('eng');
 
     const navigate = useNavigate();
@@ -25,6 +27,8 @@ const CardLearn = () => {
                 setVocabularyData(data);
             } catch (error) {
                 console.error('Error fetching vocabulary data:', error);
+            } finally {
+                setLoading(false); // 로딩 완료 후 상태 변경
             }
         };
 
@@ -45,7 +49,6 @@ const CardLearn = () => {
                 )
             }));
 
-            // Update bookmark on the server
             await updateBookmark(wordId);
         } catch (error) {
             console.error('Failed to update bookmark', error);
@@ -68,6 +71,15 @@ const CardLearn = () => {
     const handleQuizCreation = () => {
         navigate(`/learn/chooseQuiz?titleId=${titleId}&sectionId=${sectionId}`);
     };
+
+    if (loading) {
+        return (
+            <div className="spinner-container">
+                <ClipLoader color="#8FB299" size={60} />
+                <p>카드 만드는 중..</p>
+            </div>
+        );
+    }
 
     return (
         <div className="card-learn-page">
@@ -127,7 +139,6 @@ const CardLearn = () => {
                 </div>
             </div>
 
-            {/* Cards */}
             <div className="card-container-wrapper">
                 <div className="card-container">
                     {filteredWords?.map(word => (
@@ -136,7 +147,7 @@ const CardLearn = () => {
                             word={word}
                             onBookmarkToggle={handleBookmarkToggle}
                             defaultLanguage={defaultLanguage}
-                            showSentences={showSentences} // 문장 표시 여부 전달
+                            showSentences={showSentences}
                         />
                     ))}
                 </div>

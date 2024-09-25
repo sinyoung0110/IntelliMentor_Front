@@ -185,7 +185,21 @@
   
   
   
-  
+  .spinner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 전체 화면을 차지하게 설정 */
+    text-align: center;
+}
+
+.spinner-container p {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #8FB299;
+}
+
   
   /* CardLearn */
   .card-container-wrapper {
