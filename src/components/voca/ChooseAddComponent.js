@@ -31,10 +31,7 @@ const ChooseAddComponent = () => {
           <PiPencilSimpleLineDuotone color="#8FB299" />
             직접 생성
           </Button>
-          <Button type="button" className="choose-button" onClick={handleRecommendAdd}>
-          <PiSmileyDuotone color="#8FB299" />
-            사용자 추천
-          </Button>
+      
           <Button type="button" className="choose-button" onClick={handleAiAdd}>
           <PiLegoSmileyDuotone color="#8FB299" />
             ai 생성

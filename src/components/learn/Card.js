@@ -29,9 +29,9 @@ const Card = ({ word, onBookmarkToggle, defaultLanguage, showSentences }) => {
                         </span>
                         <span className="mistakes">{word.mistakes} mistakes</span>
                     </div>
-                    <div className='dash-button-container'>
-                    <h3>{word.eng}</h3>
-                    {showSentences && <p>{word.sentenceEng}</p>} {/* 영어 문장 조건부 표시 */}
+                    <div className='cardbutton-container'>
+                    <h3 className='card-title'>{word.eng}</h3>
+                    {showSentences && <p className='card-sentence'>{word.sentenceEng}</p>} {/* 영어 문장 조건부 표시 */}
                     </div>
                 </div>
                 <div className="card-back">
@@ -48,8 +48,10 @@ const Card = ({ word, onBookmarkToggle, defaultLanguage, showSentences }) => {
                         </span>
                         <span className="mistakes">{word.mistakes} mistakes</span>
                     </div>
-                    <h3>{word.kor}</h3>
-                    {showSentences && <p>{word.sentenceKor}</p>} {/* 한국어 문장 조건부 표시 */}
+                    <div className='card-button-container'>
+                    <h3 className='card-title'>{word.kor}</h3>
+                    {showSentences && <p className='card-sentence'>{word.sentenceKor}</p>} {/* 한국어 문장 조건부 표시 */}
+                    </div>
                 </div>
             </div>
         </div>

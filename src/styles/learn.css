@@ -218,6 +218,31 @@
     justify-content: start;
   }
   
+.card-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  
+}
+
+.card-content p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 최대 3줄로 제한 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  margin: 20px; /* 텍스트 주변에 여백 추가 */
+  line-height: 1.4; /* 줄 간격을 조절해 가독성 향상 */
+}
+.card-button-container {
+  display: flex;
+  flex-direction: column; /* 버튼들을 수직으로 정렬 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+}
+
   .card {
     width: 300px;
     height: 180px;
@@ -226,19 +251,19 @@
     transition: transform 0.3s ease;
     position: relative;
     overflow: hidden;
-    border:0;
-    
+    border:0;    
   }
   
-  .card-content {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
-    
+  .card-title {
+    font-size: 1.5rem; /* 제목의 크기를 적절히 조정 */
+    padding-left : 20px;
   }
   
+  .card-sentence {
+    font-size: 1rem; /* 문장 크기 조정 */
+    margin-bottom: 20px; /* 문장 아래 여백 추가 */
+  }
+
   .card.flipped .card-content {
     transform: rotateY(180deg);
   }

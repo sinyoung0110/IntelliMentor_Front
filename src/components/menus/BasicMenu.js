@@ -57,7 +57,7 @@ function BasicMenu() {
 
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
-      <Container>
+      <Container style={{ paddingLeft: '30px', paddingRight: '30px' }}>
         <Navbar.Brand as={Link} to="/" style={ textOutlineStyle }>IntelliMentor</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
