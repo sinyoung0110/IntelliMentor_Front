@@ -71,3 +71,14 @@ export const deleted = async (deleteParam) => {
   return res.data;
 };
 
+//메인페이지 단어장 오답 랜덤
+export const mainrandom = async () => {
+  try {
+      const response = await apiClient.get(`${host}/`);
+      console.log('API response data:', response.data); // API 응답 데이터 확인
+      return response.data;
+  } catch (error) {
+      console.error('Error reading vocabulary:', error); // 에러 로그 출력
+      throw error;
+  }
+};
