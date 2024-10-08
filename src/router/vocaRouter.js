@@ -36,10 +36,6 @@ const vocaRouter = () => {
         element:<Suspense fallback={Loading}><AiAdd/></Suspense>
         },
         {
-        path:'recommendAdd',
-        element:<Suspense fallback={Loading}><RecommendAdd/></Suspense>
-        },
-        {
           path: 'read/:titleId',
           element: <Suspense fallback={Loading}><VocaModify/></Suspense>
         }

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import '../../App.css';
 import { updateBookmark } from '../../api/learnApi'; // updateBookmark 함수 import
 import { mainrandom } from '../../api/vocaApi'; // 단어 데이터를 가져올 API import
+import { useSelector } from 'react-redux'; // 로그인 상태 확인을 위한 useSelector import
 
 const VocaComponent = () => {
     const [vocabData, setVocabData] = useState([]); // 단어 데이터를 상태로 관리
-    const token = localStorage.getItem('accessToken');// 토큰 확인
+    const loginState = useSelector(state => state.loginSlice); // 로그인 슬라이스에서 로그인 상태 가져오기
 
     useEffect(() => {
         const fetchData = async () => {
@@ -18,10 +19,10 @@ const VocaComponent = () => {
             }
         };
 
-        if (token) { // 로그인 상태일 때만 데이터 fetch
+        if (loginState.email) { // 로그인 상태일 때만 데이터 fetch
             fetchData();
         }
-    }, [token]);
+    }, [loginState.email]);
 
     const handleBookmark = async (id) => {
         try {
@@ -47,7 +48,7 @@ const VocaComponent = () => {
                 <strong className="d-inline-block mb-2 text-primary-emphasis">오늘의 학습</strong>
 
                 {/* 로그인 여부에 따른 문구 표시 */}
-                {!token ? (
+                {!loginState.email ? (
                     <p>로그인이 필요합니다. 로그인을 해주세요.</p>
                 ) : vocabData.length === 0 ? (
                     <p>오늘의 학습을 위한 틀린 단어가 없습니다.</p>

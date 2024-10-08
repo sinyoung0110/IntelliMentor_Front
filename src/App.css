@@ -281,3 +281,45 @@ html, body {
   padding-left: 20px;
   font-style: italic;
 }
+
+/*ai choose*/
+.input-container {
+  border: 2px solid #8FB299;
+  border-radius: 20px;
+  background-color: #F4F1EC;
+  padding: 10px;
+  margin-bottom: 15px; /* 각 input-container 사이 간격 조정 */
+}
+
+.input-label {
+  color: #8FB299;
+  font-size: 1rem; /* 레이블 글자 크기 조정 */
+  margin-bottom: 5px; /* 레이블과 입력 필드 간의 간격 */
+}
+
+.input-field {
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+  color: #8FB299;
+  font-size: 1.2rem; /* 글자 크기 조정 */
+}
+
+.input-field::placeholder {
+  color: #8FB299; /* Placeholder 색상 */
+  opacity: 0.7; /* 투명도 조정 */
+}
+
+.add-button {
+  background-color: #8FB299;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1.2rem; /* 글자 크기 조정 */
+}
+
+.add-button:hover {
+  background-color: #7BBF8B; /* Hover 시 색상 변경 */
+}
