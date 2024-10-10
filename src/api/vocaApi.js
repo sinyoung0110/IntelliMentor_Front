@@ -73,3 +73,22 @@ export const mainrandom = async () => {
         throw error;
     }
   };
+
+  export const aiAdd = async (title, subject, count, level) => {
+    try {
+        const requestBody = {
+            title: title,   // 단어장 제목
+            subject: subject, // AI 생성 주제
+            count: count,    // 단어 개수
+            level: level     // 난이도 추가
+        };
+
+        // POST 요청에 데이터 전달
+        const response = await apiClient.post(`${host}/ai`, requestBody);
+
+        return response.data; // 응답 데이터 반환
+    } catch (error) {
+        console.error('Error submitting AI vocabulary request:', error); // 에러 로그
+        throw error; // 에러를 상위로 전달
+    }
+};
