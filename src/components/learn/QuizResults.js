@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { updateBookmark } from '../../api/learnApi';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 const QuizResults = ({ results }) => {
   const navigate = useNavigate();
-  const { sectionId, titleId } = useParams();
-  
+  const { sectionId, titleId } = useParams(); // sectionId와 titleId 가져오기
+
   const {
     countMap = {},
     progress = 0,
@@ -17,16 +16,33 @@ const QuizResults = ({ results }) => {
     mistakes = [],
   } = results || {};
 
-  const [bookmarkStatus, setBookmarkStatus] = useState(
-    mistakes.reduce((acc, mistake) => ({ ...acc, [mistake.id]: false }), {})
-  );
+  // 북마크 상태 초기화
+  const [bookmarkStatus, setBookmarkStatus] = useState({});
+
+  useEffect(() => {
+    // 결과가 있을 경우 북마크 상태를 초기화
+    if (results) {
+      const initialBookmarkStatus = mistakes.reduce((acc, mistake) => {
+        // 여기에서 mistake에 북마크 상태가 포함되어 있다면 사용
+        acc[mistake.id] = mistake.bookmark || false; // 기본값 false
+        return acc;
+      }, {});
+      setBookmarkStatus(initialBookmarkStatus);
+    }
+  }, [results, mistakes]);
 
   const handleBookmarkToggle = async (wordId) => {
     try {
+      const currentStatus = bookmarkStatus[wordId];
+      const newStatus = !currentStatus;
+
+      // 로컬 상태 업데이트
       setBookmarkStatus((prevStatus) => ({
         ...prevStatus,
-        [wordId]: !prevStatus[wordId],
+        [wordId]: newStatus,
       }));
+
+      // API 호출
       await updateBookmark(wordId);
     } catch (error) {
       console.error('Failed to update bookmark', error);
@@ -34,10 +50,11 @@ const QuizResults = ({ results }) => {
   };
 
   const handleRetryQuiz = () => {
-    navigate(-1);
+    navigate(-1); // 이전 페이지로 이동
   };
 
   const handleGoToList = () => {
+    // sectionId와 titleId를 URL에 포함하여 이동
     navigate(`/learn/index?titleId=${titleId}&sectionId=${sectionId}`);
   };
 
@@ -98,7 +115,6 @@ const QuizResults = ({ results }) => {
                 {progress} / {vocaCount * 3}
               </div>
             <div style={styles.gradeContainer}>
-              
               <div style={styles.grade}>
                 {grade}
               </div>
@@ -135,7 +151,7 @@ const QuizResults = ({ results }) => {
 // 스타일 정의
 const styles = {
   card: {
-    border:'1px solid #ddd',
+    border: '1px solid #ddd',
     borderRadius: '20px',
     padding: '50px',
     height: '100%',
@@ -170,8 +186,8 @@ const styles = {
   grade: {
     fontSize: '15rem',
     color: '#333',
-    marginTop:'-30px',
-    marginBottom:'-30px',
+    marginTop: '-30px',
+    marginBottom: '-30px',
   },
   progress: {
     fontSize: '2.0rem',
@@ -199,7 +215,7 @@ const styles = {
     fontSize: '1.0rem',
     fontWeight: 'bold',
     color: '#333',
-  }
+  },
 };
 
 export default QuizResults;

@@ -182,7 +182,10 @@
   .save-button:hover {
     background-color: #6D8E6F;
   }
-  
+  .quiz-button.show-correct {
+    background-color: #8FB299; /* 정답 강조 */
+    color: #FFF; /* 텍스트 색상 유지 */
+}
   
   
   .spinner-container {

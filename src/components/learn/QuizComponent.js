@@ -14,6 +14,7 @@ const QuizComponent = () => {
   const [feedbackType, setFeedbackType] = useState('');
   const [results, setResults] = useState(null); // 초기값을 null로 설정
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [isAnswering, setIsAnswering] = useState(false); // 버튼 클릭 방지 상태 추가
 
   useEffect(() => {
     if (!quizData || quizData.quiz.length === 0) {
@@ -24,11 +25,16 @@ const QuizComponent = () => {
   }, [quizData]);
 
   const handleAnswerSelect = (questionIndex, answerId) => {
+    if (isAnswering) return; // 클릭 방지
+
     const correctAnswerId = quizData.quiz[questionIndex][0].id;
+    setIsAnswering(true); // 클릭 시작
+
     setAnswers((prevAnswers) => ({
       ...prevAnswers,
       [questionIndex]: answerId,
     }));
+
     if (answerId === correctAnswerId) {
       setFeedbackMessage('정답입니다!');
       setFeedbackType('correct');
@@ -36,12 +42,14 @@ const QuizComponent = () => {
       setFeedbackMessage('틀렸습니다!');
       setFeedbackType('incorrect');
     }
+
     setTimeout(() => {
       if (currentQuestion < quizData.quiz.length - 1) {
         setCurrentQuestion((prev) => prev + 1);
         setFeedbackMessage('');
         setFeedbackType('');
       }
+      setIsAnswering(false); // 클릭 허용
     }, 1000);
   };
 
@@ -107,21 +115,33 @@ const QuizComponent = () => {
               </div>
 
               <div className="quiz-answers-container">
-                {quizData.quiz[currentQuestion].slice(1).map((option) => (
-                  <Button
-                    key={option.id}
-                    onClick={() => handleAnswerSelect(currentQuestion, option.id)}
-                    className={`answer-button ${
-                      answers[currentQuestion] === option.id
-                        ? quizData.quiz[currentQuestion][0].id === option.id
-                          ? 'correct'
-                          : 'incorrect'
-                        : ''
-                    }`}
-                  >
-                    {option.eng || option.kor || option.sentence}
-                  </Button>
-                ))}
+                {quizData.quiz[currentQuestion].slice(1).map((option) => {
+                  const isSelected = answers[currentQuestion] === option.id;
+                  const isCorrect = quizData.quiz[currentQuestion][0].id === option.id;
+                  const answerClass = isSelected 
+                    ? (isCorrect ? 'correct' : 'incorrect') 
+                    : (isCorrect && feedbackType === 'incorrect' ? 'show-correct' : ''); // 정답 버튼 스타일 추가
+
+                  return (
+                    <Button
+                      key={option.id}
+                      onClick={() => handleAnswerSelect(currentQuestion, option.id)}
+                      className={`answer-button ${answerClass}`}
+                      disabled={isAnswering} // 클릭 방지
+                      
+                      style={{
+                        backgroundColor: isSelected
+                          ? (isCorrect ? '#8FB299' : '#E57373') // 초록색과 빨간색으로 변경
+                          : (isCorrect && feedbackType === 'incorrect' ? '#8FB299' : '#D1D1D1'), // 정답 버튼만 초록색, 선택 안 했을 때는 회색
+                          border: 'none', // 테두리를 없앰
+                          
+                          opacity: 1, // 투명도 1로 설정
+                      }}
+                    >
+                      {option.eng || option.kor || option.sentence}
+                    </Button>
+                  );
+                })}
               </div>
 
               {currentQuestion === quizData.quiz.length - 1 && (

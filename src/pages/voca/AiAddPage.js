@@ -6,7 +6,6 @@ function AiAddPage(props) {
     return (
     <>
         <BasicLayout>
-            <div className={'text-3xl'}>AiAdd Page</div>
             <AiAddComponent/>
         </BasicLayout>
     </>

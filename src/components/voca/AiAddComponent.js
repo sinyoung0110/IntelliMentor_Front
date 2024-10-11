@@ -23,10 +23,15 @@ const AiAddComponent = () => {
     }
   };
 
+  const handleCountChange = (e) => {
+    const value = Number(e.target.value);
+    // count가 1보다 작으면 1로 설정, 그렇지 않으면 입력값으로 설정
+    setCount(value < 1 ? 1 : value);
+  };
+
   return (
-    <Container className="mt-4 ai-container">
+    <Container className="ai-container">
       <form onSubmit={handleSubmit}>
-        {/* 단어장 제목 입력 */}
         <Row className="mb-3">
           <Col>
             <div className="input-container">
@@ -46,7 +51,7 @@ const AiAddComponent = () => {
         <Row className="mb-3">
           <Col>
             <div className="input-container">
-              <label className="input-label">주제를 입력하세요</label>
+              <label className="input-label">단어장 주제</label>
               <input
                 type="text"
                 placeholder="주제를 입력하세요."
@@ -68,7 +73,7 @@ const AiAddComponent = () => {
                 min="1"
                 max="200"
                 value={count}
-                onChange={(e) => setCount(Number(e.target.value))} // 숫자로 변환하여 설정
+                onChange={handleCountChange} // 수정된 함수 사용
                 className="input-field"
                 required // 필수 입력
               />
@@ -88,7 +93,7 @@ const AiAddComponent = () => {
                     checked={level === '상'}
                     onChange={(e) => setLevel(e.target.value)}
                   />
-                  상
+                   상
                 </label>
                 <label className="ml-3">
                   <input
@@ -97,7 +102,7 @@ const AiAddComponent = () => {
                     checked={level === '중'}
                     onChange={(e) => setLevel(e.target.value)}
                   />
-                  중
+                   중
                 </label>
                 <label className="ml-3">
                   <input

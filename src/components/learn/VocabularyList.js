@@ -18,11 +18,10 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
         setLocalVocabularyData(updatedData);
 
         // 북마크 상태 API 호출
-        const updatedTrueIdList = updatedBookmark ? [word.id] : [];
-        const updatedFalseIdList = !updatedBookmark ? [word.id] : [];
+        const updatedIdList = [word.id]; // 단어 ID 리스트
 
         try {
-            await updateBookmark(vocabularyData.sectionId, updatedTrueIdList, updatedFalseIdList);
+            await updateBookmark(word.id); // 단어 ID를 사용하여 API 호출
         } catch (error) {
             console.error('Failed to update bookmark', error);
         }
