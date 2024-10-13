@@ -6,7 +6,6 @@ const host = `${process.env.REACT_APP_API_SERVER_HOST}/api/learn`;
 export const readVocabulary = async (titleId) => {
     try {
         const response = await apiClient.get(`${host}/read/${titleId}`);
-        console.log('API response data:', response.data); // API 응답 데이터 확인
         return response.data;
     } catch (error) {
         console.error('Error reading vocabulary:', error); // 에러 로그 출력
@@ -17,7 +16,6 @@ export const readVocabulary = async (titleId) => {
 export const readVocabularyBySection = async (sectionId) => {
     try {
         const response = await apiClient.get(`${host}/read/section/${sectionId}`);
-        console.log('API response data:', response.data); // API 응답 데이터 확인
         return response.data;
     } catch (error) {
         console.error('Error reading vocabulary by section:', error); // 에러 로그 출력

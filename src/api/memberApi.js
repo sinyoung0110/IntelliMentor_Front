@@ -71,3 +71,13 @@ export const deleted = async (deleteParam) => {
   return res.data;
 };
 
+// 섹션별 api/learnApi.js
+export const attendance = async () => {
+  try {
+      const response = await apiClient.get(`${host}/attendance`);
+      return response.data;
+  } catch (error) {
+      console.error('Error reading vocabulary by section:', error); // 에러 로그 출력
+      throw error;
+  }
+};
