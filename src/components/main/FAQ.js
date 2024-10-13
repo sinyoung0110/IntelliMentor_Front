@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './FAQ.css'; // CSS 파일 import
 
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -41,7 +42,7 @@ const FAQ = () => {
   return (
     <div className="faq-container">
       <h2 className='main-text'>Frequently Asked Questions</h2>
-      <div className="faq-list" style={{marginTop:'50px'}}>
+      <div className="faq-list" style={{marginTop:'20px'}}>
         {faqData.map((faq, index) => (
           <div key={index} className="faq-item">
             <div className="faq-question" onClick={() => handleToggle(index)}>

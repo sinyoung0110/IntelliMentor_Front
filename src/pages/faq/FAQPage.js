@@ -5,7 +5,7 @@ function QuizSolvePage() {
     return (
         <>
         <BasicLayout>
-            <div className='faq-container'style={{width:'60%'}}>
+            <div className='faq-container'>
             <FAQ/>
             </div>
         </BasicLayout>

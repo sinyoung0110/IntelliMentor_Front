@@ -1,5 +1,5 @@
 html, body {
-  min-width: 1000px;
+  /*min-width: 1000px;*/
   overflow-x: auto; /* 수평 스크롤 허용 */
 }
 .container {
@@ -250,7 +250,7 @@ html, body {
 
 
 .faq-container {
-  width: 100%;
+  width: 90%;
   margin: 0 auto;
   padding: 20px;
 }
@@ -280,6 +280,32 @@ html, body {
   margin-top: 10px;
   padding-left: 20px;
   font-style: italic;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .faq-question {
+    font-size: 16px; /* 작은 화면에서 폰트 크기 조정 */
+    padding: 8px; /* 패딩 줄이기 */
+  }
+
+  .faq-answer {
+    font-size: 14px; /* 작은 화면에서 폰트 크기 조정 */
+  }
+}
+
+@media (max-width: 576px) {
+  .faq-container {
+    padding: 15px; /* 패딩 줄이기 */
+  }
+
+  .faq-question {
+    font-size: 14px; /* 더 작은 화면에서 폰트 크기 조정 */
+  }
+
+  .faq-answer {
+    font-size: 12px; /* 더 작은 화면에서 폰트 크기 조정 */
+  }
 }
 
 /*ai choose*/

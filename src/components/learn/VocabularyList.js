@@ -10,7 +10,7 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
 
     const toggleBookmark = async (index) => {
         const updatedData = { ...localVocabularyData };
-        const word = updatedData.vocaItemDTOS[index]; // `vocaItemDTOS`에서 단어 가져옴
+        const word = updatedData.vocaItemDTOS[index]; // vocaItemDTOS에서 단어 가져옴
         const updatedBookmark = !word.bookmark;
         word.bookmark = updatedBookmark;
 
@@ -18,8 +18,6 @@ const VocabularyList = ({ sectionNumber, vocabularyData }) => {
         setLocalVocabularyData(updatedData);
 
         // 북마크 상태 API 호출
-        const updatedIdList = [word.id]; // 단어 ID 리스트
-
         try {
             await updateBookmark(word.id); // 단어 ID를 사용하여 API 호출
         } catch (error) {

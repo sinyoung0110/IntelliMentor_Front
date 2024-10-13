@@ -10,19 +10,19 @@ function MainPage() {
     return (
         <BasicLayout>
             <Row>
-                <Col sm={7}>
-                    <VocaComponent /> {/* 데이터를 내부에서 처리하는 VocaComponent */}
+                <Col lg={7} md={12} style={{ marginBottom: '20px' }}> {/* 아래쪽에 margin 추가 */}
+                    <VocaComponent />
                 </Col>
-                <Col sm={5}>
+                <Col lg={5} md={12} style={{ marginBottom: '20px' }}> {/* 아래쪽에 margin 추가 */}
                     <StudyComponent />
                 </Col>
             </Row>
             <br />
             <Row>
-                <Col sm={7}>
+                <Col lg={7} md={12}>
                     <DataComponent />
                 </Col>
-                <Col sm={5}>
+                <Col lg={5} md={12}>
                     <FAQsmall />
                 </Col>
             </Row>
