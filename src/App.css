@@ -1,5 +1,5 @@
 html, body {
-  min-width:1000px; /* 최소 너비 설정 */
+  min-width: 1000px;
   overflow-x: auto; /* 수평 스크롤 허용 */
 }
 .container {
@@ -18,7 +18,7 @@ html, body {
   position: relative;
   opacity: 0.8;
   border: 1px solid #ddd;
-  height: 100%; /* 높이를 부모 컨테이너에 맞게 설정 */
+ height:100%;
 }
 
 .text-gray{
