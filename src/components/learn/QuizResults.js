@@ -6,7 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 const QuizResults = ({ results }) => {
   const navigate = useNavigate();
-  const { sectionId, titleId } = useParams(); // sectionId와 titleId 가져오기
+  const { sectionId, titleId } = useParams();
 
   const {
     countMap = {},
@@ -16,15 +16,12 @@ const QuizResults = ({ results }) => {
     mistakes = [],
   } = results || {};
 
-  // 북마크 상태 초기화
   const [bookmarkStatus, setBookmarkStatus] = useState({});
 
   useEffect(() => {
-    // 결과가 있을 경우 북마크 상태를 초기화
     if (results) {
       const initialBookmarkStatus = mistakes.reduce((acc, mistake) => {
-        // 여기에서 mistake에 북마크 상태가 포함되어 있다면 사용
-        acc[mistake.id] = mistake.bookmark || false; // 기본값 false
+        acc[mistake.id] = mistake.bookmark || false;
         return acc;
       }, {});
       setBookmarkStatus(initialBookmarkStatus);
@@ -36,13 +33,11 @@ const QuizResults = ({ results }) => {
       const currentStatus = bookmarkStatus[wordId];
       const newStatus = !currentStatus;
 
-      // 로컬 상태 업데이트
       setBookmarkStatus((prevStatus) => ({
         ...prevStatus,
         [wordId]: newStatus,
       }));
 
-      // API 호출
       await updateBookmark(wordId);
     } catch (error) {
       console.error('Failed to update bookmark', error);
@@ -50,11 +45,10 @@ const QuizResults = ({ results }) => {
   };
 
   const handleRetryQuiz = () => {
-    navigate(-1); // 이전 페이지로 이동
+    navigate(-1);
   };
 
   const handleGoToList = () => {
-    // sectionId와 titleId를 URL에 포함하여 이동
     navigate(`/learn/index?titleId=${titleId}&sectionId=${sectionId}`);
   };
 
@@ -62,10 +56,8 @@ const QuizResults = ({ results }) => {
     <Container className="mt-4">
       <Row>
         <Col md={6}>
-          <div style={{...styles.card, backgroundColor:'#F7F9F8', border:'solid 1px #ddd'}}>
-            <div style={styles.cardHeader}>
-              오답 단어
-            </div>
+          <div style={{ ...styles.card, backgroundColor: '#F7F9F8', border: 'solid 1px #ddd' }}>
+            <div style={styles.cardHeader}>오답 단어</div>
             <div style={styles.cardBody}>
               <ul style={styles.list}>
                 {mistakes.map((mistake) => (
@@ -95,15 +87,12 @@ const QuizResults = ({ results }) => {
                 <OverlayTrigger
                   placement="top"
                   overlay={
-                    <Tooltip
-                      id={`tooltip-top`}
-                      style={styles.customTooltip}
-                    >
-                      A : 90% 
-                      B : 80% 
-                      C : 65% 
-                      D : 40% 
-                      F : 40% 
+                    <Tooltip styleName="tooltip">
+                      A : 90% <br/>
+                      B : 80% <br/>
+                      C : 65% <br/>
+                      D : 40% <br/>
+                      F : Others
                     </Tooltip>
                   }
                 >
@@ -112,14 +101,12 @@ const QuizResults = ({ results }) => {
               )}
             </div>
             <div style={styles.progress}>
-                {progress} / {vocaCount * 3}
-              </div>
-            <div style={styles.gradeContainer}>
-              <div style={styles.grade}>
-                {grade}
-              </div>
+              {progress} / {vocaCount * 3}
             </div>
-            <div className='text-end'>
+            <div style={styles.gradeContainer}>
+              <div style={styles.grade}>{grade}</div>
+            </div>
+            <div className="text-end">
               <div style={styles.score}>
                 English: {countMap.e} / {vocaCount}
               </div>
@@ -127,7 +114,8 @@ const QuizResults = ({ results }) => {
                 Korean: {countMap.k} / {vocaCount}
               </div>
               <div style={styles.score}>
-                Sentence: {countMap.s} / {vocaCount}
+                Sentence: {countMap.s} / {vocaCount}<br/>
+                <span style={{color: '#bbb'}}>To get a "+", you need to check the sentence.</span>
               </div>
             </div>
           </div>
@@ -135,11 +123,11 @@ const QuizResults = ({ results }) => {
       </Row>
 
       <Row className="mt-4">
-        <Col className='text-end'>
-          <Button className='quiz-button learning' onClick={handleRetryQuiz}>
+        <Col className="text-end">
+          <Button className="quiz-button learning" onClick={handleRetryQuiz}>
             다시 풀기
           </Button>
-          <Button className='quiz-button ms-2' onClick={handleGoToList}>
+          <Button className="quiz-button ms-2" onClick={handleGoToList}>
             목록으로
           </Button>
         </Col>
@@ -159,7 +147,7 @@ const styles = {
   cardHeader: {
     fontSize: '1.5rem',
     fontWeight: 'bold',
-    marginBottom: '20px',   
+    marginBottom: '20px',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -168,14 +156,7 @@ const styles = {
     marginLeft: '10px',
     cursor: 'pointer',
     fontSize: '1.2rem',
-    color: '#8FB299', // 아이콘 색상
-  },
-  customTooltip: {
-    backgroundColor: '#8FB299', // 툴팁 배경을 녹색으로 변경
-    color: '#fff', // 텍스트 색상을 흰색으로 설정
-    borderRadius: '8px',
-    padding: '5px 10px',
-    fontSize: '0.9rem',
+    color: '#8FB299',
   },
   gradeContainer: {
     display: 'flex',

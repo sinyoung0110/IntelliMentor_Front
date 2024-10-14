@@ -71,7 +71,7 @@ const ListComponent = () => {
           <h2 className="main-text">VOCA LIST</h2>
         </Col>
       </Row>
-      <Row className="justify-content-end mb-4 mt-5" style={{ paddingRight: '100px' }}>
+      <Row className="justify-content-end mb-4 mt-5" style={{ paddingRight: '50px' }}>
         <Col xs="auto">
           <Button
             variant="outline-primary"

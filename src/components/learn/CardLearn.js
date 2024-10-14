@@ -98,7 +98,7 @@ const CardLearn = () => {
                                     checked={bookmarkOnly}
                                     onChange={() => setBookmarkOnly(!bookmarkOnly)}
                                 />
-                                Show only bookmarked
+                                only bookmarked
                             </label>
                             <label>
                                 <input
@@ -106,7 +106,7 @@ const CardLearn = () => {
                                     checked={showSentences}
                                     onChange={() => setShowSentences(!showSentences)}
                                 />
-                                Show sentences
+                                sentences
                             </label>
                             <label>
                                 <input
@@ -115,7 +115,7 @@ const CardLearn = () => {
                                     checked={defaultLanguage === 'kor'}
                                     onChange={() => handleLanguageToggle('kor')}
                                 />
-                                Show Korean first
+                                Kor
                             </label>
                             <label>
                                 <input
@@ -124,7 +124,7 @@ const CardLearn = () => {
                                     checked={defaultLanguage === 'eng'}
                                     onChange={() => handleLanguageToggle('eng')}
                                 />
-                                Show English first
+                                Eng
                             </label>
                         </div>
                     )}

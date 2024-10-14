@@ -1,5 +1,9 @@
 /* 단어장 대쉬보드 */
 
+table {
+  min-width: 850px; /* 기본 테이블의 최소 너비 설정 */
+}
+
 .vocabulary-list {
     padding: 20px;
     border: 1px solid #ddd;
@@ -17,6 +21,7 @@
   .table-container {
     max-height: 500px;
     overflow-y: auto; /* tbody 스크롤 가능 */
+    overflow-x: auto; /* 가로 스크롤 허용 */
     position: relative;
   }
   

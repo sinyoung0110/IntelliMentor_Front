@@ -79,6 +79,7 @@ html, body {
   align-items: center;
   width: 100%;
   padding: 20px;
+  flex-wrap: wrap; /* 작은 화면에서 버튼이 줄바꿈 되도록 함 */
 }
 
 .choose-button {
@@ -86,55 +87,97 @@ html, body {
   color: rgba(0, 0, 0, 0.7);
   font-size: 1.5rem;
   font-weight: bold;
-  flex: 1; /* Make each button take up an equal amount of space */
-  max-width: 30%; /* Ensure the buttons do not exceed 30% of the container width */
-  margin: 0 10px; /* Add some space between the buttons */
-  padding: 40px 20px; /* 패딩을 조정하여 버튼 높이를 키움 */
+  flex: 1;
+  max-width: 30%;
+  margin: 0 10px;
+  padding: 40px 20px;
   border-radius: 24px;
   border-color: #F4F1EC;
   display: flex;
-  flex-direction: column; /* Arrange children in a column */
-  align-items: center; /* Center children horizontally */
-  justify-content: center; /* Center children vertically */
-  text-align: center; /* 텍스트 가운데 정렬 */
-  height: 500px; /* 버튼의 고정 높이를 300px로 설정 */
-  border: 2px solid transparent; /* 기본 상태에서 테두리 없앰 */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 500px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease; /* 애니메이션 효과 추가 */
 }
+
 .choose-button.selected {
-  border: 4px solid #8FB299; /* 선택 시 경계선 표시 */
-  background-color: #E0F2E9; /* 선택된 버튼 배경 색상 */
+  border: 4px solid #8FB299;
+  background-color: #E0F2E9;
 }
-
-
 
 .choose-button:hover {
   background-color: #EBF0EA;
   color: #000000;
   border-color: #EBF0EA;
-  border: 2x solid transparent; /* hover 상태에서도 테두리 유지 안 함 */
 }
 
 .choose-button svg {
-  width: 150px; /* 아이콘의 고정 크기 설정 */
-  height: 150px; /* 아이콘의 고정 크기 설정 */
-  margin-bottom: 20px; /* 아이콘과 텍스트 사이의 간격 조정 */
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
 }
 
 .choose-button:focus {
-  outline: none; /* 선택 시 기본 아웃라인 제거 */
+  outline: none;
 }
 
 .choose-button:active {
-  background-color: #F4F1EC; /* 버튼을 누르는 동안에도 배경색을 유지 */
-  border: 2px solid transparent; /* active 상태에서 테두리 없앰 */
+  background-color: #F4F1EC;
+  border: 2px solid transparent;
 }
 
-.choose-button.selected {
-  border: 4px solid #8FB299; /* 선택 시 테두리 */
-  background-color: #E0F2E9; /* 선택된 버튼의 배경색 */
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 1200px) {
+  .choose-button {
+    max-width: 45%; /* 화면이 줄어들 때 버튼의 최대 너비 조정 */
+    height: 400px; /* 높이 줄임 */
+  }
+
+  .choose-button svg {
+    width: 120px; /* 아이콘 크기 축소 */
+    height: 120px;
+  }
+
+  .choose-button span {
+    font-size: 60px; /* 텍스트 크기 조정 */
+  }
 }
 
+@media (max-width: 768px) {
+  .choose-button {
+    max-width: 100%; /* 화면 너비에 맞춰 버튼이 가득 차도록 설정 */
+    margin: 10px 0; /* 버튼 사이 간격 조정 */
+    height: 300px;
+  }
 
+  .choose-button svg {
+    width: 100px;
+    height: 100px;
+  }
+
+  .choose-button span {
+    font-size: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .choose-button {
+    height: 250px;
+    padding: 20px;
+  }
+
+  .choose-button svg {
+    width: 80px;
+    height: 80px;
+  }
+
+  .choose-button span {
+    font-size: 40px;
+  }
+}
 
 
 /*Quiz*/
@@ -353,4 +396,34 @@ html, body {
 
 .add-button:hover {
   background-color: #7BBF8B; /* 버튼 hover 시 색상 변경 */
+}
+
+/*Quiz Result_ToolTIp*/
+
+.tooltip [class$="inner"] {
+  background-color: #8FB299;
+  border: 1px solid #8FB299;
+}
+
+.tooltip .tooltip-arrow {
+  border-top-color: transparent; /* 기본 값 */
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+  border-top-color: #8FB299; /* 위쪽 툴팁일 때 */
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+  border-bottom-color: #8FB299; /* 아래쪽 툴팁일 때 */
+}
+
+.tooltip.bs-tooltip-left .tooltip-arrow::before {
+  border-left-color: #8FB299; /* 왼쪽 툴팁일 때 */
+}
+
+.tooltip.bs-tooltip-right .tooltip-arrow::before {
+  border-right-color: #8FB299; /* 오른쪽 툴팁일 때 */
 }
