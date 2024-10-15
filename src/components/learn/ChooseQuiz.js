@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { MdOutlineArrowForward, MdOutlineQuestionMark,MdOutlineMinimize } from "react-icons/md";
+import { MdOutlineArrowForward, MdOutlineQuestionMark } from "react-icons/md";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Container, Button, Row, Col } from 'react-bootstrap';
 import { submitQuizSelection } from '../../api/learnApi'; // 퀴즈 데이터를 불러오는 API 함수
-
+import { ClipLoader } from 'react-spinners'; // named import로 수정
 
 const ChooseQuiz = () => {
   const navigate = useNavigate();
@@ -17,6 +17,7 @@ const ChooseQuiz = () => {
     k: false,
     s: false,
   });
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
   const handleSelect = (type) => {
     setSelectedQuizzes((prevSelected) => ({
@@ -26,6 +27,7 @@ const ChooseQuiz = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true); // 로딩 시작
     try {
       const selectedTypes = Object.keys(selectedQuizzes)
         .filter((key) => selectedQuizzes[key])
@@ -39,10 +41,21 @@ const ChooseQuiz = () => {
       });
     } catch (error) {
       console.error('Error during quiz submission:', error);
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
 
-  
+  // 로딩 상태일 때 스피너 표시
+  if (loading) {
+    return (
+      <div className="spinner-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+        <ClipLoader color="#8FB299" size={60} />
+        <p>퀴즈 만드는 중..</p>
+      </div>
+    );
+  }
+
   return (
     <Container className="mt-4">
       <Row className="justify-content-center mb-4">
@@ -80,10 +93,9 @@ const ChooseQuiz = () => {
           type="button" 
           className={`choose-button ${selectedQuizzes.s ? 'selected' : ''}`} 
           onClick={() => handleSelect('s')}
-        ><div className="question-container">
-
-          <MdOutlineQuestionMark color="#8FB299" />
-
+        >
+          <div className="question-container">
+            <MdOutlineQuestionMark color="#8FB299" />
           </div>
           빈칸 맞추기
         </Button>

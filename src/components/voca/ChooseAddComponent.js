@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { PiPencilSimpleLineDuotone, PiLegoSmileyDuotone } from "react-icons/pi";
 import { Container, Button, Row, Col, Modal } from 'react-bootstrap';
 import AiAddComponent from './AiAddComponent'; // AiAddComponent 임포트
-
+import { useNavigate } from 'react-router-dom';
 const ChooseAddComponent = () => {
   const [showAiModal, setShowAiModal] = useState(false); // 모달 상태 관리
+  const navigate = useNavigate();
+
 
   const handleDirectAdd = () => {
-    // 직접 생성 페이지로 이동
+    navigate('/voca/directAdd');
+
   };
 
   const handleAiAdd = () => {

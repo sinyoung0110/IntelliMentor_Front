@@ -3,7 +3,6 @@ import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import useCustomLogin from "../../hooks/useCustomLogin";
 import { signupPost } from '../../api/memberApi'; // signupPost 함수 import
 
-
 const SignUp = () => {
   const { moveToPath } = useCustomLogin();
 
@@ -38,7 +37,11 @@ const SignUp = () => {
         moveToPath('/');
       } catch (error) {
         console.error("Signup error:", error);
-        alert("An error occurred during signup. Please try again.");
+
+        // 서버에서 보낸 에러 메시지 확인
+        const errorMessage = error.response?.data?.ERROR_MESSAGE || "An error occurred during signup. Please try again.";
+        
+        alert(errorMessage); // 에러 메시지를 사용자에게 보여줌
       }
     }
   };
