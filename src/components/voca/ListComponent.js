@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { readVocabulary, updateSection } from '../../api/learnApi';
 import { checkVocaExists } from '../../api/vocaApi';
-import { Table, Container, Button, Row, Col, Modal, Form } from 'react-bootstrap';
+import { Table, Container, Button, Row, Col, Modal, Form, Alert } from 'react-bootstrap';
 import { FaEdit, FaPlus } from 'react-icons/fa';
 
 const ListComponent = () => {
   const [vocabularyList, setVocabularyList] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedVoca, setSelectedVoca] = useState({ titleId: 0, title: '', section: 0 });
+  const [selectedVoca, setSelectedVoca] = useState({ titleId: 0, title: '', section: 0, count: 0 });
   const [sectionValue, setSectionValue] = useState('');
   const [hoveredRowIndex, setHoveredRowIndex] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [recommendedDays, setRecommendedDays] = useState(1); // 최소 추천 일수를 저장하는 상태
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,6 +39,9 @@ const ListComponent = () => {
         setSelectedVoca(voca);
         setSectionValue(voca.section);
         setShowModal(true);
+        // 최소 추천 일수를 설정
+        const wordsPerDay = 4;
+        setRecommendedDays(Math.floor(voca.count / wordsPerDay));
       }
     } catch (error) {
       console.error('Failed to handle title click:', error);
@@ -50,9 +55,18 @@ const ListComponent = () => {
   const handleModalClose = () => {
     setShowModal(false);
     setSelectedVoca({ titleId: 0, title: '', section: 0 });
+    setErrorMessage(''); // 경고 메시지 초기화
   };
 
   const handleModalSubmit = async () => {
+    const wordsPerDay = 4;
+    const requiredWords = sectionValue * wordsPerDay;
+    
+    if (selectedVoca.count < requiredWords) {
+      setErrorMessage(`하루에 최소 ${wordsPerDay}개의 단어가 필요합니다. ${sectionValue}일 동안 총 ${requiredWords}개의 단어가 필요하며, 현재 단어 수는 ${selectedVoca.count}개입니다.`);
+      return;
+    }
+
     try {
       await updateSection(selectedVoca.titleId, sectionValue);
       await readVocabulary(selectedVoca.titleId);
@@ -61,6 +75,7 @@ const ListComponent = () => {
       console.error('Failed to update vocabulary section', error);
     } finally {
       setShowModal(false);
+      setErrorMessage('');
     }
   };
 
@@ -194,6 +209,11 @@ const ListComponent = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
+            {errorMessage && (
+              <Alert variant="danger" className="text-center">
+                {errorMessage}
+              </Alert>
+            )}
             <Row className="mb-3">
               <Col md={9}>
                 <div className="input-container">
@@ -208,19 +228,32 @@ const ListComponent = () => {
               </Col>
               <Col md={3}>
                 <div className="input-container">
-                  <label className="input-label">Section</label>
+                  <label className="input-label">단어 수</label>
+                  <input 
+                    type="text" 
+                    value={selectedVoca.count} 
+                    readOnly 
+                    className="input-field"
+                  />
+                </div>
+              </Col>
+            </Row>
+            <Row className="mb-3">
+              <Col>
+                <div className="input-container">
+                  <label className="input-label">학습할 Day 수 (추천 최소: {recommendedDays}일)</label>
                   <input 
                     type="number" 
                     value={sectionValue} 
                     onChange={(e) => {
                       const value = e.target.value;
-                      // 빈 값이거나 0보다 큰 숫자일 경우만 상태 업데이트
-                      if (value === '' || (Number(value) >= 0)) {
+                      if (value >= 1 || !isNaN(value)) {
                         setSectionValue(value);
+                        setErrorMessage('');
                       }
                     }} 
-                    min="0" 
-                    className="input-field"
+                    className="input-field" 
+                    min="1" 
                   />
                 </div>
               </Col>
@@ -232,7 +265,7 @@ const ListComponent = () => {
             Close
           </Button>
           <Button className="custom-button" variant="primary" onClick={handleModalSubmit}>
-            Save Changes
+            Submit
           </Button>
         </Modal.Footer>
       </Modal>

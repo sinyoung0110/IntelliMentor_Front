@@ -427,3 +427,25 @@ html, body {
 .tooltip.bs-tooltip-right .tooltip-arrow::before {
   border-right-color: #8FB299; /* 오른쪽 툴팁일 때 */
 }
+
+
+/*spinner*/
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* 화면 전체 높이 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+
+
+.input-field {
+  font-size: 20px; /* 기본 폰트 크기 설정 (label과 같음) */
+}
+
+.input-field::placeholder {
+  font-size: 15px; /* placeholder의 크기를 label보다 작게 설정 */
+  color: #aaa; /* placeholder의 색상 (원하는 색상으로 변경 가능) */
+}

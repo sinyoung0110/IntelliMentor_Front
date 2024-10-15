@@ -16,7 +16,6 @@ function MypageComponent() {
   // 정보 저장 함수
   const handleSave = async () => {
     try {
-      // modify API 호출 시 email을 보내지 않음
       const data = await modify({
         pw,
         nickname
@@ -38,7 +37,6 @@ function MypageComponent() {
   // 회원 탈퇴 함수
   const handleDeleteAccount = async () => {
     try {
-      // deleted API 호출 시 email을 보내지 않음
       const data = await deleted({}); // deleteParam을 비워둠
 
       console.log('회원 탈퇴 완료:', data);
@@ -103,14 +101,28 @@ function MypageComponent() {
                 취소
               </button>
             </div>
-            <div className="h-10"> </div>
           </>
         ) : (
           <>
-            <p><strong>이메일:</strong> {user.email}</p>
-            <p><strong>닉네임:</strong> {nickname}</p>
-            <p><strong>계정 정보:</strong> {user.isAdmin ? '관리자' : '일반 사용자'}</p>
-            <div className="flex justify-center space-x-4 mt-5">
+            <div className="flex flex-col mb-4">
+              <label className="text-gray-700">이메일:</label>
+              <div className="p-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 w-full">
+                {user.email}
+              </div>
+            </div>
+            <div className="flex flex-col mb-4">
+              <label className="text-gray-700">닉네임:</label>
+              <div className="p-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 w-full">
+                {nickname}
+              </div>
+            </div>
+            <div className="flex flex-col mb-4">
+              <label className="text-gray-700">계정 정보:</label>
+              <div className="p-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 w-full">
+                {user.isAdmin ? '관리자' : '일반 사용자'}
+              </div>
+            </div>
+            <div className="flex justify-center space-x-4 mt-5 mb-5">
               <button
                 onClick={() => setEditing(true)}
                 className="bg-green text-white px-4 py-2 rounded-lg  hover:bg-green-600"
@@ -124,7 +136,6 @@ function MypageComponent() {
                 회원 탈퇴
               </button>
             </div>
-            <div className="h-10"> </div>
           </>
         )}
       </div>

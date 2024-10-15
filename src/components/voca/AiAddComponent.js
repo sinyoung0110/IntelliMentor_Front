@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { aiAdd } from '../../api/vocaApi'; // aiAdd 함수 임포트
+import { useNavigate } from 'react-router-dom';
+import ClipLoader from 'react-spinners/ClipLoader'; // ClipLoader 임포트
+
 
 const AiAddComponent = () => {
   const [title, setTitle] = useState(''); // 단어장 제목
   const [subject, setSubject] = useState(''); // AI 생성 주제
   const [count, setCount] = useState(1); // 단어 개수 (기본값 1로 설정)
   const [level, setLevel] = useState('상'); // 난이도 (기본값 '상'으로 설정)
+  const [loading, setLoading] = useState(false); // 로딩 상태
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // 폼 제출 시 페이지 리로드 방지
     if (!title || !subject || count < 1) {
-      alert("모든 필드를 올바르게 입력하세요.");
+      alert('모든 필드를 올바르게 입력하세요.');
       return;
     }
+
+    setLoading(true); // 로딩 시작
 
     try {
       const response = await aiAdd(title, subject, count, level); // level 추가
       console.log('서버 응답:', response); // 서버 응답 확인
+      navigate('/voca/list');
     } catch (error) {
       console.error('API 호출 중 오류 발생:', error);
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
 
@@ -28,6 +38,16 @@ const AiAddComponent = () => {
     // count가 1보다 작으면 1로 설정, 그렇지 않으면 입력값으로 설정
     setCount(value < 1 ? 1 : value);
   };
+
+  // 로딩 상태일 때 스피너와 메시지 표시
+  if (loading) {
+    return (
+      <div className="spinner-container">
+        <ClipLoader color="#8FB299" size={60} />
+        <p>카드 만드는 중..</p>
+      </div>
+    );
+  }
 
   return (
     <Container className="ai-container">
@@ -117,7 +137,9 @@ const AiAddComponent = () => {
             </div>
           </Col>
         </Row>
-        <Button type="submit" className="add-button">추가</Button>
+        <Button type="submit" className="add-button">
+          추가
+        </Button>
       </form>
     </Container>
   );
