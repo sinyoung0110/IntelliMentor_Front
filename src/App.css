@@ -432,12 +432,13 @@ html, body {
 /*spinner*/
 .spinner-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: 100vh; /* 화면 전체 높이 */
-  text-align: center; /* 텍스트 중앙 정렬 */
+  flex-direction: column;
+  text-align: center;
 }
+
 
 
 

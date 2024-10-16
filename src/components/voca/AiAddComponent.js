@@ -44,7 +44,7 @@ const AiAddComponent = () => {
     return (
       <div className="spinner-container">
         <ClipLoader color="#8FB299" size={60} />
-        <p>카드 만드는 중..</p>
+        <p>단어장 만드는 중..</p>
       </div>
     );
   }

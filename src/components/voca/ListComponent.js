@@ -241,7 +241,7 @@ const ListComponent = () => {
             <Row className="mb-3">
               <Col>
                 <div className="input-container">
-                  <label className="input-label">학습할 Day 수 (추천 최소: {recommendedDays}일)</label>
+                  <label className="input-label">학습할 Day 수 (최대: {recommendedDays}일)</label>
                   <input 
                     type="number" 
                     value={sectionValue} 

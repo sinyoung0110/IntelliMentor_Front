@@ -49,7 +49,7 @@ const ChooseQuiz = () => {
   // 로딩 상태일 때 스피너 표시
   if (loading) {
     return (
-      <div className="spinner-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>
+      <div className="spinner-container">
         <ClipLoader color="#8FB299" size={60} />
         <p>퀴즈 만드는 중..</p>
       </div>
