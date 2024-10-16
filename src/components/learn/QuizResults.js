@@ -9,7 +9,9 @@ const QuizResults = ({ results }) => {
   const { sectionId, titleId } = useParams();
 
   const {
-    countMap = {},
+    countEng=0,
+    countKor=0,
+    countSen=0,
     progress = 0,
     vocaCount = 0,
     grade = 'N/A',
@@ -108,13 +110,13 @@ const QuizResults = ({ results }) => {
             </div>
             <div className="text-end">
               <div style={styles.score}>
-                English: {countMap.e} / {vocaCount}
+                English: {countEng} / {vocaCount}
               </div>
               <div style={styles.score}>
-                Korean: {countMap.k} / {vocaCount}
+                Korean: {countKor} / {vocaCount}
               </div>
               <div style={styles.score}>
-                Sentence: {countMap.s} / {vocaCount}<br/>
+                Sentence: {countSen} / {vocaCount}<br/>
                 <span style={{color: '#bbb'}}>To get a "+", you need to check the sentence.</span>
               </div>
             </div>

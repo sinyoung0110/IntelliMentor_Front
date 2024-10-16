@@ -87,7 +87,7 @@ function MypageComponent() {
                 className="p-2 border border-gray-300 rounded-lg w-full"
               />
             </div>
-            <div className="flex justify-center space-x-4 mt-4">
+            <div className="flex justify-center space-x-4 mt-4 mb-5">
               <button
                 onClick={handleSave}
                 className="bg-green text-white px-4 py-2 rounded-lg hover:bg-green-700"

@@ -46,6 +46,10 @@ const VocaComponent = () => {
         }
     };
 
+    const handleSectionNavigation = (titleId, sectionId) => {
+        navigate(`/learn/index?titleId=${titleId}&sectionId=${sectionId}`);
+    };
+
     return (
         <div
             className="commonContainer"
@@ -54,7 +58,6 @@ const VocaComponent = () => {
                 color: '#000000',
                 position: 'relative',
                 transition: 'background-color 0.3s ease',
-                
             }}
         >
             {!loginState.email && (
@@ -73,14 +76,13 @@ const VocaComponent = () => {
                         fontSize: '20px',
                         cursor: 'pointer',
                         transition: 'all 0.3s ease',
-                
                     }}
                     onClick={handleLogin}
                 >
                     로그인이 필요합니다. 로그인을 해주세요.
                 </div>
             )}
-            
+
             <div className="col p-4 d-flex flex-column position-static">
                 <h1>Vocabulary</h1>
                 <strong className="d-inline-block mb-2 text-primary-emphasis">오늘의 학습</strong>
@@ -90,16 +92,23 @@ const VocaComponent = () => {
                 ) : (
                     vocabData.map((vocabulary, index) => (
                         <div key={vocabulary.id} className="vocabulary-card">
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div
+                                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',cursor: 'pointer' }}
+                                onClick={() => handleSectionNavigation(vocabulary.titleId, vocabulary.sectionId)}
+                                className="vocabulary-clickable"
+                            >
                                 <div style={{ flexGrow: 1 }}>
                                     <h3 className="mb-0">{vocabulary.eng}</h3>
                                     <div className="mb-1 text-body-secondary">{vocabulary.kor}</div>
                                     <br />
                                     <p className="card-text mb-auto">{vocabulary.sentenceEng}</p>
-                                    <p className="card-text mb-auto">= {vocabulary.sentenceKor}</p>
+                                    <p className="card-text mb-auto">{vocabulary.sentenceKor}</p>
                                 </div>
                                 <button
-                                    onClick={() => handleBookmark(vocabulary.id)}
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // 버튼 클릭 시 섹션 이동 방지
+                                        handleBookmark(vocabulary.id);
+                                    }}
                                     className="bookmark"
                                     style={{ color: vocabulary.bookmark ? 'gold' : 'gray', fontSize: '24px' }}
                                 >

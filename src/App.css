@@ -322,7 +322,7 @@ html, body {
 .faq-answer {
   margin-top: 10px;
   padding-left: 20px;
-  font-style: italic;
+  color : gray;
 }
 
 /* 반응형 스타일 */

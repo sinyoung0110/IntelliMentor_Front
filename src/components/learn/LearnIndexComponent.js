@@ -10,6 +10,7 @@ const LearnIndexComponent = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const titleId = queryParams.get('titleId');
+    const sectionId = queryParams.get('sectionId');  // URL에서 sectionId 가져오기
 
     const [selectedDay, setSelectedDay] = useState('Day1');
     const [vocabularyData, setVocabularyData] = useState(null);
@@ -25,6 +26,14 @@ const LearnIndexComponent = () => {
                 setVocabularyData(data);
                 setSectionData(data.vocaSectionDTOs); // 수정된 데이터 구조에 맞게 설정
                 setGrades(data.vocaSectionDTOs.map(section => section.grade)); // 성적 저장
+
+                // sectionId가 있으면 그에 맞는 Day 설정
+                if (sectionId && data.vocaSectionDTOs) {
+                    const section = data.vocaSectionDTOs.find(sec => sec.sectionId === parseInt(sectionId, 10));
+                    if (section) {
+                        setSelectedDay(`Day${section.section}`);
+                    }
+                }
             } catch (error) {
                 console.error('Error fetching vocabulary data:', error);
             }
@@ -33,7 +42,7 @@ const LearnIndexComponent = () => {
         if (titleId) {
             fetchData();
         }
-    }, [titleId]);
+    }, [titleId, sectionId]);
 
     const maxSection = sectionData.length;
 

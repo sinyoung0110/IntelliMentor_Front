@@ -65,7 +65,7 @@ const CardLearn = () => {
     };
 
     const handleList = () => {
-        navigate(`/learn/index?titleId=${titleId}&sectionNumber=${sectionNumber}`);
+        navigate(`/learn/index?titleId=${titleId}&sectionId=${sectionId}`);
     };
 
     const handleQuizCreation = () => {
